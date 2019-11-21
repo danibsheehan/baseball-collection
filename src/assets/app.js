@@ -7,21 +7,16 @@ export default {
         BaseballCard
     },
     data: () => ({
-        images: []
+        players: []
     }),
     mounted() {
-        this.images = [];
-        axios.get(`https://api.unsplash.com/search/photos?query=baseball&per_page=30`, {
-            headers: {
-                Authorization: "Client-ID 1d074482b6ad4e653d02bc12cc9e29e024347095abcbba9e5ad6acfcda23ae4f",
-                "Accept-Version": "v1"
-            }
-        })
+        this.players = [];
+        axios.get(`https://api.sportsdata.io/v3/mlb/scores/json/Players/ATL?key=a5ab22c5a0e3407c9cc72de8ec2561ae`)
         .then(response => {
-            this.images = response.data.results;
+            this.players = response.data.filter(player => player.Status === 'Active');
         })
         .catch(() => {
-            this.images = [];
+            this.players = [];
         });
     }
 }

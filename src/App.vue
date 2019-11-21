@@ -1,7 +1,7 @@
 <template>
   <div id="app">
 	<div class="container">
-		<baseball-card v-for="(image, i) in images" :key="i" :image="image">
+		<baseball-card v-for="(player, i) in players" :key="i" :player="player">
 		</baseball-card>
 	</div>
   </div>
