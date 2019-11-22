@@ -1,0 +1,19 @@
+.card__name {
+	background-color: rgba(243, 245, 242, .9);
+	text-align: left;
+	width: 100%;
+}
+
+.card__name--first,
+.card__name--last {
+	padding-left: 10%;
+}
+
+.card__name--last {
+	font-size: 28px;
+}
+
+.card__name--first {
+	font-size: 20px;
+}
+    

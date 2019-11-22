@@ -1,4 +1,4 @@
-import BaseballCard from '../components/BaseballCard';
+import BaseballCard from '../BaseballCard';
 import axios from "axios";
 
 export default {

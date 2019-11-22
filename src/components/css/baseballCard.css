@@ -1,0 +1,19 @@
+.card__container {
+	box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.6);
+	margin: 15px;
+	max-width: 500px;
+	position: relative;
+	width: 20%;
+}
+
+.card__container--front {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.card__image {
+	background: url('../../assets/baseball-field.jpg');
+	border-bottom-right-radius: 10px;
+	min-height: 200px;
+	width: 70%;
+}

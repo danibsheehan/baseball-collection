@@ -7,8 +7,8 @@
   </div>
 </template>
 
-<script src="./assets/app.js"></script>
+<script src="./components/js/app.js"></script>
 
 <style scoped>
-  @import './assets/app.css';
+	@import './components/css/app.css';
 </style>
