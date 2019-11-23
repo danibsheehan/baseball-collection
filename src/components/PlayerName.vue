@@ -1,7 +1,7 @@
 <template>
 	<div class="card__name">
-		<div class="card__name--last">{{lastName}}</div>
-		<div class="card__name--first">{{firstName}}</div>
+		<span class="card__name--last">{{lastName}}</span>
+		<span class="card__name--first">{{firstName}}</span>
 	</div>
 </template>
 

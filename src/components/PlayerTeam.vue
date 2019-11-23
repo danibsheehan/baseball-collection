@@ -1,6 +1,7 @@
 <template>
-	<div class="card__team">
-		<div class="card__team--letter" v-for="(letter, i) in team" :key="i">{{letter}}</div>
+	<div class="card__player--info">
+		<span class="card__player--position">{{position}}</span>
+		<span class="card__player--team">{{team}}</span>
 	</div>
 </template>
 

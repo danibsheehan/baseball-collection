@@ -1,4 +1,5 @@
 .card__container {
+	background-color: rgb(240, 243, 247);
 	box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.6);
 	margin: 15px;
 	max-width: 500px;
@@ -9,11 +10,55 @@
 .card__container--front {
 	display: flex;
 	flex-wrap: wrap;
+	position: relative;
+}
+
+.card__border {
+	border-bottom: 4px solid black;
+	border-bottom-right-radius: 10px;
+	border-right: 2px solid black;
+	height: 88%;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 95%;
+	z-index: 99;
 }
 
 .card__image {
-	background: url('../../assets/baseball-field.jpg');
-	border-bottom-right-radius: 10px;
+	background: url('../../assets/baseball-field.jpg') center/cover;
+	color: white;
+	display: inline-block;
 	min-height: 200px;
-	width: 70%;
+	position: relative;
+	width: 100%;
+}
+
+.card__image::after {
+	box-shadow: 20px 0 15px -10px inset,
+	-30px 0 30px 0px inset;
+	content: "";
+	height: 100%;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+}
+
+.card__image--player {
+	height: 100%;
+}
+
+.card__logo {
+	bottom: 0;
+	position: absolute;
+	top: 62%;
+	left: 70%;
+	right: 0;
+	width: 20%;
+	z-index: 99;
+}
+
+.card__logo--atl {
+	background: url('../../assets/atl-logo.png') center/contain no-repeat;
 }
