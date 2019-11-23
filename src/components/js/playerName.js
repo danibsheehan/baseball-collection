@@ -6,6 +6,9 @@ export default {
         },
         lastName: {
             type: String
+        },
+        theme: {
+            type: String
         }
     }
 }

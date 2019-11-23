@@ -13,9 +13,15 @@ export default {
 		}
 	},
     data: () => ({
-		teamLogo: ''
+		theme: '',
+		flipped: false
 	}),
 	mounted() {
-		this.teamLogo = `card__logo card__logo--${this.player.Team.toLowerCase()}`;
+		this.theme = this.player.Team.toLowerCase();
+	},
+	methods: {
+		flipCard() {
+			this.flipped = !this.flipped;
+		}
 	}
 }

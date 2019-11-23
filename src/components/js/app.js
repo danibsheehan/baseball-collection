@@ -16,7 +16,8 @@ export default {
 		this.teams = [];
 		axios.get(`https://api.sportsdata.io/v3/mlb/scores/json/teams?key=a5ab22c5a0e3407c9cc72de8ec2561ae`)
 			.then(response => {
-				this.teams = response.data;
+				const data = response.data;
+				this.teams = data.sort((a, b) => (a.City > b.City) ? 1 : -1);
 			})
 			.catch(() => {
 				this.teams = [];
