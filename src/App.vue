@@ -1,10 +1,15 @@
 <template>
-  <div id="app">
-	<div class="container">
-		<baseball-card v-for="(player, i) in players" :key="i" :player="player">
-		</baseball-card>
+	<div id="app">
+		<div class="album__search">
+			<div class="teams__container">
+				<team v-for="(team, i) in teams" :key="i" :team="team" @update="loadPlayers"></team>
+			</div>
+		</div>
+		<div class="album__results">
+			<baseball-card v-for="(player, i) in players" :key="i" :player="player">
+			</baseball-card>
+		</div>
 	</div>
-  </div>
 </template>
 
 <script src="./components/js/app.js"></script>

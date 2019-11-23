@@ -7,10 +7,21 @@
 	margin-top: 60px;
 }
 
-.container {
+.album__search {
+	margin: 0 auto;
+	width: 50%;
+}
+
+.teams__container {
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+}
+
+.album__results {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	margin: 0 auto;
+	margin: 50px auto;
 	width: 80%;
 }

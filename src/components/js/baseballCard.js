@@ -15,7 +15,7 @@ export default {
     data: () => ({
 		teamLogo: ''
 	}),
-	mounted() {
+	updated() {
 		this.teamLogo = `card__logo card__logo--${this.player.Team.toLowerCase()}`;
 	}
 }
