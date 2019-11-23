@@ -10,4 +10,13 @@
 		padding: 10px 0;
 		width: 33%;
 	}
+
+	.team:hover {
+		background-color: black;
+		color: white;
+	}
+
+	.team:focus {
+		outline: none;
+	}
 </style>>
