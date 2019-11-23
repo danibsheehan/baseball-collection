@@ -6,7 +6,7 @@
 			</div>
 		</div>
 		<div class="album__results">
-			<baseball-card v-for="(player, i) in players" :key="i" :player="player">
+			<baseball-card v-for="player in players" :key="player.PlayerID" :player="player">
 			</baseball-card>
 		</div>
 	</div>
