@@ -1,24 +1,61 @@
 <template>
-	<div class="card__container" @click="flipCard" v-bind:class="{ 'show-back': flipped }">
-		<div class="card__container--front">
-			<div class="card__top" :class="theme">
-				<span class="card__image" :class="theme">
-					<img :src="player.PhotoUrl" class="card__image--player"/>
-				</span>
-			</div>
-			<div class="card__bottom">
-				<span class="card__logo" :class="theme"></span>
-				<player-name :firstName="player.FirstName" :lastName="player.LastName" :theme="theme"></player-name>
-			</div>
-		</div>
-		<div class="card__container--back">
-			Hi
+	<div class="card__scene">
+		<div class="card__container" @click="flipCard" v-bind:class="{ 'card__container--flipped': flipped }">
+			<card-front :player="player" :theme="theme"></card-front>
+			<card-back :player="player" :theme="theme"></card-back>
 		</div>
 	</div>
 </template>
 
-<script src="./js/baseballCard.js"></script>
+<script>
+import CardBack from './CardBack';
+import CardFront from './CardFront';
+
+export default {
+	name: 'BaseballCard',
+	components: {
+		CardBack,
+		CardFront
+	},
+	props: {
+		player: {
+			type: Object
+		}
+	},
+	data: () => ({
+		theme: '',
+		flipped: false
+	}),
+	mounted() {
+		this.theme = this.player.Team.toLowerCase();
+	},
+	methods: {
+		flipCard() {
+			this.flipped = !this.flipped;
+		}
+	}
+}
+</script>
 
 <style scoped>
-	@import './css/baseballCard.css';
+.card__scene {
+	box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.6);
+	height: 300px;
+	margin: 15px;
+	perspective: 600px;
+	position: relative;
+	width: 250px;
+}
+.card__container {
+	cursor: pointer;
+	height: 100%;
+	transition: transform 1s;
+	transform-style: preserve-3d;
+	position: relative;
+	width: 100%;
+}
+
+.card__container--flipped {
+	transform: rotateY(180deg);
+}
 </style>

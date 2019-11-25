@@ -5,8 +5,33 @@
 	</div>
 </template>
 
-<script src="./js/playerTeam.js"></script>
+<script>
+export default {
+    name: 'PlayerTeam',
+    props: {
+        position: {
+            type: String
+        },
+        team: {
+            type: String
+        }
+    }
+}
+</script>
 
 <style scoped>
-	@import './css/playerTeam.css';
+.card__player--info {
+	bottom: 3%;
+	display: inline-block;
+	font-size: 10px;
+	position: absolute;
+	right: 10%;
+}
+
+.card__player--position {
+	border-right: 1px solid black;
+	margin-right: 5px;
+	padding-right: 5px;
+	text-transform: uppercase;
+}
 </style>
