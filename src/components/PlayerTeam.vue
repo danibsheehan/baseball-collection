@@ -1,8 +1,8 @@
 <template>
-	<div class="card__player--info">
-		<span class="card__player--position">{{position}}</span>
-		<span class="card__player--team">{{team}}</span>
-	</div>
+		<div class="player__details" :class="theme">
+			<span class="player__position" :class="theme">{{position}}</span>
+			<span class="player__team">{{team}}</span>
+		</div>
 </template>
 
 <script>
@@ -14,24 +14,43 @@ export default {
         },
         team: {
             type: String
-        }
+		},
+		theme: {
+			type: String
+		}
     }
 }
 </script>
 
 <style scoped>
-.card__player--info {
-	bottom: 3%;
-	display: inline-block;
-	font-size: 10px;
-	position: absolute;
-	right: 10%;
+.player__details {
+	border-bottom: 2px solid black;
+	font-size: 14px;
+	text-align: center;
+	width: 100%;
 }
 
-.card__player--position {
+.player__details.ari {
+	border-color: rgb(227, 212, 173);
+	color: rgb(167, 30, 49);
+}
+
+.player__details.atl {
+	border-color: rgb(234, 170, 0);
+	color: rgb(206, 31, 67);
+}
+
+.player__position {
 	border-right: 1px solid black;
 	margin-right: 5px;
 	padding-right: 5px;
-	text-transform: uppercase;
+}
+
+.player__position.ari {
+	border-color:rgb(167, 30, 49);
+}
+
+.player__position.atl {
+	border-color: rgb(206, 31, 67);
 }
 </style>

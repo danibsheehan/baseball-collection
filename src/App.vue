@@ -85,6 +85,7 @@ h2 {
 	flex-wrap: wrap;
 	justify-content: center;
 	margin: 50px auto;
+	max-width: 1200px;
 }
 
 .album__results--title {

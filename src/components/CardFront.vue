@@ -5,8 +5,8 @@
 				<player-image :photoUrl="player.PhotoUrl" :theme="theme"></player-image>
 			</div>
 			<div class="card__bottom">
-				<player-logo :theme="theme"></player-logo>
 				<player-name :firstName="player.FirstName" :lastName="player.LastName" :theme="theme"></player-name>
+				<player-logo :theme="theme"></player-logo>
 			</div>
 		</div>
 	</div>
@@ -38,7 +38,7 @@ export default {
 <style scoped>
 .card {
 	backface-visibility: hidden;
-	background-color: rgb(242, 247, 245);
+	background-color: rgba(242, 247, 245, .5);
 	height: 100%;
 	left: 0;
 	position: absolute;
@@ -49,6 +49,7 @@ export default {
 .card__container--front {
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
 	height: 100%;
 	position: relative;
 }
@@ -179,6 +180,7 @@ export default {
 }
 
 .card__bottom {
+	height: 100%;
 	position: relative;
 }
 </style>
