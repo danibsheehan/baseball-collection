@@ -40,6 +40,7 @@ export default {
 <style scoped>
 .card__scene {
 	box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.6);
+	font-family: 'Montserrat', sans-serif;
 	height: 300px;
 	margin: 15px;
 	perspective: 600px;

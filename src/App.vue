@@ -50,7 +50,7 @@ export default {
 
 <style scoped>
 #app {
-	font-family: "Avenir", Helvetica, Arial, sans-serif;
+	font-family: 'Mukta', sans-serif;
 	margin-top: 50px;
 }
 
@@ -74,10 +74,6 @@ h2 {
 	display: flex;
 	flex-wrap: wrap;
 	width: 100%;
-}
-
-.team {
-	background-color: white;
 }
 
 .album__results {
