@@ -24,11 +24,13 @@ export default {
 			http.get(`players/${this.team.Key}`)
 				.then(response => {
 					this.players = response.data.filter(player => player.Status === 'Active');
-					this.$emit('update', this.players);
+					this.$emit('updatePlayers', this.players);
 				})
 				.catch(() => {
 					this.players = [];
 				});
+
+			this.$emit('updateTeam', this.team);
 		}
 	},
 	computed: {
@@ -41,11 +43,12 @@ export default {
 
 <style scoped>
 .team {
+	background-color: white;
 	border: 1px solid black;
 	font-size: 18px;
 	font-weight: 250;
 	height: 40px;
-	padding: 10px 0;
+	padding: 10px;
 	position: relative;
 	width: 33%;
 }
@@ -199,5 +202,11 @@ export default {
 
 .team:hover .team__logo {
 	display: inline-block;
+}
+
+@media (max-width: 480px) {
+	.team {
+		font-size: 12px;
+	}
 }
 </style>>
