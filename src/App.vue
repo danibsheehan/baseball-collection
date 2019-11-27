@@ -31,7 +31,7 @@ export default {
 	}),
 	mounted() {
 		this.teams = [];
-		axios.get(`https://api.sportsdata.io/v3/mlb/scores/json/teams?key=a5ab22c5a0e3407c9cc72de8ec2561ae`)
+		axios.get(`https://api.sportsdata.io/v3/mlb/scores/json/teams?key=${process.env.VUE_APP_SPORTS_KEY}`)
 			.then(response => {
 				const data = response.data;
 				this.teams = data.sort((a, b) => (a.City > b.City) ? 1 : -1);

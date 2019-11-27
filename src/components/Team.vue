@@ -18,7 +18,7 @@ export default {
 	methods: {
 		searchPlayers() {
 			this.players = [];
-			axios.get(`https://api.sportsdata.io/v3/mlb/scores/json/Players/${this.team.Key}?key=a5ab22c5a0e3407c9cc72de8ec2561ae`)
+			axios.get(`https://api.sportsdata.io/v3/mlb/scores/json/Players/${this.team.Key}?key=${process.env.VUE_APP_SPORTS_KEY}`)
 				.then(response => {
 					this.players = response.data.filter(player => player.Status === 'Active');
 					this.$emit('update', this.players);
