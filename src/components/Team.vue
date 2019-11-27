@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import http from '../http-common';
 
 export default {
 	name: 'Team',
@@ -18,7 +18,7 @@ export default {
 	methods: {
 		searchPlayers() {
 			this.players = [];
-			axios.get(`https://api.sportsdata.io/v3/mlb/scores/json/Players/${this.team.Key}?key=${process.env.VUE_APP_SPORTS_KEY}`)
+			http.get(`players/${this.team.Key}`)
 				.then(response => {
 					this.players = response.data.filter(player => player.Status === 'Active');
 					this.$emit('update', this.players);

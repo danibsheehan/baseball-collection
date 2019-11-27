@@ -17,7 +17,7 @@
 <script>
 import BaseballCard from './components/BaseballCard';
 import Team from './components/Team';
-import axios from 'axios';
+import http from './http-common';
 
 export default {
 	name: 'app',
@@ -31,7 +31,7 @@ export default {
 	}),
 	mounted() {
 		this.teams = [];
-		axios.get(`https://api.sportsdata.io/v3/mlb/scores/json/teams?key=${process.env.VUE_APP_SPORTS_KEY}`)
+		http.get(`teams`)
 			.then(response => {
 				const data = response.data;
 				this.teams = data.sort((a, b) => a.Key.localeCompare(b.Key, 'en', {'sensitivity': 'base'}));
