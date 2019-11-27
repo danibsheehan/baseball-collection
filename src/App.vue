@@ -34,7 +34,7 @@ export default {
 		axios.get(`https://api.sportsdata.io/v3/mlb/scores/json/teams?key=${process.env.VUE_APP_SPORTS_KEY}`)
 			.then(response => {
 				const data = response.data;
-				this.teams = data.sort((a, b) => (a.City > b.City) ? 1 : -1);
+				this.teams = data.sort((a, b) => a.Key.localeCompare(b.Key, 'en', {'sensitivity': 'base'}));
 			})
 			.catch(() => {
 				this.teams = [];
