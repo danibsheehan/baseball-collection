@@ -87,7 +87,7 @@ h2 {
 .album__search {
 	margin: 0 auto;
 	max-width: 800px;
-	width: 65%;
+	width: 70%;
 }
 
 .album__search--title {
