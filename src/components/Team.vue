@@ -23,7 +23,8 @@ export default {
 			this.players = [];
 			http.get(`players/${this.team.Key}`)
 				.then(response => {
-					this.players = response.data.filter(player => player.Status === 'Active');
+					const data = response.data.filter(player => player.Status === 'Active');
+					this.players = data.sort((a, b) => a.LastName.localeCompare(b.LastName, 'en', {'sensitivity': 'base'}));
 					this.$emit('updatePlayers', this.players);
 				})
 				.catch(() => {
