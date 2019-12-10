@@ -1,15 +1,16 @@
+require('dotenv').config();
 const express = require('express');
 const request = require('request');
 const serveStatic = require('serve-static');
 
 const app = express();
-const baseURL = `https://api.sportsdata.io/v3/mlb/scores/json/`;
-const key = `a5ab22c5a0e3407c9cc72de8ec2561ae`;
+const baseURL = 'https://api.sportsdata.io/v3/mlb/scores/json/';
+const key = process.env.VUE_APP_SPORTS_KEY;
 const port = process.env.PORT || 8080;
 
 app.use((req, res, next) => {
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 	next();
 });
 
@@ -28,5 +29,5 @@ app.get('/players/:team', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`server is listening at port`, port);
+    console.log('server is listening at port', port);
 });
