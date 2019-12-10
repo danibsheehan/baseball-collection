@@ -4,6 +4,7 @@ const serveStatic = require('serve-static');
 
 const app = express();
 const baseURL = `https://api.sportsdata.io/v3/mlb/scores/json/`;
+const host = '0.0.0.0';
 const key = `a5ab22c5a0e3407c9cc72de8ec2561ae`;
 const port = process.env.PORT || 8080;
 
@@ -27,6 +28,6 @@ app.get('/players/:team', (req, res) => {
 	request(url).pipe(res);
 });
 
-app.listen(port, () => {
-    console.log('server is listening at', port);
+app.listen(port, host, () => {
+    console.log(`server is listening at http://${host}:${port}`);
 });
