@@ -47,6 +47,7 @@ export default {
 }
 
 .card__container--front {
+	backface-visibility: hidden;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
