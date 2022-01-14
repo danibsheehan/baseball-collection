@@ -10,7 +10,7 @@
     "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "dependencies": {
-    "axios": "0.21.1",
+    "axios": "0.21.2",
     "axios-extensions": "^3.0.6",
     "core-js": "^3.3.2",
     "dotenv": "^8.2.0",
