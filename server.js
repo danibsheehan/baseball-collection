@@ -28,6 +28,22 @@ app.get('/teams/:teamId/roster', (req, res) => {
 	request(url).pipe(res);
 });
 
+/** Comma-separated MLB person IDs → single MLB batch request (personIds query). */
+app.get('/people', (req, res) => {
+	const raw = req.query.ids;
+	if (raw == null || typeof raw !== 'string' || !raw.trim()) {
+		res.status(400).json({ message: 'Missing or invalid ids query (comma-separated person IDs).' });
+		return;
+	}
+	const ids = raw.trim();
+	if (!/^\d+(,\d+)*$/.test(ids)) {
+		res.status(400).json({ message: 'ids must be comma-separated numeric person IDs.' });
+		return;
+	}
+	const url = `${baseURL}people?personIds=${encodeURIComponent(ids)}`;
+	request(url).pipe(res);
+});
+
 app.get('/people/:playerId', (req, res) => {
 	const url = `${baseURL}people/${req.params.playerId}`;
 

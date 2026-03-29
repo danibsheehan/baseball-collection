@@ -21,19 +21,51 @@ const players = ref([]);
 
 const theme = computed(() => props.team.teamCode?.toLowerCase() || '');
 
+const PEOPLE_BATCH_SIZE = 50;
+
+function fetchPeopleByIds(personIds) {
+	const unique = [...new Set(personIds.filter(Boolean))];
+	const chunks = [];
+	for (let i = 0; i < unique.length; i += PEOPLE_BATCH_SIZE) {
+		chunks.push(unique.slice(i, i + PEOPLE_BATCH_SIZE));
+	}
+	return Promise.all(
+		chunks.map((chunk) =>
+			http.get('people', { params: { ids: chunk.join(',') } })
+		)
+	)
+		.then((responses) => {
+			const people = responses.flatMap((r) => r.data.people || []);
+			return Object.fromEntries(people.map((p) => [p.id, p]));
+		})
+		.catch(() => ({}));
+}
+
 function searchPlayers() {
 	players.value = [];
+	emit('updateTeam', props.team);
+
 	http.get(`teams/${props.team.id}/roster`)
 		.then((response) => {
-			const data = response.data.roster;
-			players.value = data;
-			emit('updatePlayers', players.value);
+			const data = response.data.roster || [];
+			const ids = data.map((r) => r.person?.id).filter(Boolean);
+			if (!ids.length) {
+				emit('updatePlayers', []);
+				return;
+			}
+			return fetchPeopleByIds(ids).then((byId) => {
+				const enriched = data.map((r) => ({
+					...r,
+					playerInfo: byId[r.person?.id] || {}
+				}));
+				players.value = enriched;
+				emit('updatePlayers', enriched);
+			});
 		})
 		.catch(() => {
 			players.value = [];
+			emit('updatePlayers', []);
 		});
-
-	emit('updateTeam', props.team);
 }
 </script>
 

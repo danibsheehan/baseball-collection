@@ -8,14 +8,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
 import PlayerInfo from './PlayerInfo.vue';
 import PlayerLogo from './PlayerLogo.vue';
-import http from '../http-common';
 
-const props = defineProps({
+defineProps({
 	player: {
 		type: Object
+	},
+	playerInfo: {
+		type: Object,
+		default: () => ({})
 	},
 	teamName: {
 		type: String
@@ -23,19 +25,6 @@ const props = defineProps({
 	theme: {
 		type: String
 	}
-});
-
-const playerInfo = ref({});
-
-onMounted(() => {
-	http.get(`people/${props.player.person.id}`)
-		.then((response) => {
-			playerInfo.value = response.data.people[0];
-		})
-		.catch((err) => {
-			console.error('player request failed', err);
-			playerInfo.value = {};
-		});
 });
 </script>
 

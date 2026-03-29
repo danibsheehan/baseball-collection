@@ -2,7 +2,12 @@
 	<div class="card__scene">
 		<div class="card__container" @click="flipCard" v-bind:class="{ 'card__container--flipped': flipped }">
 			<CardFront :player="player" :theme="theme" />
-			<CardBack :player="player" :theme="theme" :teamName="teamName" />
+			<CardBack
+				:player="player"
+				:playerInfo="player.playerInfo"
+				:theme="theme"
+				:teamName="teamName"
+			/>
 		</div>
 	</div>
 </template>
