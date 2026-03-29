@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import PlayerInfo from './PlayerInfo';
-import PlayerLogo from './PlayerLogo';
+import PlayerInfo from './PlayerInfo.vue';
+import PlayerLogo from './PlayerLogo.vue';
 import http from '../http-common';
 
 export default {

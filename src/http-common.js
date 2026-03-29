@@ -1,7 +1,7 @@
 import axios, { getAdapter } from 'axios';
 import { cacheAdapterEnhancer } from 'axios-extensions';
 
-const apiBase = process.env.VUE_APP_API_BASE || '';
+const apiBase = import.meta.env.VITE_API_BASE || '';
 
 // Axios 1.x uses adapter name list on defaults, not a single function; cacheAdapterEnhancer needs a callable.
 const defaultAdapter = (config) =>

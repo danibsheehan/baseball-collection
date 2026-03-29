@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import CardBack from './CardBack';
-import CardFront from './CardFront';
+import CardBack from './CardBack.vue';
+import CardFront from './CardFront.vue';
 
 export default {
 	name: 'BaseballCard',

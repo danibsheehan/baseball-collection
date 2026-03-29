@@ -25,8 +25,8 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          VUE_APP_API_BASE: https://statsapi.mlb.com/api/v1
-          VUE_APP_PUBLIC_PATH: /${{ github.event.repository.name }}/
+          VITE_API_BASE: https://statsapi.mlb.com/api/v1
+          VITE_PUBLIC_PATH: /${{ github.event.repository.name }}/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

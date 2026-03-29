@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import BaseballCard from './components/BaseballCard';
-import Team from './components/Team';
+import BaseballCard from './components/BaseballCard.vue';
+import Team from './components/Team.vue';
 import http from './http-common';
 
 export default {

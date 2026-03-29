@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import PlayerImage from './PlayerImage';
-import PlayerName from './PlayerName';
-import PlayerLogo from './PlayerLogo';
+import PlayerImage from './PlayerImage.vue';
+import PlayerName from './PlayerName.vue';
+import PlayerLogo from './PlayerLogo.vue';
 
 export default {
 	name: 'CardFront',

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import PlayerTeam from './PlayerTeam';
+import PlayerTeam from './PlayerTeam.vue';
 
 export default {
 	name: 'PlayerInfo',

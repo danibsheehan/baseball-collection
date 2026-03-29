@@ -33,11 +33,11 @@ Requires **Node.js 20** (matches the GitHub Actions workflow).
 # Terminal 1 — Express proxy on port 3000 (forwards to MLB Stats API)
 npm run api
 
-# Terminal 2 — Vue CLI dev server (proxies /teams and /people to the proxy)
-npm run serve
+# Terminal 2 — Vite dev server (proxies /teams and /people to the proxy)
+npm run dev
 ```
 
-Open the URL printed by `npm run serve` (typically `http://localhost:8080`).
+Open the URL printed by `npm run dev` (typically `http://localhost:5173`).
 
 **Production-style static build** — point the client at the MLB API base (see `.env.production`), then build:
 
@@ -53,7 +53,7 @@ npm start
 
 ## API reference
 
-The browser calls these paths relative to the app origin. In development they hit the Vue dev server and are proxied to `server.js`; in production (e.g. GitHub Pages) `VUE_APP_API_BASE` is set so requests go straight to MLB.
+The browser calls these paths relative to the app origin. In development they hit the Vite dev server and are proxied to `server.js`; in production (e.g. GitHub Pages) `VITE_API_BASE` is set so requests go straight to MLB.
 
 | Client path | Purpose |
 |-------------|---------|
@@ -67,14 +67,14 @@ Upstream data is from the **MLB Stats API** (`https://statsapi.mlb.com/api/v1/`)
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `VUE_APP_API_BASE` | string | *(empty in dev)* | Full MLB Stats API root, e.g. `https://statsapi.mlb.com/api/v1`. When unset, the client uses `location.origin` and relies on the dev proxy or Express routes. |
-| `VUE_APP_PUBLIC_PATH` | string | `/` | Vue `publicPath`; set to `/repository-name/` for GitHub project Pages. |
+| `VITE_API_BASE` | string | *(empty in dev)* | Full MLB Stats API root, e.g. `https://statsapi.mlb.com/api/v1`. When unset, the client uses `location.origin` and relies on the dev proxy or Express routes. |
+| `VITE_PUBLIC_PATH` | string | `/` | Vite `base` URL; set to `/repository-name/` for GitHub project Pages. |
 | `PORT` | number | `8080` | Port for `server.js` when using `npm start`. |
-| `npm run api` | — | `3000` | Sets `PORT=3000` for the local proxy used with `npm run serve`. |
+| `npm run api` | — | `3000` | Sets `PORT=3000` for the local proxy used with `npm run dev`. |
 
 ## Deployment
 
-- **GitHub Pages**: workflow `.github/workflows/deploy-pages.yml` runs `npm ci`, `npm run build` with `VUE_APP_API_BASE` and `VUE_APP_PUBLIC_PATH`, then deploys `dist`.
+- **GitHub Pages**: workflow `.github/workflows/deploy-pages.yml` runs `npm ci`, `npm run build` with `VITE_API_BASE` and `VITE_PUBLIC_PATH`, then deploys `dist`.
 - **Heroku**: `package.json` includes `heroku-postbuild` to install dev dependencies and build; use `npm start` as the web process if you deploy this repo as a Node app.
 
 ## Contributing
