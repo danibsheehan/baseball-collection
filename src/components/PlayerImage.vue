@@ -1,17 +1,60 @@
 <template>
-	<span class="card__image" :class="theme">
-		<img :src="`https://img.mlbstatic.com/mlb/images/players/head_shot/${playerId}.jpg`" class="card__image--player"/>
+	<span ref="root" class="card__image" :class="theme">
+		<img
+			v-if="shouldLoadImage"
+			:src="headshotSrc"
+			class="card__image--player"
+			loading="lazy"
+			decoding="async"
+			alt=""
+		/>
 	</span>
 </template>
 
 <script setup>
-defineProps({
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+
+const props = defineProps({
 	playerId: {
 		type: Number
 	},
 	theme: {
 		type: String
 	}
+});
+
+const root = ref(null);
+const shouldLoadImage = ref(false);
+
+const headshotSrc = computed(
+	() =>
+		`https://img.mlbstatic.com/mlb/images/players/head_shot/${props.playerId}.jpg`
+);
+
+let observer;
+
+onMounted(() => {
+	if (typeof IntersectionObserver === 'undefined') {
+		shouldLoadImage.value = true;
+		return;
+	}
+	observer = new IntersectionObserver(
+		(entries) => {
+			if (entries.some((e) => e.isIntersecting)) {
+				shouldLoadImage.value = true;
+				observer?.disconnect();
+				observer = undefined;
+			}
+		},
+		{ rootMargin: '320px 0px', threshold: 0 }
+	);
+	if (root.value) {
+		observer.observe(root.value);
+	}
+});
+
+onBeforeUnmount(() => {
+	observer?.disconnect();
 });
 </script>
 
