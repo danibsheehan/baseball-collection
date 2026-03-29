@@ -3,6 +3,7 @@
 		<div class="card__container" @click="flipCard" v-bind:class="{ 'card__container--flipped': flipped }">
 			<CardFront :player="player" :theme="theme" />
 			<CardBack
+				v-if="flipped || hasLoadedBack"
 				:player="player"
 				:playerInfo="player.playerInfo"
 				:theme="theme"
@@ -30,9 +31,14 @@ defineProps({
 });
 
 const flipped = ref(false);
+const hasLoadedBack = ref(false);
 
 function flipCard() {
-	flipped.value = !flipped.value;
+	const nextFlipped = !flipped.value;
+	flipped.value = nextFlipped;
+	if (nextFlipped) {
+		hasLoadedBack.value = true;
+	}
 }
 </script>
 
