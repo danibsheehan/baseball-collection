@@ -119,16 +119,16 @@ export default {
 
 .player__info.ari,
 .player__info.bal,
-.player__info.chw,
+.player__info.cha,
 .player__info.cin,
 .player__info.col,
 .player__info.mia,
 .player__info.pit,
-.player__info.sf {
+.player__info.sfn {
 	color: rgb(0, 0, 0);
 }
 
-.player__info.chc {
+.player__info.chn {
 	color: rgb(39, 59, 129);
 }
 
@@ -144,15 +144,15 @@ export default {
 	color: rgb(30, 49, 96);
 }
 
-.player__info.kc {
+.player__info.kca {
 	color: rgb(23, 72, 133);
 }
 
-.player__info.laa {
+.player__info.ana {
 	color: rgb(0, 50, 99);
 }
 
-.player__info.lad {
+.player__info.lan {
 	color: rgb(0, 90, 156);
 }
 
@@ -164,15 +164,15 @@ export default {
 	color: rgb(26, 46, 90);
 }
 
-.player__info.nym {
+.player__info.nyn {
 	color: rgb(0, 45, 114);
 }
 
-.player__info.nyy {
+.player__info.nya {
 	color: rgb(18, 36, 72);
 }
 
-.player__info.oak {
+.player__info.ath {
 	color: rgb(1, 56, 49);
 }
 
@@ -180,7 +180,7 @@ export default {
 	color: rgb(40, 73, 153);
 }
 
-.player__info.sd {
+.player__info.sdn {
 	color: rgb(30, 49, 96);
 }
 
@@ -188,11 +188,11 @@ export default {
 	color: rgb(24, 45, 85);
 }
 
-.player__info.stl {
+.player__info.sln {
 	color: rgb(34, 32, 95);
 }
 
-.player__info.tb {
+.player__info.tba {
 	color: rgb(27, 47, 91);
 }
 
@@ -204,7 +204,7 @@ export default {
 	color: rgb(30, 46, 92);
 }
 
-.player__info.wsh {
+.player__info.was {
 	color: rgb(33, 39, 89);
 }
 

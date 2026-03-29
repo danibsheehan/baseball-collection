@@ -46,12 +46,12 @@ export default {
 	border-color: rgb(189, 49, 57);
 }
 
-.card__logo.chw {
+.card__logo.cha {
 	background-position: -150px -150px;
 	border-color: rgb(196, 206, 211);
 }
 
-.card__logo.chc {
+.card__logo.chn {
 	background-position: -120px -120px;
 	border-color: rgb(204, 52, 51);
 }
@@ -81,17 +81,17 @@ export default {
 	border-color: rgb(30, 49, 96);
 }
 
-.card__logo.kc {
+.card__logo.kca {
 	background-position: -330px -330px;
 	border-color: rgb(123, 178, 221);
 }
 
-.card__logo.laa {
+.card__logo.ana {
 	background-position: -360px -360px;
 	border-color: rgb(0, 50, 99);
 }
 
-.card__logo.lad {
+.card__logo.lan {
 	background-position: -390px -390px;
 	border-color: rgb(239, 62, 66);
 }
@@ -111,17 +111,17 @@ export default {
 	border-color: rgb(207, 172, 122);
 }
 
-.card__logo.nym {
+.card__logo.nyn {
 	background-position: -510px -510px;
 	border-color: rgb(0, 45, 114);
 }
 
-.card__logo.nyy {
+.card__logo.nya {
 	background-position: -540px -540px;
 	border-color: rgb(196, 206, 211);
 }
 
-.card__logo.oak {
+.card__logo.ath {
 	background-position: -570px -570px;
 	border-color: rgb(238, 178, 30);
 }
@@ -136,12 +136,12 @@ export default {
 	border-color: rgb(0, 0, 0);
 }
 
-.card__logo.sd {
+.card__logo.sdn {
 	background-position: -660px -660px;
 	border-color: rgb(30, 49, 96);
 }
 
-.card__logo.sf {
+.card__logo.sfn {
 	background-position: -690px -690px;
 	border-color: rgb(0, 0, 0);
 }
@@ -151,12 +151,12 @@ export default {
 	border-color: rgb(2, 93, 93);
 }
 
-.card__logo.stl {
+.card__logo.sln {
 	background-position: -750px -750px;
 	border-color: rgb(34, 32, 95);
 }
 
-.card__logo.tb {
+.card__logo.tba {
 	background-position: -780px -780px;
 	border-color: rgb(144, 188, 228);
 }
@@ -171,7 +171,7 @@ export default {
 	border-color: rgb(231, 44, 37);
 }
 
-.card__logo.wsh {
+.card__logo.was {
 	background-position: -870px -870px;
 	border-color: rgb(33, 39, 89);
 }

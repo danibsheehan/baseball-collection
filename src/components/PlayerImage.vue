@@ -61,12 +61,12 @@ export default {
 	color: rgba(25, 44, 85, .4);
 }
 
-.card__image.chw {
+.card__image.cha {
 	border-color: rgb(196, 206, 211);
 	color: rgba(0, 0, 0, .4);
 }
 
-.card__image.chc {
+.card__image.chn {
 	border-color: rgb(204, 52, 51);
 	color: rgba(39, 59, 129, .4);
 }
@@ -96,17 +96,17 @@ export default {
 	color: rgb(187, 188, 188);
 }
 
-.card__image.kc {
+.card__image.kca {
 	border-color: rgb(192, 153, 90);
 	color: rgba(23, 72, 133, .4);
 }
 
-.card__image.laa {
+.card__image.ana {
 	border-color: rgb(134, 38, 51);
 	color: rgb(196, 206, 212);
 }
 
-.card__image.lad {
+.card__image.lan {
 	border-color: rgb(239, 62, 66);
 	color: rgb(0, 90, 156)
 }
@@ -126,17 +126,17 @@ export default {
 	color: rgba(26, 46, 90, .4);
 }
 
-.card__image.nym {
+.card__image.nyn {
 	border-color: rgb(0, 45, 114);
 	color: rgba(0, 45, 114, .4);
 }
 
-.card__image.nyy {
+.card__image.nya {
 	border-color: rgb(18, 36, 72);
 	color: rgba(18, 36, 72, .4);
 }
 
-.card__image.oak {
+.card__image.ath {
 	border-color: rgb(1, 56, 49);
 	color: rgba(1, 56, 49, .4);
 }
@@ -151,12 +151,12 @@ export default {
 	color: rgba(0, 0, 0, .4);
 }
 
-.card__image.sd {
+.card__image.sdn {
 	border-color: rgb(30, 49, 96);
 	color: rgba(30, 49, 96, .4);
 }
 
-.card__image.sf {
+.card__image.sfn {
 	border-color: rgb(139, 111, 78);
 	color: rgba(230, 216, 175, .4);
 }
@@ -166,12 +166,12 @@ export default {
 	color: rgb(196, 206, 211);
 }
 
-.card__image.stl {
+.card__image.sln {
 	border-color: rgb(253, 218);
 	color: rgba(34, 32, 95, .4);
 }
 
-.card__image.tb {
+.card__image.tba {
 	border-color: rgb(245, 209, 49);
 	color: rgba(27, 47, 91, .4);
 }
@@ -186,7 +186,7 @@ export default {
 	color: rgba(30, 46, 92, .4);
 }
 
-.card__image.wsh {
+.card__image.was {
 	border-color: rgb(33, 39, 89);
 	color: rgba(33, 39, 89, .4);
 }

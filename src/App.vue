@@ -11,8 +11,8 @@
 			</div>
 		</div>
 		<div class="album__results">
-			<h2 class="album__results--title" v-if="players.length" :class="theme">Your Baseball Cards for the {{teamCity}} {{teamName}}!</h2>
-			<baseball-card v-for="player in players" :key="player.PlayerID" :player="player">
+			<h2 class="album__results--title" v-if="players.length" :class="theme">Your Baseball Cards for the {{teamName}}!</h2>
+			<baseball-card v-for="player in players" :key="player.person.id" :player="player" :theme="theme">
 			</baseball-card>
 		</div>
 	</div>
@@ -40,10 +40,13 @@ export default {
 		this.teams = [];
 		http.get(`teams`)
 			.then(response => {
-				const data = response.data;
-				this.teams = data.sort((a, b) => a.Key.localeCompare(b.Key, 'en', {'sensitivity': 'base'}));
+				const data = (response.data.teams || []).filter(
+					(t) => t.sport && t.sport.name === 'Major League Baseball'
+				);
+				this.teams = data
 			})
-			.catch(() => {
+			.catch((err) => {
+				console.error('teams request failed', err);
 				this.teams = [];
 			})
 	},
@@ -52,9 +55,8 @@ export default {
 			this.players = players;
 		},
 		loadTeam(team) {
-			this.teamCity = team.City;
-			this.theme = team.Key.toLowerCase();
-			this.teamName = team.Name;
+			this.theme = team.teamCode?.toLowerCase() || '';
+			this.teamName = team.name;
 		}
 	}
 }
@@ -124,16 +126,16 @@ h2 {
 
 .album__results--title.ari,
 .album__results--title.bal,
-.album__results--title.chw,
+.album__results--title.cha,
 .album__results--title.cin,
 .album__results--title.col,
 .album__results--title.mia,
 .album__results--title.pit,
-.album__results--title.sf {
+.album__results--title.sfn {
 	color: rgb(0, 0, 0);
 }
 
-.album__results--title.chc {
+.album__results--title.chn {
 	color: rgb(39, 59, 129);
 }
 
@@ -149,15 +151,15 @@ h2 {
 	color: rgb(30, 49, 96);
 }
 
-.album__results--title.kc {
+.album__results--title.kca {
 	color: rgb(23, 72, 133);
 }
 
-.album__results--title.laa {
+.album__results--title.ana {
 	color: rgb(0, 50, 99);
 }
 
-.album__results--title.lad {
+.album__results--title.lan {
 	color: rgb(0, 90, 156);
 }
 
@@ -169,15 +171,15 @@ h2 {
 	color: rgb(26, 46, 90);
 }
 
-.album__results--title.nym {
+.album__results--title.nyn {
 	color: rgb(0, 45, 114);
 }
 
-.album__results--title.nyy {
+.album__results--title.nya {
 	color: rgb(18, 36, 72);
 }
 
-.album__results--title.oak {
+.album__results--title.ath {
 	color: rgb(1, 56, 49);
 }
 
@@ -185,7 +187,7 @@ h2 {
 	color: rgb(40, 73, 153);
 }
 
-.album__results--title.sd {
+.album__results--title.sdn {
 	color: rgb(30, 49, 96);
 }
 
@@ -193,11 +195,11 @@ h2 {
 	color: rgb(24, 45, 85);
 }
 
-.album__results--title.stl {
+.album__results--title.sln {
 	color: rgb(34, 32, 95);
 }
 
-.album__results--title.tb {
+.album__results--title.tba {
 	color: rgb(27, 47, 91);
 }
 
@@ -209,7 +211,7 @@ h2 {
 	color: rgb(30, 46, 92);
 }
 
-.album__results--title.wsh {
+.album__results--title.was {
 	color: rgb(33, 39, 89);
 }
 

@@ -4,7 +4,7 @@ const request = require('request');
 const serveStatic = require('serve-static');
 
 const app = express();
-const baseURL = 'https://api.sportsdata.io/v3/mlb/scores/json/';
+const baseURL = 'http://statsapi.mlb.com/api/v1/';
 const key = process.env.VUE_APP_SPORTS_KEY;
 const port = process.env.PORT || 8080;
 
@@ -17,13 +17,13 @@ app.use((req, res, next) => {
 app.use(serveStatic(__dirname + '/dist'));
 
 app.get('/teams', (req, res) => {
-	const url = `${baseURL}teams?key=${key}`;
+	const url = `${baseURL}teams`;
 
 	request(url).pipe(res);
 });
 
-app.get('/players/:team', (req, res) => {
-	const url = `${baseURL}players/${req.params.team}?key=${key}`;
+app.get('/teams/:teamId/roster', (req, res) => {
+	const url = `${baseURL}teams/${req.params.teamId}/roster`;
 
 	request(url).pipe(res);
 });

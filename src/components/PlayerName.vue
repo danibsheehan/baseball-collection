@@ -1,7 +1,6 @@
 <template>
 	<div class="card__name" :class="theme">
-		<span class="card__name--last">{{lastName}}</span>
-		<span class="card__name--first">{{firstName}}</span>
+		<span class="card__name--full">{{ fullName }}</span>
 	</div>
 </template>
 
@@ -9,7 +8,7 @@
 export default {
 	name: 'PlayerName',
 	props: {
-		firstName: {
+		fullName: {
 			type: String
 		},
 		lastName: {
@@ -37,7 +36,7 @@ export default {
 	padding-left: 10%;
 }
 
-.card__name--last {
+.card__name--full {
 	font-size: 22px;
 	font-weight: 700;
 	letter-spacing: 1.5px;
@@ -54,16 +53,16 @@ export default {
 
 .card__name.ari,
 .card__name.bal,
-.card__name.chw,
+.card__name.cha,
 .card__name.cin,
 .card__name.col,
 .card__name.mia,
 .card__name.pit,
-.card__name.sf {
+.card__name.sfn {
 	color: rgb(0, 0, 0);
 }
 
-.card__name.chc {
+.card__name.chn {
 	color: rgb(39, 59, 129);
 }
 
@@ -79,15 +78,15 @@ export default {
 	color: rgb(30, 49, 96);
 }
 
-.card__name.kc {
+.card__name.kca {
 	color: rgb(23, 72, 133);
 }
 
-.card__name.laa {
+.card__name.ana {
 	color: rgb(0, 50, 99);
 }
 
-.card__name.lad {
+.card__name.lan {
 	color: rgb(0, 90, 156);
 }
 
@@ -99,15 +98,15 @@ export default {
 	color: rgb(26, 46, 90);
 }
 
-.card__name.nym {
+.card__name.nyn {
 	color: rgb(0, 45, 114);
 }
 
-.card__name.nyy {
+.card__name.nya {
 	color: rgb(18, 36, 72);
 }
 
-.card__name.oak {
+.card__name.ath {
 	color: rgb(1, 56, 49);
 }
 
@@ -115,7 +114,7 @@ export default {
 	color: rgb(40, 73, 153);
 }
 
-.card__name.sd {
+.card__name.sdn {
 	color: rgb(30, 49, 96);
 }
 
@@ -123,11 +122,11 @@ export default {
 	color: rgb(24, 45, 85);
 }
 
-.card__name.stl {
+.card__name.sln {
 	color: rgb(34, 32, 95);
 }
 
-.card__name.tb {
+.card__name.tba {
 	color: rgb(27, 47, 91);
 }
 
@@ -139,7 +138,7 @@ export default {
 	color: rgb(30, 46, 92);
 }
 
-.card__name.wsh {
+.card__name.was {
 	color: rgb(33, 39, 89);
 }
 </style>

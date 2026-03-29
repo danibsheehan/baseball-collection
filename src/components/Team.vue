@@ -1,6 +1,6 @@
 <template>
 	<button class="team" :class="theme" @click="searchPlayers">
-		<span class="team__name" :class="theme">{{team.City}} {{team.Name}}</span>
+		<span class="team__name" :class="theme">{{team.name}}</span>
 		<span class="team__logo" :class="theme"></span>
 	</button>
 </template>
@@ -21,10 +21,10 @@ export default {
 	methods: {
 		searchPlayers() {
 			this.players = [];
-			http.get(`players/${this.team.Key}`)
+			http.get(`teams/${this.team.id}/roster`)
 				.then(response => {
-					const data = response.data.filter(player => player.Status === 'Active');
-					this.players = data.sort((a, b) => a.LastName.localeCompare(b.LastName, 'en', {'sensitivity': 'base'}));
+					const data = response.data.roster;
+					this.players = data
 					this.$emit('updatePlayers', this.players);
 				})
 				.catch(() => {
@@ -36,7 +36,7 @@ export default {
 	},
 	computed: {
 		theme: function() {
-			return this.team.Key.toLowerCase();
+			return this.team.teamCode.toLowerCase();
 		}
 	}
 }
@@ -93,11 +93,11 @@ export default {
 	background-position: -90px -90px;
 }
 
-.team__logo.chw {
+.team__logo.cha {
 	background-position: -150px -150px;
 }
 
-.team__logo.chc {
+.team__logo.chn {
 	background-position: -120px -120px;
 }
 
@@ -121,15 +121,15 @@ export default {
 	background-position: -300px -300px;
 }
 
-.team__logo.kc {
+.team__logo.kca {
 	background-position: -330px -330px;
 }
 
-.team__logo.laa {
+.team__logo.ana {
 	background-position: -360px -360px;
 }
 
-.team__logo.lad {
+.team__logo.lan {
 	background-position: -390px -390px;
 }
 
@@ -145,15 +145,15 @@ export default {
 	background-position: -480px -480px;
 }
 
-.team__logo.nym {
+.team__logo.nyn {
 	background-position: -510px -510px;
 }
 
-.team__logo.nyy {
+.team__logo.nya {
 	background-position: -540px -540px;
 }
 
-.team__logo.oak {
+.team__logo.ath {
 	background-position: -570px -570px;
 }
 
@@ -165,11 +165,11 @@ export default {
 	background-position: -630px -630px;
 }
 
-.team__logo.sd {
+.team__logo.sdn {
 	background-position: -660px -660px;
 }
 
-.team__logo.sf {
+.team__logo.sfn {
 	background-position: -690px -690px;
 }
 
@@ -177,11 +177,11 @@ export default {
 	background-position: -720px -720px;
 }
 
-.team__logo.stl {
+.team__logo.sln {
 	background-position: -750px -750px;
 }
 
-.team__logo.tb {
+.team__logo.tba {
 	background-position: -780px -780px;
 }
 
@@ -193,7 +193,7 @@ export default {
 	background-position: -840px -840px;
 }
 
-.team__logo.wsh {
+.team__logo.was {
 	background-position: -870px -870px;
 }
 

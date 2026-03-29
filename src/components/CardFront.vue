@@ -2,27 +2,27 @@
 	<div class="card">
 		<div class="card__container--front">
 			<div class="card__top" :class="theme">
-				<player-image :photoUrl="player.PhotoUrl" :theme="theme"></player-image>
+				<!-- <player-image :photoUrl="player.PhotoUrl" :theme="theme"></player-image> -->
 			</div>
 			<div class="card__bottom">
-				<player-name :firstName="player.FirstName" :lastName="player.LastName" :theme="theme"></player-name>
-				<player-logo :theme="theme"></player-logo>
+				<player-name :fullName="player.person.fullName"></player-name>
+				<!-- <player-logo :theme="theme"></player-logo> -->
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import PlayerImage from './PlayerImage';
+// import PlayerImage from './PlayerImage';
 import PlayerName from './PlayerName';
-import PlayerLogo from './PlayerLogo';
+// import PlayerLogo from './PlayerLogo';
 
 export default {
 	name: 'CardFront',
 	components: {
-		PlayerImage,
+		// PlayerImage,
 		PlayerName,
-		PlayerLogo
+		// PlayerLogo
 	},
 	props: {
 		player: {
@@ -72,7 +72,7 @@ export default {
 }
 
 .card__top.bal,
-.card__top.chw {
+.card__top.cha {
 	border-color: rgb(0, 0, 0);
 }
 
@@ -80,7 +80,7 @@ export default {
 	border-color: rgb(25, 44, 85);
 }
 
-.card__top.chc {
+.card__top.chn {
 	border-color: rgb(39, 59, 129);
 }
 
@@ -104,15 +104,15 @@ export default {
 	border-color: rgb(234, 110, 36);
 }
 
-.card__top.kc {
+.card__top.kca {
 	border-color: rgb(123, 178, 221);
 }
 
-.card__top.laa {
+.card__top.ana {
 	border-color: rgb(186, 0, 33);
 }
 
-.card__top.lad {
+.card__top.lan {
 	border-color: rgb(0, 90, 156);
 }
 
@@ -132,11 +132,11 @@ export default {
 	border-color: rgb(255, 89, 16);
 }
 
-.card__top.nyy {
+.card__top.nya {
 	border-color: rgb(196, 206, 211);
 }
 
-.card__top.oak {
+.card__top.ath {
 	border-color: rgb(238, 178, 30);
 }
 
@@ -148,11 +148,11 @@ export default {
 	border-color: rgb(253, 183, 36);
 }
 
-.card__top.sd {
+.card__top.sdn {
 	border-color: rgb(30, 49, 96);
 }
 
-.card__top.sf {
+.card__top.sfn {
 	border-color: rgb(241, 91, 40);
 }
 
@@ -160,11 +160,11 @@ export default {
 	border-color: rgb(2, 93, 93);
 }
 
-.card__top.stl {
+.card__top.sln {
 	border-color: rgb(196, 32, 59);
 }
 
-.card__top.tb {
+.card__top.tba {
 	border-color: rgb(144, 188, 228);
 }
 
@@ -176,7 +176,7 @@ export default {
 	border-color: rgb(18, 75, 141);
 }
 
-.card__top.wsh {
+.card__top.was {
 	border-color: rgb(170, 30, 34);
 }
 

@@ -52,12 +52,12 @@ export default {
 	color: rgb(189, 49, 57);
 }
 
-.player__details.chc {
+.player__details.chn {
 	border-color: rgb(204, 52, 51);
 	color: rgb(204, 52, 51);
 }
 
-.player__details.chw {
+.player__details.cha {
 	border-color: rgb(196, 206, 211);
 	color: rgb(0, 0, 0);
 }
@@ -87,17 +87,17 @@ export default {
 	color: rgb(234, 110, 36);
 }
 
-.player__details.kc {
+.player__details.kca {
 	border-color: rgb(192, 153, 90);
 	color: rgb(123, 178, 221);
 }
 
-.player__details.laa {
+.player__details.ana {
 	border-color: rgb(134, 38, 51);
 	color: rgb(186, 0, 33);
 }
 
-.player__details.lad {
+.player__details.lan {
 	border-color: rgb(239, 62, 66);
 	color: rgb(0, 90, 156);
 }
@@ -117,17 +117,17 @@ export default {
 	color: rgb(211, 30, 71);
 }
 
-.player__details.nym {
+.player__details.nyn {
 	border-color: rgb(255, 89, 16);
 	color: rgb(0, 45, 114);
 }
 
-.player__details.nyy {
+.player__details.nya {
 	border-color: rgb(196, 206, 211);
 	color: rgb(18, 36, 72);
 }
 
-.player__details.oak {
+.player__details.ath {
 	border-color: rgb(238, 178, 30);
 	color: rgb(1, 56, 49);
 }
@@ -142,12 +142,12 @@ export default {
 	color: rgb(0, 0, 0);
 }
 
-.player__details.sd {
+.player__details.sdn {
 	border-color: rgb(30, 49, 96);
 	color: rgb(30, 49, 96);
 }
 
-.player__details.sf {
+.player__details.sfn {
 	border-color: rgb(139, 111, 78);
 	color: rgb(241, 91, 40);
 }
@@ -157,12 +157,12 @@ export default {
 	color: rgb(2, 93, 93);
 }
 
-.player__details.stl {
+.player__details.sln {
 	border-color: rgb(253, 218, 0);
 	color: rgb(196, 32, 59);
 }
 
-.player__details.tb {
+.player__details.tba {
 	border-color: rgb(245, 209, 49);
 	color: rgb(144, 188, 228);
 }
@@ -177,7 +177,7 @@ export default {
 	color: rgb(18, 75, 141);
 }
 
-.player__details.wsh {
+.player__details.was {
 	border-color: rgb(170, 30, 34);
 	color: rgb(33, 39, 89);
 }
@@ -204,11 +204,11 @@ export default {
 	border-color: rgb(189, 49, 57);
 }
 
-.player__position.chc {
+.player__position.chn {
 	border-color: rgb(204, 52, 51);
 }
 
-.player__position.chw,
+.player__position.cha,
 .player__position.cin {
 	border-color: rgb(0, 0, 0);
 }
@@ -229,15 +229,15 @@ export default {
 	border-color: rgb(234, 110, 36);
 }
 
-.player__position.kc {
+.player__position.kca {
 	border-color: rgb(123, 178, 221);
 }
 
-.player__position.laa {
+.player__position.ana {
 	border-color: rgb(186, 0, 33);
 }
 
-.player__position.lad {
+.player__position.lan {
 	border-color: rgb(0, 90, 156);
 }
 
@@ -253,15 +253,15 @@ export default {
 	border-color: rgb(211, 30, 71);
 }
 
-.player__position.nym {
+.player__position.nyn {
 	border-color: rgb(0, 45, 114);
 }
 
-.player__position.nyy {
+.player__position.nya {
 	border-color: rgb(18, 36, 72);
 }
 
-.player__position.oak {
+.player__position.ath {
 	border-color: rgb(1, 56, 49);
 }
 
@@ -273,11 +273,11 @@ export default {
 	border-color: rgb(0, 0, 0);
 }
 
-.player__position.sd {
+.player__position.sdn {
 	border-color: rgb(30, 49, 96);
 }
 
-.player__position.sf {
+.player__position.sfn {
 	border-color: rgb(241, 91, 40);
 }
 
@@ -285,11 +285,11 @@ export default {
 	border-color: rgb(2, 93, 93);
 }
 
-.player__position.stl {
+.player__position.sln {
 	border-color: rgb(196, 32, 59);
 }
 
-.player__position.tb {
+.player__position.tba {
 	border-color: rgb(144, 188, 228);
 }
 
@@ -301,7 +301,7 @@ export default {
 	border-color: rgb(18, 75, 141);
 }
 
-.player__position.wsh {
+.player__position.was {
 	border-color: rgb(33, 39, 89);
 }
 </style>
