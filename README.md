@@ -1,10 +1,96 @@
-# Cartophiles Web App
-Enjoy your very own baseball card collection - online!
+# Cartophiles
 
-<img src="https://github.com/danibsheehan/baseball-collection/blob/master/src/assets/CartophilesHome.png" width=250/><img src="https://github.com/danibsheehan/baseball-collection/blob/master/src/assets/CartophilesTeam.png" width=250/><img src="https://github.com/danibsheehan/baseball-collection/blob/master/src/assets/CartophilesCard.png" width=250/>
+> Browse MLB rosters and flip styled baseball cards for active players—built as a Vue 3 single-page app.
 
-This app is built with Vue.js and axios. It uses the [SportsDataIO API](https://sportsdata.io/) for up-to-date data regarding active players from all 30 MLB teams. Assets regarding each team are courtesy of [U.S. Team Colors](https://usteamcolors.com/).
+## Overview
 
-[**Cartophiles**](https://cartophiles.herokuapp.com/) is still a work in progress! Please feel free to check back to see updates. 
+Cartophiles loads all Major League Baseball teams, lets you pick one, and renders a roster as collectible-style cards. Player details on the card back come from the same public stats feed the app uses for teams and rosters. Team colors and logos follow real franchise styling; data is live from MLB’s API.
 
-Team colors and logos are the property of their respective owners. I am not affiliated with any of the teams or MLB.
+## Features
+
+- Lists MLB teams and filters to the major-league sport only
+- Fetches a team roster on demand and shows one card per player
+- Card front/back UI with team-themed styling
+- Axios client with a short-lived cache adapter for repeat requests
+- Production build can call the MLB Stats API directly from the browser (CORS-friendly)
+- Local development uses a small Express proxy so the SPA talks to same-origin URLs
+
+## Installation
+
+```bash
+git clone https://github.com/danibsheehan/baseball-collection.git
+cd baseball-collection
+npm ci
+```
+
+Requires **Node.js 20** (matches the GitHub Actions workflow).
+
+## Quick Start
+
+**Development** — run the API proxy and the Vue dev server in two terminals:
+
+```bash
+# Terminal 1 — Express proxy on port 3000 (forwards to MLB Stats API)
+npm run api
+
+# Terminal 2 — Vue CLI dev server (proxies /teams and /people to the proxy)
+npm run serve
+```
+
+Open the URL printed by `npm run serve` (typically `http://localhost:8080`).
+
+**Production-style static build** — point the client at the MLB API base (see `.env.production`), then build:
+
+```bash
+npm run build
+```
+
+**Serve the built app with Express** (static `dist` plus proxy routes):
+
+```bash
+npm start
+```
+
+## API reference
+
+The browser calls these paths relative to the app origin. In development they hit the Vue dev server and are proxied to `server.js`; in production (e.g. GitHub Pages) `VUE_APP_API_BASE` is set so requests go straight to MLB.
+
+| Client path | Purpose |
+|-------------|---------|
+| `GET /teams` | MLB teams collection (app keeps `sport.name === 'Major League Baseball'`) |
+| `GET /teams/:teamId/roster` | Active roster for one team |
+| `GET /people/:playerId` | Player record for card back details |
+
+Upstream data is from the **MLB Stats API** (`https://statsapi.mlb.com/api/v1/`). Response shapes follow that API.
+
+## Configuration
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `VUE_APP_API_BASE` | string | *(empty in dev)* | Full MLB Stats API root, e.g. `https://statsapi.mlb.com/api/v1`. When unset, the client uses `location.origin` and relies on the dev proxy or Express routes. |
+| `VUE_APP_PUBLIC_PATH` | string | `/` | Vue `publicPath`; set to `/repository-name/` for GitHub project Pages. |
+| `PORT` | number | `8080` | Port for `server.js` when using `npm start`. |
+| `npm run api` | — | `3000` | Sets `PORT=3000` for the local proxy used with `npm run serve`. |
+
+## Deployment
+
+- **GitHub Pages**: workflow `.github/workflows/deploy-pages.yml` runs `npm ci`, `npm run build` with `VUE_APP_API_BASE` and `VUE_APP_PUBLIC_PATH`, then deploys `dist`.
+- **Heroku**: `package.json` includes `heroku-postbuild` to install dev dependencies and build; use `npm start` as the web process if you deploy this repo as a Node app.
+
+## Contributing
+
+```bash
+npm run lint
+```
+
+## Screenshots
+
+<img src="./src/assets/CartophilesHome.png" width="250" alt="Home screen"/> <img src="./src/assets/CartophilesTeam.png" width="250" alt="Team selection"/> <img src="./src/assets/CartophilesCard.png" width="250" alt="Sample card"/>
+
+## Attributions & disclaimer
+
+Team colors and logo treatments draw on reference material from [U.S. Team Colors](https://usteamcolors.com/). Team names, colors, and logos belong to their respective owners; this project is not affiliated with MLB or any club.
+
+## License
+
+No `LICENSE` file is present in this repository; add one if you want a specific terms choice.
