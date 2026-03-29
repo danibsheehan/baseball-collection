@@ -7,7 +7,7 @@
 		</div>
 		<div class="album__search">
 			<div class="teams__container">
-				<Team v-for="(team, i) in teams" :key="i" :team="team" @updatePlayers="loadPlayers" @updateTeam="loadTeam" />
+				<Team v-for="team in teams" :key="team.id" :team="team" @updatePlayers="loadPlayers" @updateTeam="loadTeam" />
 			</div>
 		</div>
 		<div class="album__results">
