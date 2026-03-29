@@ -5,21 +5,18 @@
 		</div>
 </template>
 
-<script>
-export default {
-    name: 'PlayerTeam',
-    props: {
-        position: {
-            type: String
-        },
-        teamName: {
-            type: String
-		},
-		theme: {
-			type: String
-		}
-    }
-}
+<script setup>
+defineProps({
+	position: {
+		type: String
+	},
+	teamName: {
+		type: String
+	},
+	theme: {
+		type: String
+	}
+});
 </script>
 
 <style scoped>

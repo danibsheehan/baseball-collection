@@ -1,6 +1,6 @@
 <template>
 	<div class="player__info" :class="theme" v-if="playerInfo">
-		<player-team :position="playerInfo.primaryPosition?.name" :theme="theme" :teamName="teamName"></player-team>
+		<PlayerTeam :position="playerInfo.primaryPosition?.name" :theme="theme" :teamName="teamName" />
 		<div class="player__stat">
 			<span class="player__height">ht: {{playerInfo.height}}</span>
 			<span class="player__weight">wt: {{playerInfo.weight}}</span>
@@ -18,26 +18,20 @@
 	</div>
 </template>
 
-<script>
+<script setup>
 import PlayerTeam from './PlayerTeam.vue';
 
-export default {
-	name: 'PlayerInfo',
-	components: {
-		PlayerTeam
+defineProps({
+	playerInfo: {
+		type: Object
 	},
-    props: {
-        playerInfo: {
-            type: Object
-		},
-		teamName: {
-			type: String
-		},
-		theme: {
-			type: String
-		}
+	teamName: {
+		type: String
 	},
-}
+	theme: {
+		type: String
+	}
+});
 </script>
 
 <style scoped>

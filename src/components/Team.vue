@@ -5,40 +5,35 @@
 	</button>
 </template>
 
-<script>
+<script setup>
+import { ref, computed } from 'vue';
 import http from '../http-common';
 
-export default {
-	name: 'Team',
-	props: {
-		team: {
-			type: Object
-		}
-	},
-	data: () => ({
-		players: []
-	}),
-	methods: {
-		searchPlayers() {
-			this.players = [];
-			http.get(`teams/${this.team.id}/roster`)
-				.then(response => {
-					const data = response.data.roster;
-					this.players = data
-					this.$emit('updatePlayers', this.players);
-				})
-				.catch(() => {
-					this.players = [];
-				});
-
-			this.$emit('updateTeam', this.team);
-		}
-	},
-	computed: {
-		theme: function() {
-			return this.team.teamCode.toLowerCase();
-		}
+const props = defineProps({
+	team: {
+		type: Object
 	}
+});
+
+const emit = defineEmits(['updatePlayers', 'updateTeam']);
+
+const players = ref([]);
+
+const theme = computed(() => props.team.teamCode?.toLowerCase() || '');
+
+function searchPlayers() {
+	players.value = [];
+	http.get(`teams/${props.team.id}/roster`)
+		.then((response) => {
+			const data = response.data.roster;
+			players.value = data;
+			emit('updatePlayers', players.value);
+		})
+		.catch(() => {
+			players.value = [];
+		});
+
+	emit('updateTeam', props.team);
 }
 </script>
 

@@ -1,41 +1,33 @@
 <template>
 	<div class="card__scene">
 		<div class="card__container" @click="flipCard" v-bind:class="{ 'card__container--flipped': flipped }">
-			<card-front :player="player" :theme="theme"></card-front>
-			<card-back :player="player" :theme="theme" :teamName="teamName"></card-back>
+			<CardFront :player="player" :theme="theme" />
+			<CardBack :player="player" :theme="theme" :teamName="teamName" />
 		</div>
 	</div>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
 import CardBack from './CardBack.vue';
 import CardFront from './CardFront.vue';
 
-export default {
-	name: 'BaseballCard',
-	components: {
-		CardBack,
-		CardFront
+defineProps({
+	player: {
+		type: Object
 	},
-	props: {
-		player: {
-			type: Object
-		},
-		teamName: {
-			type: String
-		},
-		theme: {
-			type: String
-		}
+	teamName: {
+		type: String
 	},
-	data: () => ({
-		flipped: false
-	}),
-	methods: {
-		flipCard() {
-			this.flipped = !this.flipped;
-		}
+	theme: {
+		type: String
 	}
+});
+
+const flipped = ref(false);
+
+function flipCard() {
+	flipped.value = !flipped.value;
 }
 </script>
 

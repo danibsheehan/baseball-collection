@@ -2,37 +2,29 @@
 	<div class="card">
 		<div class="card__container--front">
 			<div class="card__top" :class="theme">
-				<player-image :playerId="player.person.id" :theme="theme"></player-image>
+				<PlayerImage :playerId="player.person.id" :theme="theme" />
 			</div>
 			<div class="card__bottom">
-				<player-name :fullName="player.person.fullName"></player-name>
-				<player-logo :theme="theme"></player-logo>
+				<PlayerName :fullName="player.person.fullName" />
+				<PlayerLogo :theme="theme" />
 			</div>
 		</div>
 	</div>
 </template>
 
-<script>
+<script setup>
 import PlayerImage from './PlayerImage.vue';
 import PlayerName from './PlayerName.vue';
 import PlayerLogo from './PlayerLogo.vue';
 
-export default {
-	name: 'CardFront',
-	components: {
-		PlayerImage,
-		PlayerName,
-		PlayerLogo
+defineProps({
+	player: {
+		type: Object
 	},
-	props: {
-		player: {
-			type: Object
-		},
-		theme: {
-			type: String
-		}
+	theme: {
+		type: String
 	}
-}
+});
 </script>
 
 <style scoped>

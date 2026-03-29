@@ -7,59 +7,56 @@
 		</div>
 		<div class="album__search">
 			<div class="teams__container">
-				<team v-for="(team, i) in teams" :key="i" :team="team" @updatePlayers="loadPlayers" @updateTeam="loadTeam"></team>
+				<Team v-for="(team, i) in teams" :key="i" :team="team" @updatePlayers="loadPlayers" @updateTeam="loadTeam" />
 			</div>
 		</div>
 		<div class="album__results">
 			<h2 class="album__results--title" v-if="players.length" :class="theme">Your Baseball Cards for the {{teamName}}!</h2>
-			<baseball-card v-for="player in players" :key="player.person.id" :player="player" :theme="theme" :teamName="teamName">
-			</baseball-card>
+			<BaseballCard
+				v-for="player in players"
+				:key="player.person.id"
+				:player="player"
+				:theme="theme"
+				:teamName="teamName"
+			/>
 		</div>
 	</div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from 'vue';
 import BaseballCard from './components/BaseballCard.vue';
 import Team from './components/Team.vue';
 import http from './http-common';
 
-export default {
-	name: 'app',
-	components: {
-		BaseballCard,
-		Team
-	},
-	data: () => ({
-		players: [],
-		teamCity: '',
-		teamName: '',
-		teams: [],
-		theme: ''
-	}),
-	mounted() {
-		this.teams = [];
-		http.get(`teams`)
-			.then(response => {
-				const data = (response.data.teams || []).filter(
-					(t) => t.sport && t.sport.name === 'Major League Baseball'
-				);
-				this.teams = data
-			})
-			.catch((err) => {
-				console.error('teams request failed', err);
-				this.teams = [];
-			})
-	},
-	methods: {
-		loadPlayers(players) {
-			this.players = players;
-		},
-		loadTeam(team) {
-			this.theme = team.teamCode?.toLowerCase() || '';
-			this.teamName = team.name;
-		}
-	}
+const players = ref([]);
+const teamName = ref('');
+const teams = ref([]);
+const theme = ref('');
+
+function loadPlayers(nextPlayers) {
+	players.value = nextPlayers;
 }
+
+function loadTeam(team) {
+	theme.value = team.teamCode?.toLowerCase() || '';
+	teamName.value = team.name;
+}
+
+onMounted(() => {
+	teams.value = [];
+	http.get('teams')
+		.then((response) => {
+			const data = (response.data.teams || []).filter(
+				(t) => t.sport && t.sport.name === 'Major League Baseball'
+			);
+			teams.value = data;
+		})
+		.catch((err) => {
+			console.error('teams request failed', err);
+			teams.value = [];
+		});
+});
 </script>
 
 <style scoped>

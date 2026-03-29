@@ -2,15 +2,12 @@
 	<span class="card__logo" :class="theme"></span>
 </template>
 
-<script>
-export default {
-	name: 'PlayerLogo',
-	props: {
-		theme: {
-			type: String
-		}
+<script setup>
+defineProps({
+	theme: {
+		type: String
 	}
-}
+});
 </script>
 
 <style scoped>

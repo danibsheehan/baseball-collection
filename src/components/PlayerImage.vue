@@ -4,18 +4,15 @@
 	</span>
 </template>
 
-<script>
-export default {
-	name: 'PlayerImage',
-	props: {
-		playerId: {
-			type: Number
-		},
-		theme: {
-			type: String
-		}
+<script setup>
+defineProps({
+	playerId: {
+		type: Number
+	},
+	theme: {
+		type: String
 	}
-}
+});
 </script>
 
 <style scoped>

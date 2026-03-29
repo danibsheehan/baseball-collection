@@ -1,49 +1,42 @@
 <template>
 	<div class="card">
 		<div class="card__container--back">
-			<player-logo :theme="theme"></player-logo>
-			<player-info :playerInfo="playerInfo" :theme="theme" :teamName="teamName"></player-info>
+			<PlayerLogo :theme="theme" />
+			<PlayerInfo :playerInfo="playerInfo" :theme="theme" :teamName="teamName" />
 		</div>
 	</div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from 'vue';
 import PlayerInfo from './PlayerInfo.vue';
 import PlayerLogo from './PlayerLogo.vue';
 import http from '../http-common';
 
-export default {
-	name: 'CardBack',
-	components: {
-		PlayerInfo,
-		PlayerLogo
+const props = defineProps({
+	player: {
+		type: Object
 	},
-	props: {
-		player: {
-			type: Object
-		},
-		teamName: {
-			type: String
-		},
-		theme: {
-			type: String
-		}
+	teamName: {
+		type: String
 	},
-	data: () => ({
-		playerInfo: {}
-	}),
-	mounted() {
-		http.get(`people/${this.player.person.id}`)
-			.then(response => {
-				this.playerInfo = response.data.people[0];
-			})
-			.catch((err) => {
-				console.error('player request failed', err);
-				this.playerInfo = {};
-			})
+	theme: {
+		type: String
 	}
+});
 
-}
+const playerInfo = ref({});
+
+onMounted(() => {
+	http.get(`people/${props.player.person.id}`)
+		.then((response) => {
+			playerInfo.value = response.data.people[0];
+		})
+		.catch((err) => {
+			console.error('player request failed', err);
+			playerInfo.value = {};
+		});
+});
 </script>
 
 <style scoped>

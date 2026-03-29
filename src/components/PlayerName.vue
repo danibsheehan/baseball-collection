@@ -4,18 +4,15 @@
 	</div>
 </template>
 
-<script>
-export default {
-	name: 'PlayerName',
-	props: {
-		fullName: {
-			type: String
-		},
-		theme: {
-			type: String
-		}
+<script setup>
+defineProps({
+	fullName: {
+		type: String
+	},
+	theme: {
+		type: String
 	}
-}
+});
 </script>
 
 <style scoped>
