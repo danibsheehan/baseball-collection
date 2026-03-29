@@ -1,8 +1,8 @@
 <template>
 	<div class="card">
 		<div class="card__container--back">
-			<PlayerLogo :theme="theme" />
-			<PlayerInfo :playerInfo="playerInfo" :theme="theme" :teamName="teamName" />
+			<PlayerLogo />
+			<PlayerInfo :playerInfo="playerInfo" :teamName="teamName" />
 		</div>
 	</div>
 </template>
@@ -20,9 +20,6 @@ defineProps({
 		default: () => ({})
 	},
 	teamName: {
-		type: String
-	},
-	theme: {
 		type: String
 	}
 });

@@ -1,12 +1,12 @@
 <template>
 	<div class="card">
 		<div class="card__container--front">
-			<div class="card__top" :class="theme">
-				<PlayerImage :playerId="player.person.id" :theme="theme" />
+			<div class="card__top">
+				<PlayerImage :playerId="player.person.id" />
 			</div>
 			<div class="card__bottom">
 				<PlayerName :fullName="player.person.fullName" />
-				<PlayerLogo :theme="theme" />
+				<PlayerLogo />
 			</div>
 		</div>
 	</div>
@@ -20,9 +20,6 @@ import PlayerLogo from './PlayerLogo.vue';
 defineProps({
 	player: {
 		type: Object
-	},
-	theme: {
-		type: String
 	}
 });
 </script>
@@ -48,128 +45,11 @@ defineProps({
 }
 
 .card__top {
-	border-bottom: 4px solid black;
+	border-bottom: 4px solid var(--theme-card-top-border, black);
 	border-bottom-right-radius: 10px;
-	border-right: 4px solid black;
+	border-right: 4px solid var(--theme-card-top-border, black);
 	padding-bottom: 5%;
 	width: 95%;
-}
-
-.card__top.ari {
-	border-color: rgb(167, 30, 49);
-}
-
-.card__top.atl {
-	border-color: rgb(206, 31, 67);
-}
-
-.card__top.bal,
-.card__top.cha {
-	border-color: rgb(0, 0, 0);
-}
-
-.card__top.bos {
-	border-color: rgb(25, 44, 85);
-}
-
-.card__top.chn {
-	border-color: rgb(39, 59, 129);
-}
-
-.card__top.cin {
-	border-color: rgb(198, 33, 39);
-}
-
-.card__top.cle {
-	border-color: rgb(226, 29, 56);
-}
-
-.card__top.col {
-	border-color: rgb(55, 36, 107);
-}
-
-.card__top.det {
-	border-color: rgb(24, 45, 85);
-}
-
-.card__top.hou {
-	border-color: rgb(234, 110, 36);
-}
-
-.card__top.kca {
-	border-color: rgb(123, 178, 221);
-}
-
-.card__top.ana {
-	border-color: rgb(186, 0, 33);
-}
-
-.card__top.lan {
-	border-color: rgb(0, 90, 156);
-}
-
-.card__top.mia {
-	border-color: rgb(242, 103, 34);
-}
-
-.card__top.mil {
-	border-color: rgb(181, 146, 47);
-}
-
-.card__top.min {
-	border-color: rgb(211, 30, 71);
-}
-
-.card__top.nym {
-	border-color: rgb(255, 89, 16);
-}
-
-.card__top.nya {
-	border-color: rgb(196, 206, 211);
-}
-
-.card__top.ath {
-	border-color: rgb(238, 178, 30);
-}
-
-.card__top.phi {
-	border-color: rgb(231, 29, 42);
-}
-
-.card__top.pit {
-	border-color: rgb(253, 183, 36);
-}
-
-.card__top.sdn {
-	border-color: rgb(30, 49, 96);
-}
-
-.card__top.sfn {
-	border-color: rgb(241, 91, 40);
-}
-
-.card__top.sea {
-	border-color: rgb(2, 93, 93);
-}
-
-.card__top.sln {
-	border-color: rgb(196, 32, 59);
-}
-
-.card__top.tba {
-	border-color: rgb(144, 188, 228);
-}
-
-.card__top.tex {
-	border-color: rgb(192, 33, 38);
-}
-
-.card__top.tor {
-	border-color: rgb(18, 75, 141);
-}
-
-.card__top.was {
-	border-color: rgb(170, 30, 34);
 }
 
 .card__bottom {

@@ -11,7 +11,11 @@
 			</div>
 		</div>
 		<div class="album__results">
-			<h2 class="album__results--title" v-if="players.length" :class="theme">Your Baseball Cards for the {{teamName}}!</h2>
+			<h2
+				class="album__results--title"
+				v-if="players.length"
+				:data-theme="theme || undefined"
+			>Your Baseball Cards for the {{teamName}}!</h2>
 			<BaseballCard
 				v-for="player in players"
 				:key="player.person.id"
@@ -109,107 +113,9 @@ h2 {
 }
 
 .album__results--title {
+	color: var(--theme-heading, inherit);
 	font-size: 32px;
 	width: 100%;
-}
-
-.album__results--title.atl {
-	color: rgb(22, 40, 79);
-}
-
-.album__results--title.bos {
-	color: rgb(25, 44, 85);
-}
-
-.album__results--title.ari,
-.album__results--title.bal,
-.album__results--title.cha,
-.album__results--title.cin,
-.album__results--title.col,
-.album__results--title.mia,
-.album__results--title.pit,
-.album__results--title.sfn {
-	color: rgb(0, 0, 0);
-}
-
-.album__results--title.chn {
-	color: rgb(39, 59, 129);
-}
-
-.album__results--title.cle {
-	color: rgb(26, 46, 90);
-}
-
-.album__results--title.det {
-	color: rgb(24, 45, 85);
-}
-
-.album__results--title.hou {
-	color: rgb(30, 49, 96);
-}
-
-.album__results--title.kca {
-	color: rgb(23, 72, 133);
-}
-
-.album__results--title.ana {
-	color: rgb(0, 50, 99);
-}
-
-.album__results--title.lan {
-	color: rgb(0, 90, 156);
-}
-
-.album__results--title.mil {
-	color: rgb(26, 37, 80);
-}
-
-.album__results--title.min {
-	color: rgb(26, 46, 90);
-}
-
-.album__results--title.nyn {
-	color: rgb(0, 45, 114);
-}
-
-.album__results--title.nya {
-	color: rgb(18, 36, 72);
-}
-
-.album__results--title.ath {
-	color: rgb(1, 56, 49);
-}
-
-.album__results--title.phi {
-	color: rgb(40, 73, 153);
-}
-
-.album__results--title.sdn {
-	color: rgb(30, 49, 96);
-}
-
-.album__results--title.sea {
-	color: rgb(24, 45, 85);
-}
-
-.album__results--title.sln {
-	color: rgb(34, 32, 95);
-}
-
-.album__results--title.tba {
-	color: rgb(27, 47, 91);
-}
-
-.album__results--title.tex {
-	color: rgb(35, 57, 116);
-}
-
-.album__results--title.tor {
-	color: rgb(30, 46, 92);
-}
-
-.album__results--title.was {
-	color: rgb(33, 39, 89);
 }
 
 @media (max-width: 760px) {

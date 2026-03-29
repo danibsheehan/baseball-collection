@@ -1,12 +1,11 @@
 <template>
-	<div class="card__scene">
+	<div class="card__scene" :data-theme="theme || undefined">
 		<div class="card__container" @click="flipCard" v-bind:class="{ 'card__container--flipped': flipped }">
-			<CardFront :player="player" :theme="theme" />
+			<CardFront :player="player" />
 			<CardBack
 				v-if="flipped || hasLoadedBack"
 				:player="player"
 				:playerInfo="player.playerInfo"
-				:theme="theme"
 				:teamName="teamName"
 			/>
 		</div>
