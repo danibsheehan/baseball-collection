@@ -2,27 +2,27 @@
 	<div class="card">
 		<div class="card__container--front">
 			<div class="card__top" :class="theme">
-				<!-- <player-image :photoUrl="player.PhotoUrl" :theme="theme"></player-image> -->
+				<player-image :playerId="player.person.id" :theme="theme"></player-image>
 			</div>
 			<div class="card__bottom">
 				<player-name :fullName="player.person.fullName"></player-name>
-				<!-- <player-logo :theme="theme"></player-logo> -->
+				<player-logo :theme="theme"></player-logo>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-// import PlayerImage from './PlayerImage';
+import PlayerImage from './PlayerImage';
 import PlayerName from './PlayerName';
-// import PlayerLogo from './PlayerLogo';
+import PlayerLogo from './PlayerLogo';
 
 export default {
 	name: 'CardFront',
 	components: {
-		// PlayerImage,
+		PlayerImage,
 		PlayerName,
-		// PlayerLogo
+		PlayerLogo
 	},
 	props: {
 		player: {

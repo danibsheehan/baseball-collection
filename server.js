@@ -5,7 +5,7 @@ const serveStatic = require('serve-static');
 
 const app = express();
 const baseURL = 'http://statsapi.mlb.com/api/v1/';
-const key = process.env.VUE_APP_SPORTS_KEY;
+// const key = process.env.VUE_APP_SPORTS_KEY;
 const port = process.env.PORT || 8080;
 
 app.use((req, res, next) => {
@@ -24,6 +24,12 @@ app.get('/teams', (req, res) => {
 
 app.get('/teams/:teamId/roster', (req, res) => {
 	const url = `${baseURL}teams/${req.params.teamId}/roster`;
+
+	request(url).pipe(res);
+});
+
+app.get('/people/:playerId', (req, res) => {
+	const url = `${baseURL}people/${req.params.playerId}`;
 
 	request(url).pipe(res);
 });

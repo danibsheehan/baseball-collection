@@ -11,9 +11,6 @@ export default {
 		fullName: {
 			type: String
 		},
-		lastName: {
-			type: String
-		},
 		theme: {
 			type: String
 		}

@@ -2,7 +2,7 @@
 	<div class="card">
 		<div class="card__container--back">
 			<player-logo :theme="theme"></player-logo>
-			<player-info :player="player" :theme="theme"></player-info>
+			<player-info :playerInfo="playerInfo" :theme="theme" :teamName="teamName"></player-info>
 		</div>
 	</div>
 </template>
@@ -10,6 +10,7 @@
 <script>
 import PlayerInfo from './PlayerInfo';
 import PlayerLogo from './PlayerLogo';
+import http from '../http-common';
 
 export default {
 	name: 'CardBack',
@@ -21,10 +22,27 @@ export default {
 		player: {
 			type: Object
 		},
+		teamName: {
+			type: String
+		},
 		theme: {
 			type: String
 		}
+	},
+	data: () => ({
+		playerInfo: {}
+	}),
+	mounted() {
+		http.get(`people/${this.player.person.id}`)
+			.then(response => {
+				this.playerInfo = response.data.people[0];
+			})
+			.catch((err) => {
+				console.error('player request failed', err);
+				this.playerInfo = {};
+			})
 	}
+
 }
 </script>
 

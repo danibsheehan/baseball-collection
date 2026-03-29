@@ -1,6 +1,6 @@
 <template>
 	<span class="card__image" :class="theme">
-		<img :src="photoUrl" class="card__image--player"/>
+		<img :src="`https://img.mlbstatic.com/mlb/images/players/head_shot/${playerId}.jpg`" class="card__image--player"/>
 	</span>
 </template>
 
@@ -8,8 +8,8 @@
 export default {
 	name: 'PlayerImage',
 	props: {
-		photoUrl: {
-			type: String
+		playerId: {
+			type: Number
 		},
 		theme: {
 			type: String

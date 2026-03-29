@@ -1,19 +1,19 @@
 <template>
-	<div class="player__info" :class="theme">
-		<player-team :position="player.Position" :team="player.Team" :theme="theme"></player-team>
+	<div class="player__info" :class="theme" v-if="playerInfo">
+		<player-team :position="playerInfo.primaryPosition?.name" :theme="theme" :teamName="teamName"></player-team>
 		<div class="player__stat">
-			<span class="player__height">ht: {{height}}</span>
-			<span class="player__weight">wt: {{weight}}</span>
+			<span class="player__height">ht: {{playerInfo.height}}</span>
+			<span class="player__weight">wt: {{playerInfo.weight}}</span>
 		</div>
 		<div class="player__stat">
-			<span class="player__bat">bats: {{batHand}}</span>
-			<span class="player__throw">throws: {{throwHand}}</span>
+			<span class="player__bat">bats: {{playerInfo.batSide?.description}}</span>
+			<span class="player__throw">throws: {{playerInfo.pitchHand?.description}}</span>
 		</div>
 		<div class="player__stat">
-			<span class="player__birthdate">born: {{birthday}},</span>
-			<span class="player__birthcity" v-if="player.BirthCity">{{player.BirthCity}},</span>
-			<span class="player__birthstate" v-if="player.BirthState">{{player.BirthState}},</span>
-			<span class="player__birthcountry" v-if="player.BirthCountry">{{player.BirthCountry}}</span>
+			<span class="player__birthdate">born: {{playerInfo.birthDate}},</span>
+			<span class="player__birthcity" v-if="playerInfo.birthCity">{{playerInfo.birthCity}},</span>
+			<span class="player__birthstate" v-if="playerInfo.birthStateProvince">{{playerInfo.birthStateProvince}},</span>
+			<span class="player__birthcountry" v-if="playerInfo.birthCountry">{{playerInfo.birthCountry}}</span>
 		</div>
 	</div>
 </template>
@@ -27,68 +27,16 @@ export default {
 		PlayerTeam
 	},
     props: {
-        player: {
+        playerInfo: {
             type: Object
+		},
+		teamName: {
+			type: String
 		},
 		theme: {
 			type: String
 		}
 	},
-	computed: {
-		batHand: function() {
-			switch (this.player.BatHand) {
-				case 'L':
-					return 'left';
-				case 'R':
-					return 'right';
-				case 'S':
-					return 'both';
-				default:
-					return 'unknown';
-			}
-		},
-		birthday: function() {
-			if (!this.player.BirthDate) {
-				return '?';
-			}
-
-			return this.player.BirthDate.split('T')[0];
-		},
-		height: function() {
-			let feet,
-				inches,
-				message;
-
-			if (!this.player.Height) {
-				message = '?';
-			} else {
-				feet = Math.floor(this.player.Height/12);
-				inches = this.player.Height - (feet * 12);
-				message = `${feet}'${inches}"`;
-			}
-
-			return message;
-		},
-		throwHand: function() {
-			switch (this.player.ThrowHand) {
-				case 'L':
-					return 'left';
-				case 'R':
-					return 'right';
-				case 'S':
-					return 'both';
-				default:
-					return '?';
-			}
-		},
-		weight: function() {
-			if (!this.player.Weight) {
-				return '?';
-			} else {
-				return this.player.Weight;
-			}
-		}
-	}
 }
 </script>
 

@@ -2,24 +2,27 @@
 	<div class="card__scene">
 		<div class="card__container" @click="flipCard" v-bind:class="{ 'card__container--flipped': flipped }">
 			<card-front :player="player" :theme="theme"></card-front>
-			<!-- <card-back :player="player" :theme="theme"></card-back> -->
+			<card-back :player="player" :theme="theme" :teamName="teamName"></card-back>
 		</div>
 	</div>
 </template>
 
 <script>
-// import CardBack from './CardBack';
+import CardBack from './CardBack';
 import CardFront from './CardFront';
 
 export default {
 	name: 'BaseballCard',
 	components: {
-		// CardBack,
+		CardBack,
 		CardFront
 	},
 	props: {
 		player: {
 			type: Object
+		},
+		teamName: {
+			type: String
 		},
 		theme: {
 			type: String

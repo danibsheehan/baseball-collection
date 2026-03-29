@@ -1,7 +1,7 @@
 <template>
 		<div class="player__details" :class="theme">
 			<span class="player__position" :class="theme">{{position}}</span>
-			<span class="player__team">{{team}}</span>
+			<span class="player__team">{{teamName}}</span>
 		</div>
 </template>
 
@@ -12,7 +12,7 @@ export default {
         position: {
             type: String
         },
-        team: {
+        teamName: {
             type: String
 		},
 		theme: {

@@ -12,7 +12,7 @@
 		</div>
 		<div class="album__results">
 			<h2 class="album__results--title" v-if="players.length" :class="theme">Your Baseball Cards for the {{teamName}}!</h2>
-			<baseball-card v-for="player in players" :key="player.person.id" :player="player" :theme="theme">
+			<baseball-card v-for="player in players" :key="player.person.id" :player="player" :theme="theme" :teamName="teamName">
 			</baseball-card>
 		</div>
 	</div>
