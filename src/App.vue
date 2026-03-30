@@ -52,7 +52,9 @@ onMounted(() => {
 	teams.value = [];
 	http.get('teams')
 		.then((response) => {
-			const data = filterMajorLeagueBaseballTeams(response.data.teams || []);
+			const data = filterMajorLeagueBaseballTeams(response.data.teams || []).sort(
+				(a, b) => String(a.name || '').localeCompare(String(b.name || ''), undefined, { sensitivity: 'base' })
+			);
 			teams.value = data;
 		})
 		.catch((err) => {
