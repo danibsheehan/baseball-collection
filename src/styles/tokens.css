@@ -16,6 +16,9 @@
 	--color-surface-selected: #f0f3f7;
 	--color-surface-selected-hover: #e8ecf1;
 
+	/* Team grid chips: cool blue-slate (no warm greige), readable text + ≥3:1 vs --color-surface (WCAG 1.4.11). */
+	--color-team-button: #7d8a98;
+
 	--color-border-subtle: rgba(0, 0, 0, 0.06);
 	--color-border-card: rgba(0, 0, 0, 0.1);
 	--color-border-medium: #d1d5db;
@@ -34,6 +37,10 @@
 		0 1px 2px rgba(0, 0, 0, 0.05),
 		0 4px 10px rgba(0, 0, 0, 0.07),
 		0 10px 24px rgba(0, 0, 0, 0.06);
+	/* Lighter stack for long rosters (less compositing work with many 3D cards). */
+	--shadow-card-large-roster:
+		0 1px 2px rgba(0, 0, 0, 0.04),
+		0 2px 6px rgba(0, 0, 0, 0.055);
 	--shadow-team-hover: 0 1px 3px rgba(0, 0, 0, 0.07);
 
 	--space-1: 0.25rem;
@@ -55,6 +62,8 @@
 		--color-surface-selected: #262626;
 		--color-surface-selected-hover: #2e2e2e;
 
+		--color-team-button: #5e626c;
+
 		--color-border-subtle: rgba(255, 255, 255, 0.08);
 		--color-border-card: rgba(255, 255, 255, 0.12);
 		--color-border-medium: #4b5563;
@@ -70,6 +79,9 @@
 			0 1px 2px rgba(0, 0, 0, 0.5),
 			0 4px 14px rgba(0, 0, 0, 0.4),
 			0 12px 32px rgba(0, 0, 0, 0.45);
+		--shadow-card-large-roster:
+			0 1px 2px rgba(0, 0, 0, 0.4),
+			0 3px 10px rgba(0, 0, 0, 0.32);
 		--shadow-team-hover: 0 1px 3px rgba(0, 0, 0, 0.35);
 	}
 }

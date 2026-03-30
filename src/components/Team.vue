@@ -98,7 +98,7 @@ function searchPlayers() {
 <style scoped>
 .team {
 	align-items: center;
-	background-color: var(--color-surface-elevated);
+	background-color: var(--color-team-button);
 	border: 1px solid var(--color-border-strong);
 	color: var(--color-text);
 	cursor: pointer;

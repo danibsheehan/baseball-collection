@@ -1,22 +1,25 @@
 <template>
-	<div class="card__scene" :data-theme="theme || undefined">
-		<div
-			class="card__container"
-			role="button"
-			tabindex="0"
-			:aria-pressed="flipped"
-			:aria-label="flipAriaLabel"
-			@click="flipCard"
-			@keydown="onFlipKeydown"
-			v-bind:class="{ 'card__container--flipped': flipped }"
-		>
-			<CardFront :player="player" />
-			<CardBack
-				v-if="flipped || hasLoadedBack"
-				:player="player"
-				:playerInfo="player.playerInfo"
-				:teamName="teamName"
-			/>
+	<div class="card__defer">
+		<div class="card__scene" :data-theme="theme || undefined">
+			<div
+				class="card__container"
+				role="button"
+				tabindex="0"
+				:aria-pressed="flipped"
+				:aria-label="flipAriaLabel"
+				@click="flipCard"
+				@keydown="onFlipKeydown"
+				v-bind:class="{ 'card__container--flipped': flipped }"
+			>
+				<CardFront :player="player" />
+				<CardBack
+					v-if="flipped || hasLoadedBack"
+					:player="player"
+					:playerInfo="player.playerInfo"
+					:teamName="teamName"
+					:manyPlayers="manyPlayers"
+				/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -35,6 +38,10 @@ const props = defineProps({
 	},
 	theme: {
 		type: String
+	},
+	manyPlayers: {
+		type: Boolean,
+		default: false
 	}
 });
 
@@ -64,6 +71,17 @@ function onFlipKeydown(event) {
 </script>
 
 <style scoped>
+/*
+ * Off-screen cards: skip layout/paint until near the viewport. If a browser
+ * mis-composites 3D flips with this, remove .card__defer’s content-visibility.
+ */
+.card__defer {
+	contain-intrinsic-block-size: 336px; /* ~5:6 at 280px max width */
+	content-visibility: auto;
+	max-width: 280px;
+	width: 100%;
+}
+
 /* Card typography: var(--font-card) — see src/styles/tokens.css */
 .card__scene {
 	aspect-ratio: 5 / 6;

@@ -35,6 +35,7 @@
 			<section
 				ref="resultsSection"
 				class="album__results"
+				:class="{ 'album__results--many-cards': players.length > 30 }"
 				aria-label="Player cards"
 				tabindex="-1"
 				:aria-busy="rosterLoading ? true : undefined"
@@ -61,6 +62,7 @@
 						:player="player"
 						:theme="theme"
 						:teamName="teamName"
+						:manyPlayers="players.length > 30"
 					/>
 					<p
 						v-if="!players.length"
@@ -381,6 +383,10 @@ h2 {
 	scroll-margin-top: calc(0.75rem + 48px + env(safe-area-inset-top, 0px));
 }
 
+.album__results--many-cards {
+	--shadow-card: var(--shadow-card-large-roster);
+}
+
 .album__results:focus {
 	outline: none;
 }
@@ -393,7 +399,7 @@ h2 {
 }
 
 .album__results--title {
-	color: var(--theme-heading, inherit);
+	color: var(--theme-heading, var(--color-text));
 	font-size: clamp(1.25rem, 4vw, 2rem);
 	font-weight: 700;
 	grid-column: 1 / -1;
@@ -401,6 +407,22 @@ h2 {
 	line-height: 1.2;
 	text-align: center;
 	width: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+	.album__results--title {
+		color: var(--color-text);
+	}
+
+	@supports (color: color-mix(in srgb, red 10%, blue 90%)) {
+		.album__results--title {
+			color: color-mix(
+				in srgb,
+				var(--theme-heading, var(--color-text)) 45%,
+				var(--color-text) 55%
+			);
+		}
+	}
 }
 
 /* Narrow: baseballs on one row, title block full width below */

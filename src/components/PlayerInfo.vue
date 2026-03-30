@@ -60,6 +60,6 @@ defineProps({
 }
 
 .player__birthplace {
-	text-transform: center;
+	text-align: center;
 }
 </style>

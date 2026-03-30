@@ -1,5 +1,5 @@
 <template>
-	<div class="card">
+	<div class="card" :class="{ 'card--large-roster': manyPlayers }">
 		<div class="card__container--back">
 			<PlayerLogo />
 			<PlayerInfo :playerInfo="playerInfo" :teamName="teamName" />
@@ -21,6 +21,10 @@ defineProps({
 	},
 	teamName: {
 		type: String
+	},
+	manyPlayers: {
+		type: Boolean,
+		default: false
 	}
 });
 </script>
@@ -38,6 +42,17 @@ defineProps({
 	top: 0;
 	transform: rotateY(180deg);
 	width: 100%;
+}
+
+.card--large-roster {
+	background-image: none;
+	background: linear-gradient(145deg, #f2f7f5 0%, #e4ebe8 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+	.card--large-roster {
+		background: linear-gradient(145deg, #2a302e 0%, #1c2220 100%);
+	}
 }
 
 .card__container--back {
