@@ -54,8 +54,13 @@ function searchPlayers() {
 			}
 			return fetchPeopleByIds(ids).then((byId) => {
 				const enriched = enrichRosterWithPlayerInfo(data, byId);
-				players.value = enriched;
-				emit('updatePlayers', enriched);
+				const sorted = [...enriched].sort((a, b) => {
+					const an = String(a.playerInfo?.fullName ?? a.person?.fullName ?? '');
+					const bn = String(b.playerInfo?.fullName ?? b.person?.fullName ?? '');
+					return an.localeCompare(bn, undefined, { sensitivity: 'base' });
+				});
+				players.value = sorted;
+				emit('updatePlayers', sorted);
 			});
 		})
 		.catch(() => {
