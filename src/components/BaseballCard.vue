@@ -64,15 +64,12 @@ function onFlipKeydown(event) {
 </script>
 
 <style scoped>
-/* Card typography: var(--font-card) — see App.vue :root */
+/* Card typography: var(--font-card) — see src/styles/tokens.css */
 .card__scene {
 	aspect-ratio: 5 / 6;
-	border: 1px solid rgba(0, 0, 0, 0.1);
+	border: 1px solid var(--color-border-card);
 	border-radius: 10px;
-	box-shadow:
-		0 1px 2px rgba(0, 0, 0, 0.05),
-		0 4px 10px rgba(0, 0, 0, 0.07),
-		0 10px 24px rgba(0, 0, 0, 0.06);
+	box-shadow: var(--shadow-card);
 	font-family: var(--font-card);
 	height: auto;
 	max-width: 280px;
@@ -101,7 +98,9 @@ function onFlipKeydown(event) {
 }
 
 .card__container:focus-visible {
-	box-shadow: 0 0 0 3px #fff, 0 0 0 5px #1a5f9e;
+	box-shadow:
+		0 0 0 3px var(--color-focus-ring),
+		0 0 0 5px var(--color-accent);
 }
 
 .card__container--flipped {

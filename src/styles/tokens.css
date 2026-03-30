@@ -1,0 +1,75 @@
+/*
+ * Global design tokens (neutrals, spacing, radii, shadows).
+ * Team accents stay in team-themes.css via [data-theme] (--theme-*).
+ * prefers-color-scheme: dark flips these so you tune light/dark in one place.
+ */
+:root {
+	--font-ui: 'Mukta', sans-serif;
+	--font-card: 'Montserrat', sans-serif;
+
+	--color-text: #1a1a1a;
+	--color-text-muted: #6b7280;
+	--color-surface: #f0efeb;
+	--color-surface-elevated: #ffffff;
+	--color-surface-nav: rgba(240, 239, 235, 0.94);
+	--color-surface-interactive: #f4f6f8;
+	--color-surface-selected: #f0f3f7;
+	--color-surface-selected-hover: #e8ecf1;
+
+	--color-border-subtle: rgba(0, 0, 0, 0.06);
+	--color-border-card: rgba(0, 0, 0, 0.1);
+	--color-border-medium: #d1d5db;
+	--color-border-strong: #000000;
+
+	--color-danger-bg: #fde8e8;
+	--color-danger-border: #c53030;
+	--color-danger-text: #742a2a;
+
+	--color-accent: #1a5f9e;
+	--color-focus-ring: #ffffff;
+
+	--radius-sm: 0.375rem;
+
+	--shadow-card:
+		0 1px 2px rgba(0, 0, 0, 0.05),
+		0 4px 10px rgba(0, 0, 0, 0.07),
+		0 10px 24px rgba(0, 0, 0, 0.06);
+	--shadow-team-hover: 0 1px 3px rgba(0, 0, 0, 0.07);
+
+	--space-1: 0.25rem;
+	--space-2: 0.375rem;
+	--space-3: 0.5rem;
+	--space-4: 0.75rem;
+	--space-5: 1rem;
+	--space-6: 1.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--color-text: #ececec;
+		--color-text-muted: #9ca3af;
+		--color-surface: #121212;
+		--color-surface-elevated: #1c1c1c;
+		--color-surface-nav: rgba(18, 18, 18, 0.94);
+		--color-surface-interactive: #252525;
+		--color-surface-selected: #262626;
+		--color-surface-selected-hover: #2e2e2e;
+
+		--color-border-subtle: rgba(255, 255, 255, 0.08);
+		--color-border-card: rgba(255, 255, 255, 0.12);
+		--color-border-medium: #4b5563;
+		--color-border-strong: rgba(255, 255, 255, 0.38);
+
+		--color-danger-bg: #3a1f1f;
+		--color-danger-border: #c45c5c;
+		--color-danger-text: #fecaca;
+
+		--color-focus-ring: #121212;
+
+		--shadow-card:
+			0 1px 2px rgba(0, 0, 0, 0.5),
+			0 4px 14px rgba(0, 0, 0, 0.4),
+			0 12px 32px rgba(0, 0, 0, 0.45);
+		--shadow-team-hover: 0 1px 3px rgba(0, 0, 0, 0.35);
+	}
+}

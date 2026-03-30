@@ -98,8 +98,9 @@ function searchPlayers() {
 <style scoped>
 .team {
 	align-items: center;
-	background-color: #fff;
-	border: 1px solid #000;
+	background-color: var(--color-surface-elevated);
+	border: 1px solid var(--color-border-strong);
+	color: var(--color-text);
 	cursor: pointer;
 	display: flex;
 	font-size: 18px;
@@ -107,7 +108,7 @@ function searchPlayers() {
 	height: 100%;
 	min-height: 44px;
 	min-width: 0;
-	padding: 8px 10px;
+	padding: var(--space-3) 0.625rem;
 	text-align: left;
 	width: 100%;
 }
@@ -117,58 +118,76 @@ function searchPlayers() {
 }
 
 .team:focus-visible {
-	box-shadow: 0 0 0 3px #fff, 0 0 0 5px #1a5f9e;
+	box-shadow:
+		0 0 0 3px var(--color-focus-ring),
+		0 0 0 5px var(--color-accent);
 	outline: 2px solid transparent;
 }
 
 .team--selected {
-	background-color: #f0f3f7;
-	border-color: var(--theme-logo-border, #000);
+	background-color: var(--color-surface-selected);
+	border-color: var(--theme-logo-border, var(--color-border-strong));
 	border-width: 2px;
-	padding: 7px 9px;
+	padding: calc(var(--space-3) - 1px) calc(0.625rem - 1px);
 }
 
 @supports (background-color: color-mix(in srgb, white, black)) {
 	.team--selected {
-		background-color: color-mix(in srgb, var(--theme-logo-border, #1a5f9e) 14%, #fff);
-		box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--theme-logo-border, #1a5f9e) 35%, transparent);
+		background-color: color-mix(
+			in srgb,
+			var(--theme-logo-border, var(--color-accent)) 14%,
+			var(--color-surface-elevated)
+		);
+		box-shadow: inset 0 0 0 1px
+			color-mix(in srgb, var(--theme-logo-border, var(--color-accent)) 35%, transparent);
 	}
 }
 
 @media (hover: hover) and (pointer: fine) {
 	.team:not(.team--selected):hover {
-		background-color: #f4f6f8;
-		border-color: var(--theme-logo-border, #000);
+		background-color: var(--color-surface-interactive);
+		border-color: var(--theme-logo-border, var(--color-border-strong));
 	}
 
 	.team:not(.team--selected):hover:not(:focus-visible) {
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+		box-shadow: var(--shadow-team-hover);
 	}
 
 	/* Omit box-shadow so .team--selected’s inset ring is not replaced. */
 	.team.team--selected:hover {
-		background-color: #e8ecf1;
+		background-color: var(--color-surface-selected-hover);
 	}
 }
 
 @supports (background-color: color-mix(in srgb, white, black)) {
 	@media (hover: hover) and (pointer: fine) {
 		.team:not(.team--selected):hover {
-			background-color: color-mix(in srgb, var(--theme-logo-border, #1a5f9e) 9%, #fff);
+			background-color: color-mix(
+				in srgb,
+				var(--theme-logo-border, var(--color-accent)) 9%,
+				var(--color-surface-elevated)
+			);
 		}
 
 		.team:not(.team--selected):hover:not(:focus-visible) {
-			box-shadow: 0 1px 3px color-mix(in srgb, var(--theme-logo-border, #000) 10%, transparent);
+			box-shadow: 0 1px 3px
+				color-mix(in srgb, var(--theme-logo-border, var(--color-border-strong)) 10%, transparent);
 		}
 
 		.team.team--selected:hover {
-			background-color: color-mix(in srgb, var(--theme-logo-border, #1a5f9e) 20%, #fff);
+			background-color: color-mix(
+				in srgb,
+				var(--theme-logo-border, var(--color-accent)) 20%,
+				var(--color-surface-elevated)
+			);
 		}
 
 		.team.team--selected:hover:not(:focus-visible) {
 			box-shadow:
-				0 1px 4px color-mix(in srgb, var(--theme-logo-border, #000) 12%, transparent),
-				inset 0 0 0 1px color-mix(in srgb, var(--theme-logo-border, #1a5f9e) 38%, transparent);
+				0 1px 4px
+					color-mix(in srgb, var(--theme-logo-border, var(--color-border-strong)) 12%, transparent),
+				inset 0 0 0 1px
+					color-mix(in srgb, var(--theme-logo-border, var(--color-accent)) 38%, transparent);
 		}
 	}
 }
@@ -176,7 +195,7 @@ function searchPlayers() {
 .team__inner {
 	align-items: center;
 	display: flex;
-	gap: 8px;
+	gap: var(--space-3);
 	min-width: 0;
 	width: 100%;
 }
@@ -191,7 +210,7 @@ function searchPlayers() {
 /* Sprite math is authored for a 30×30 viewport; scale from center so logos stay centered in the circle. */
 .team__logo {
 	border-radius: 50%;
-	box-shadow: 0 0 0 1px var(--theme-logo-border, #000);
+	box-shadow: 0 0 0 1px var(--theme-logo-border, var(--color-border-strong));
 	flex-shrink: 0;
 	height: 26px;
 	overflow: hidden;
@@ -219,7 +238,7 @@ function searchPlayers() {
 	}
 
 	.team__inner {
-		gap: 6px;
+		gap: var(--space-2);
 	}
 
 	.team__logo {

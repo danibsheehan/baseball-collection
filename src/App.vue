@@ -164,15 +164,9 @@ onMounted(() => {
 
 <style>
 /*
- * Typography / brand (fonts loaded in index.html)
- * Mukta    — app shell: layout, team nav, headings, status copy (UI)
- * Montserrat — baseball cards only: front/back surfaces (“product” typography)
+ * Typography / brand: see src/styles/tokens.css (--font-ui, --font-card).
+ * Mukta — app shell; Montserrat — card surfaces only.
  */
-:root {
-	--font-ui: 'Mukta', sans-serif;
-	--font-card: 'Montserrat', sans-serif;
-}
-
 html {
 	box-sizing: border-box;
 }
@@ -186,8 +180,8 @@ html {
 body {
 	margin: 0;
 	min-height: 100vh;
-	background: #f0efeb;
-	color: #1a1a1a;
+	background: var(--color-surface);
+	color: var(--color-text);
 }
 </style>
 
@@ -215,18 +209,18 @@ body {
 }
 
 .app__banner {
-	border-radius: 6px;
-	margin: 0 auto 16px;
+	border-radius: var(--radius-sm);
+	margin: 0 auto var(--space-5);
 	max-width: 800px;
-	padding: 12px 16px;
+	padding: var(--space-4) var(--space-5);
 	text-align: center;
 	width: 90%;
 }
 
 .app__banner--error {
-	background: #fde8e8;
-	border: 1px solid #c53030;
-	color: #742a2a;
+	background: var(--color-danger-bg);
+	border: 1px solid var(--color-danger-border);
+	color: var(--color-danger-text);
 }
 
 .app__main {
@@ -236,7 +230,7 @@ body {
 }
 
 .album__status {
-	margin: 0 auto 12px;
+	margin: 0 auto var(--space-4);
 	max-width: 800px;
 	text-align: center;
 	width: 70%;
@@ -244,9 +238,9 @@ body {
 
 .album__results-status {
 	align-items: center;
-	color: #4a5560;
+	color: var(--color-text-muted);
 	display: flex;
-	gap: 0.5rem;
+	gap: var(--space-3);
 	grid-column: 1 / -1;
 	justify-content: center;
 	justify-self: stretch;
@@ -257,7 +251,7 @@ body {
 
 .album__results-placeholder,
 .album__results-empty {
-	color: #6b7280;
+	color: var(--color-text-muted);
 	grid-column: 1 / -1;
 	justify-self: stretch;
 	margin: 0;
@@ -267,9 +261,9 @@ body {
 
 .album__spinner {
 	animation: album-spin 0.7s linear infinite;
-	border: 2px solid #d1d5db;
+	border: 2px solid var(--color-border-medium);
 	border-radius: 50%;
-	border-top-color: #1a5f9e;
+	border-top-color: var(--color-accent);
 	box-sizing: border-box;
 	display: inline-block;
 	flex-shrink: 0;
@@ -290,11 +284,11 @@ body {
 }
 
 .teams__nav {
-	background: rgba(240, 239, 235, 0.94);
+	background: var(--color-surface-nav);
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
-	border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-	padding-block: 0.5rem 0.75rem;
+	border-bottom: 1px solid var(--color-border-subtle);
+	padding-block: var(--space-3) var(--space-4);
 	position: sticky;
 	top: env(safe-area-inset-top, 0px);
 	width: 100%;
@@ -323,7 +317,7 @@ h2 {
 }
 
 .app__title-subtitle {
-	color: #4a5560;
+	color: var(--color-text-muted);
 	font-size: clamp(1rem, 2.4vw, 1.2rem);
 	font-weight: 500;
 	line-height: 1.45;
@@ -353,7 +347,7 @@ h2 {
 .teams__container {
 	align-items: stretch;
 	display: grid;
-	gap: 6px;
+	gap: var(--space-2);
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	width: 100%;
 }
@@ -392,7 +386,9 @@ h2 {
 }
 
 .album__results:focus-visible {
-	box-shadow: 0 0 0 3px #fff, 0 0 0 5px #1a5f9e;
+	box-shadow:
+		0 0 0 3px var(--color-focus-ring),
+		0 0 0 5px var(--color-accent);
 	outline: 2px solid transparent;
 }
 
