@@ -2,7 +2,10 @@
 	<div class="card">
 		<div class="card__container--front">
 			<div class="card__top">
-				<PlayerImage :playerId="player.person.id" />
+				<PlayerImage
+					:playerId="player.person.id"
+					:imageDescription="player.person.fullName"
+				/>
 			</div>
 			<div class="card__bottom">
 				<PlayerName :fullName="player.person.fullName" />

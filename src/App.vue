@@ -1,29 +1,45 @@
 <template>
 	<div id="app">
-		<div class="app__title">
+		<p class="visually-hidden" aria-live="polite" aria-atomic="true">{{ liveRegionText }}</p>
+		<div v-if="teamsError" class="app__banner app__banner--error" role="alert">
+			{{ teamsError }}
+		</div>
+		<header class="app__title">
 			<img src="./assets/baseball.png" alt="" class="title__img">
 			<h1 class="album__search--title">Pick a Team and Get Your Cards!</h1>
 			<img src="./assets/baseball.png" alt="" class="title__img">
-		</div>
-		<div class="album__search">
-			<div class="teams__container">
-				<Team v-for="team in teams" :key="team.id" :team="team" @updatePlayers="loadPlayers" @updateTeam="loadTeam" />
+		</header>
+		<main class="app__main">
+			<div class="album__search">
+				<p v-if="teamsLoading" class="album__status">Loading teams…</p>
+				<nav class="teams__nav" aria-label="Major League Baseball teams">
+					<div class="teams__container">
+						<Team
+							v-for="team in teams"
+							:key="team.id"
+							:team="team"
+							@updatePlayers="loadPlayers"
+							@updateTeam="loadTeam"
+							@liveMessage="setLiveMessage"
+						/>
+					</div>
+				</nav>
 			</div>
-		</div>
-		<div class="album__results">
-			<h2
-				class="album__results--title"
-				v-if="players.length"
-				:data-theme="theme || undefined"
-			>Your Baseball Cards for the {{teamName}}!</h2>
-			<BaseballCard
-				v-for="player in players"
-				:key="player.person.id"
-				:player="player"
-				:theme="theme"
-				:teamName="teamName"
-			/>
-		</div>
+			<section class="album__results" aria-label="Player cards">
+				<h2
+					class="album__results--title"
+					v-if="players.length"
+					:data-theme="theme || undefined"
+				>Your Baseball Cards for the {{ teamName }}!</h2>
+				<BaseballCard
+					v-for="player in players"
+					:key="player.person.id"
+					:player="player"
+					:theme="theme"
+					:teamName="teamName"
+				/>
+			</section>
+		</main>
 	</div>
 </template>
 
@@ -38,6 +54,9 @@ const players = ref([]);
 const teamName = ref('');
 const teams = ref([]);
 const theme = ref('');
+const teamsLoading = ref(true);
+const teamsError = ref('');
+const liveRegionText = ref('');
 
 function loadPlayers(nextPlayers) {
 	players.value = nextPlayers;
@@ -48,18 +67,35 @@ function loadTeam(team) {
 	teamName.value = team.name;
 }
 
+function setLiveMessage(message) {
+	liveRegionText.value = message;
+}
+
 onMounted(() => {
 	teams.value = [];
+	teamsLoading.value = true;
+	teamsError.value = '';
+	liveRegionText.value = 'Loading team list.';
 	http.get('teams')
 		.then((response) => {
 			const data = filterMajorLeagueBaseballTeams(response.data.teams || []).sort(
 				(a, b) => String(a.name || '').localeCompare(String(b.name || ''), undefined, { sensitivity: 'base' })
 			);
 			teams.value = data;
+			teamsError.value = '';
+			liveRegionText.value =
+				data.length > 0
+					? `${data.length} teams loaded. Choose a team to see cards.`
+					: 'No teams available.';
 		})
 		.catch((err) => {
 			console.error('teams request failed', err);
 			teams.value = [];
+			teamsError.value =
+				'Could not load teams. Check your connection or try refreshing the page.';
+		})
+		.finally(() => {
+			teamsLoading.value = false;
 		});
 });
 </script>
@@ -68,6 +104,49 @@ onMounted(() => {
 #app {
 	font-family: 'Mukta', sans-serif;
 	margin-top: 50px;
+}
+
+.visually-hidden {
+	border: 0;
+	clip: rect(0, 0, 0, 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+
+.app__banner {
+	border-radius: 6px;
+	margin: 0 auto 16px;
+	max-width: 800px;
+	padding: 12px 16px;
+	text-align: center;
+	width: 90%;
+}
+
+.app__banner--error {
+	background: #fde8e8;
+	border: 1px solid #c53030;
+	color: #742a2a;
+}
+
+.app__main {
+	margin: 0 auto;
+	max-width: 1200px;
+}
+
+.album__status {
+	margin: 0 auto 12px;
+	max-width: 800px;
+	text-align: center;
+	width: 70%;
+}
+
+.teams__nav {
+	width: 100%;
 }
 
 h1,

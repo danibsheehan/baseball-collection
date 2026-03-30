@@ -6,7 +6,7 @@
 			class="card__image--player"
 			loading="lazy"
 			decoding="async"
-			alt=""
+			:alt="headshotAlt"
 		/>
 	</span>
 </template>
@@ -17,7 +17,16 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 const props = defineProps({
 	playerId: {
 		type: Number
+	},
+	imageDescription: {
+		type: String,
+		default: ''
 	}
+});
+
+const headshotAlt = computed(() => {
+	const name = props.imageDescription?.trim();
+	return name ? `Headshot of ${name}` : '';
 });
 
 const root = ref(null);

@@ -1,6 +1,15 @@
 <template>
 	<div class="card__scene" :data-theme="theme || undefined">
-		<div class="card__container" @click="flipCard" v-bind:class="{ 'card__container--flipped': flipped }">
+		<div
+			class="card__container"
+			role="button"
+			tabindex="0"
+			:aria-pressed="flipped"
+			:aria-label="flipAriaLabel"
+			@click="flipCard"
+			@keydown="onFlipKeydown"
+			v-bind:class="{ 'card__container--flipped': flipped }"
+		>
 			<CardFront :player="player" />
 			<CardBack
 				v-if="flipped || hasLoadedBack"
@@ -13,11 +22,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import CardBack from './CardBack.vue';
 import CardFront from './CardFront.vue';
 
-defineProps({
+const props = defineProps({
 	player: {
 		type: Object
 	},
@@ -32,12 +41,25 @@ defineProps({
 const flipped = ref(false);
 const hasLoadedBack = ref(false);
 
+const flipAriaLabel = computed(() => {
+	const name = props.player?.person?.fullName || 'Player';
+	return `Baseball card for ${name}. Press Enter or Space to flip between front and back.`;
+});
+
 function flipCard() {
 	const nextFlipped = !flipped.value;
 	flipped.value = nextFlipped;
 	if (nextFlipped) {
 		hasLoadedBack.value = true;
 	}
+}
+
+function onFlipKeydown(event) {
+	if (event.key !== 'Enter' && event.key !== ' ') {
+		return;
+	}
+	event.preventDefault();
+	flipCard();
 }
 </script>
 
@@ -58,6 +80,14 @@ function flipCard() {
 	transform-style: preserve-3d;
 	position: relative;
 	width: 100%;
+}
+
+.card__container:focus {
+	outline: none;
+}
+
+.card__container:focus-visible {
+	box-shadow: 0 0 0 3px #fff, 0 0 0 5px #1a5f9e;
 }
 
 .card__container--flipped {

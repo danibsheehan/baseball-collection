@@ -1,5 +1,5 @@
 <template>
-	<span class="card__logo"></span>
+	<span class="card__logo" aria-hidden="true"></span>
 </template>
 
 <style scoped>

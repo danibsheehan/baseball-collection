@@ -1,7 +1,7 @@
 <template>
-	<button class="team" :data-theme="theme || undefined" @click="searchPlayers">
-		<span class="team__name">{{team.name}}</span>
-		<span class="team__logo"></span>
+	<button type="button" class="team" :data-theme="theme || undefined" @click="searchPlayers">
+		<span class="team__name">{{ team.name }}</span>
+		<span class="team__logo" aria-hidden="true"></span>
 	</button>
 </template>
 
@@ -22,7 +22,7 @@ const props = defineProps({
 	}
 });
 
-const emit = defineEmits(['updatePlayers', 'updateTeam']);
+const emit = defineEmits(['updatePlayers', 'updateTeam', 'liveMessage']);
 
 const players = ref([]);
 
@@ -43,6 +43,7 @@ function fetchPeopleByIds(personIds) {
 function searchPlayers() {
 	players.value = [];
 	emit('updateTeam', props.team);
+	emit('liveMessage', `Loading roster for ${props.team.name}.`);
 
 	http.get(`teams/${props.team.id}/roster`)
 		.then((response) => {
@@ -50,6 +51,7 @@ function searchPlayers() {
 			const ids = data.map((r) => r.person?.id).filter(Boolean);
 			if (!ids.length) {
 				emit('updatePlayers', []);
+				emit('liveMessage', `No players listed for ${props.team.name}.`);
 				return;
 			}
 			return fetchPeopleByIds(ids).then((byId) => {
@@ -61,11 +63,16 @@ function searchPlayers() {
 				});
 				players.value = sorted;
 				emit('updatePlayers', sorted);
+				emit(
+					'liveMessage',
+					`Showing ${sorted.length} ${sorted.length === 1 ? 'card' : 'cards'} for ${props.team.name}.`
+				);
 			});
 		})
 		.catch(() => {
 			players.value = [];
 			emit('updatePlayers', []);
+			emit('liveMessage', `Could not load roster for ${props.team.name}.`);
 		});
 }
 </script>
@@ -84,6 +91,11 @@ function searchPlayers() {
 
 .team:focus {
 	outline: none;
+}
+
+.team:focus-visible {
+	box-shadow: 0 0 0 3px #fff, 0 0 0 5px #1a5f9e;
+	outline: 2px solid transparent;
 }
 
 .team__logo,
@@ -106,11 +118,13 @@ function searchPlayers() {
 	width: 30px;
 }
 
-.team:hover .team__name {
+.team:hover .team__name,
+.team:focus-within .team__name {
 	display: none;
 }
 
-.team:hover .team__logo {
+.team:hover .team__logo,
+.team:focus-within .team__logo {
 	display: inline-block;
 }
 
