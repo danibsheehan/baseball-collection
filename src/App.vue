@@ -49,8 +49,8 @@
 				</p>
 				<template v-else>
 					<h2
-						class="album__results--title"
 						v-if="players.length"
+						class="album__results--title"
 						:data-theme="theme || undefined"
 					>Your Baseball Cards for the {{ teamName }}!</h2>
 					<BaseballCard
@@ -60,6 +60,12 @@
 						:theme="theme"
 						:teamName="teamName"
 					/>
+					<p
+						v-if="!players.length"
+						class="album__results-empty"
+					>
+						No players to show for the {{ teamName }}.
+					</p>
 				</template>
 			</section>
 		</main>
@@ -164,8 +170,10 @@ body {
 	font-family: var(--font-ui);
 	margin: 0 auto;
 	max-width: 1280px;
-	padding: clamp(1.25rem, 4vw, 2rem) clamp(1rem, 5vw, 2.25rem)
-		clamp(3rem, 10vw, 5rem);
+	padding-bottom: calc(clamp(3rem, 10vw, 5rem) + env(safe-area-inset-bottom, 0px));
+	padding-left: calc(clamp(1rem, 5vw, 2.25rem) + env(safe-area-inset-left, 0px));
+	padding-right: calc(clamp(1rem, 5vw, 2.25rem) + env(safe-area-inset-right, 0px));
+	padding-top: calc(clamp(1.25rem, 4vw, 2rem) + env(safe-area-inset-top, 0px));
 }
 
 .visually-hidden {
@@ -221,7 +229,8 @@ body {
 	width: 100%;
 }
 
-.album__results-placeholder {
+.album__results-placeholder,
+.album__results-empty {
 	color: #6b7280;
 	grid-column: 1 / -1;
 	justify-self: stretch;
@@ -249,7 +258,15 @@ body {
 }
 
 .teams__nav {
+	background: rgba(240, 239, 235, 0.94);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+	padding-block: 0.5rem 0.75rem;
+	position: sticky;
+	top: env(safe-area-inset-top, 0px);
 	width: 100%;
+	z-index: 10;
 }
 
 h1,
@@ -330,7 +347,7 @@ h2 {
 .album__results {
 	display: grid;
 	gap: clamp(1rem, 3vw, 1.5rem);
-	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr));
 	justify-items: center;
 	margin: clamp(2rem, 6vw, 3rem) auto 0;
 	max-width: 1200px;
@@ -338,9 +355,11 @@ h2 {
 
 .album__results--title {
 	color: var(--theme-heading, inherit);
-	font-size: 32px;
+	font-size: clamp(1.25rem, 4vw, 2rem);
+	font-weight: 700;
 	grid-column: 1 / -1;
 	justify-self: stretch;
+	line-height: 1.2;
 	text-align: center;
 	width: 100%;
 }
@@ -373,9 +392,4 @@ h2 {
 	}
 }
 
-@media (max-width: 480px) {
-	.album__results--title {
-		font-size: 22px;
-	}
-}
 </style>
