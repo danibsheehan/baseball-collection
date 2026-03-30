@@ -45,6 +45,22 @@ Open the URL printed by `npm run dev` (typically `http://localhost:5173`).
 npm run build
 ```
 
+**Build + bundle size** — same as `npm run build`, then a short table of `dist/assets` (raw and gzip-compressed sizes):
+
+```bash
+npm run build:report
+```
+
+## Performance profiling (quick checklist)
+
+Use this when checking load time, network cost, or regressions after changes.
+
+1. **Lighthouse (Chrome DevTools)** — *Lighthouse* panel: run *Performance* (mobile + desktop). Note LCP, TBT, and *Network dependency tree* for the critical path.
+2. **Network** — Disable cache, hard reload, pick a team: confirm batched `GET /people?ids=…` (or production MLB URL) instead of dozens of single-people calls; check image requests (headshots) start only as cards approach the viewport.
+3. **Coverage (optional)** — *More tools → Coverage*: record while using the app; see how much JS/CSS is used on first paint vs after interactions.
+4. **Vue DevTools** — *Timeline* / component updates: flip cards and switch teams; ensure you are not seeing excessive re-renders on large lists.
+5. **Repeat visits** — Second load with cache enabled: static assets should be `304` or from memory cache; API responses may hit `Cache-Control` from `server.js` when using the Express proxy.
+
 **Serve the built app with Express** (static `dist` plus proxy routes):
 
 ```bash
