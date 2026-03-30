@@ -31,7 +31,7 @@ function fetchPeopleByIds(personIds) {
 	}
 	return Promise.all(
 		chunks.map((chunk) =>
-			http.get('people', { params: { ids: chunk.join(',') } })
+			http.get('people', { params: { personIds: chunk.join(',') } })
 		)
 	)
 		.then((responses) => {

@@ -76,14 +76,14 @@ app.get('/teams/:teamId/roster', (req, res) => {
 
 /** Comma-separated MLB person IDs → single MLB batch request (personIds query). */
 app.get('/people', (req, res) => {
-	const raw = req.query.ids;
+	const raw = req.query.personIds ?? req.query.ids;
 	if (raw == null || typeof raw !== 'string' || !raw.trim()) {
-		res.status(400).json({ message: 'Missing or invalid ids query (comma-separated person IDs).' });
+		res.status(400).json({ message: 'Missing or invalid personIds query (comma-separated person IDs).' });
 		return;
 	}
 	const ids = raw.trim();
 	if (!/^\d+(,\d+)*$/.test(ids)) {
-		res.status(400).json({ message: 'ids must be comma-separated numeric person IDs.' });
+		res.status(400).json({ message: 'personIds must be comma-separated numeric person IDs.' });
 		return;
 	}
 	const path = `people?personIds=${encodeURIComponent(ids)}`;
