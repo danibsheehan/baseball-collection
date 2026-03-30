@@ -1,12 +1,62 @@
 require('dotenv').config();
+const http = require('http');
+const https = require('https');
 const express = require('express');
-const request = require('request');
+const axios = require('axios');
 const serveStatic = require('serve-static');
 
 const app = express();
 const baseURL = 'http://statsapi.mlb.com/api/v1/';
-// const key = process.env.VUE_APP_SPORTS_KEY;
 const port = process.env.PORT || 8080;
+
+const httpAgent = new http.Agent({ keepAlive: true, maxSockets: 50 });
+const httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 50 });
+
+const mlbClient = axios.create({
+	baseURL,
+	httpAgent,
+	httpsAgent,
+	timeout: 30000,
+	maxRedirects: 5,
+	validateStatus: () => true,
+	responseType: 'stream'
+});
+
+/** Short CDN/browser caching for MLB-shaped JSON (safe for repeat visits; rosters change more often than teams). */
+const CACHE = {
+	teams: 'public, max-age=300, stale-while-revalidate=60',
+	roster: 'public, max-age=120, stale-while-revalidate=60',
+	people: 'public, max-age=300, stale-while-revalidate=120'
+};
+
+function pipeMlbToResponse(upstream, res, cacheControl) {
+	const ct = upstream.headers['content-type'];
+	if (ct) {
+		res.setHeader('Content-Type', ct);
+	}
+	res.setHeader('Cache-Control', cacheControl);
+	res.status(upstream.status);
+
+	const stream = upstream.data;
+	stream.on('error', () => {
+		if (!res.headersSent) {
+			res.status(502).json({ message: 'Upstream connection error' });
+		} else {
+			res.destroy();
+		}
+	});
+	stream.pipe(res);
+}
+
+async function proxyMlb(req, res, relativePath, cacheControl) {
+	try {
+		const upstream = await mlbClient.get(relativePath);
+		pipeMlbToResponse(upstream, res, cacheControl);
+	} catch (err) {
+		console.error('MLB proxy error', err.message);
+		res.status(502).json({ message: 'Failed to reach MLB API' });
+	}
+}
 
 app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*');
@@ -17,15 +67,11 @@ app.use((req, res, next) => {
 app.use(serveStatic(__dirname + '/dist'));
 
 app.get('/teams', (req, res) => {
-	const url = `${baseURL}teams`;
-
-	request(url).pipe(res);
+	proxyMlb(req, res, 'teams', CACHE.teams);
 });
 
 app.get('/teams/:teamId/roster', (req, res) => {
-	const url = `${baseURL}teams/${req.params.teamId}/roster`;
-
-	request(url).pipe(res);
+	proxyMlb(req, res, `teams/${req.params.teamId}/roster`, CACHE.roster);
 });
 
 /** Comma-separated MLB person IDs → single MLB batch request (personIds query). */
@@ -40,16 +86,18 @@ app.get('/people', (req, res) => {
 		res.status(400).json({ message: 'ids must be comma-separated numeric person IDs.' });
 		return;
 	}
-	const url = `${baseURL}people?personIds=${encodeURIComponent(ids)}`;
-	request(url).pipe(res);
+	const path = `people?personIds=${encodeURIComponent(ids)}`;
+	proxyMlb(req, res, path, CACHE.people);
 });
 
 app.get('/people/:playerId', (req, res) => {
-	const url = `${baseURL}people/${req.params.playerId}`;
-
-	request(url).pipe(res);
+	if (!/^\d+$/.test(req.params.playerId)) {
+		res.status(400).json({ message: 'Invalid player id.' });
+		return;
+	}
+	proxyMlb(req, res, `people/${req.params.playerId}`, CACHE.people);
 });
 
 app.listen(port, () => {
-    console.log('server is listening at port', port);
+	console.log('server is listening at port', port);
 });
