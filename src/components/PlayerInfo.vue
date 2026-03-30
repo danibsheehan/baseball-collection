@@ -10,10 +10,12 @@
 			<span class="player__throw">throws: {{playerInfo.pitchHand?.description}}</span>
 		</div>
 		<div class="player__stat">
-			<span class="player__birthdate">born: {{playerInfo.birthDate}},</span>
-			<span class="player__birthcity" v-if="playerInfo.birthCity">{{playerInfo.birthCity}},</span>
-			<span class="player__birthstate" v-if="playerInfo.birthStateProvince">{{playerInfo.birthStateProvince}},</span>
-			<span class="player__birthcountry" v-if="playerInfo.birthCountry">{{playerInfo.birthCountry}}</span>
+			<span class="player__birthdate">born: {{playerInfo.birthDate}}</span>
+			<div class="player__birthplace">
+				<span class="player__birthcity" v-if="playerInfo.birthCity">{{playerInfo.birthCity}},</span>
+				<span class="player__birthstate" v-if="playerInfo.birthStateProvince">{{playerInfo.birthStateProvince}},</span>
+				<span class="player__birthcountry" v-if="playerInfo.birthCountry">{{playerInfo.birthCountry}}</span>
+			</div>
 		</div>
 	</div>
 </template>
@@ -57,10 +59,7 @@ defineProps({
 	width: 85%;
 }
 
-.player__birthcity,
-.player__birthcountry,
-.player__birthdate,
-.player__birthstate {
-	margin: 0 2px;
+.player__birthplace {
+	text-transform: center;
 }
 </style>

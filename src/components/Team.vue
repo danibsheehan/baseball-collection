@@ -97,11 +97,14 @@ function searchPlayers() {
 
 <style scoped>
 .team {
+	align-items: center;
 	background-color: #fff;
 	border: 1px solid #000;
 	cursor: pointer;
+	display: flex;
 	font-size: 18px;
 	font-weight: 300;
+	height: 100%;
 	min-height: 44px;
 	min-width: 0;
 	padding: 8px 10px;

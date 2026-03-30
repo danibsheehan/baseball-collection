@@ -302,6 +302,7 @@ h2 {
 }
 
 .teams__container {
+	align-items: stretch;
 	display: grid;
 	gap: 6px;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
