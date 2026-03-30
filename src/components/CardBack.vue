@@ -30,8 +30,10 @@ defineProps({
 	background: url('../assets/baseballs.jpg') center/cover;
 	background-color: rgba(242, 247, 245, .5);
 	backface-visibility: hidden;
+	border-radius: 10px;
 	height: 100%;
 	left: 0;
+	overflow: hidden;
 	position: absolute;
 	top: 0;
 	transform: rotateY(180deg);

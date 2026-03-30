@@ -1,7 +1,16 @@
 <template>
-	<button type="button" class="team" :data-theme="theme || undefined" @click="searchPlayers">
-		<span class="team__name">{{ team.name }}</span>
-		<span class="team__logo" aria-hidden="true"></span>
+	<button
+		type="button"
+		class="team"
+		:class="{ 'team--selected': selected }"
+		:data-theme="theme || undefined"
+		:aria-current="selected ? 'true' : undefined"
+		@click="searchPlayers"
+	>
+		<span class="team__inner">
+			<span class="team__logo" aria-hidden="true"></span>
+			<span class="team__name">{{ team.name }}</span>
+		</span>
 	</button>
 </template>
 
@@ -19,10 +28,14 @@ import {
 const props = defineProps({
 	team: {
 		type: Object
+	},
+	selected: {
+		type: Boolean,
+		default: false
 	}
 });
 
-const emit = defineEmits(['updatePlayers', 'updateTeam', 'liveMessage']);
+const emit = defineEmits(['updatePlayers', 'updateTeam', 'liveMessage', 'rosterLoading']);
 
 const players = ref([]);
 
@@ -43,7 +56,9 @@ function fetchPeopleByIds(personIds) {
 function searchPlayers() {
 	players.value = [];
 	emit('updateTeam', props.team);
+	emit('updatePlayers', []);
 	emit('liveMessage', `Loading roster for ${props.team.name}.`);
+	emit('rosterLoading', true);
 
 	http.get(`teams/${props.team.id}/roster`)
 		.then((response) => {
@@ -73,20 +88,25 @@ function searchPlayers() {
 			players.value = [];
 			emit('updatePlayers', []);
 			emit('liveMessage', `Could not load roster for ${props.team.name}.`);
+		})
+		.finally(() => {
+			emit('rosterLoading', false);
 		});
 }
 </script>
 
 <style scoped>
 .team {
-	background-color: white;
-	border: 1px solid black;
+	background-color: #fff;
+	border: 1px solid #000;
+	cursor: pointer;
 	font-size: 18px;
-	font-weight: 250;
-	height: 40px;
-	padding: 10px;
-	position: relative;
-	width: 33%;
+	font-weight: 300;
+	min-height: 44px;
+	min-width: 0;
+	padding: 8px 10px;
+	text-align: left;
+	width: 100%;
 }
 
 .team:focus {
@@ -98,40 +118,114 @@ function searchPlayers() {
 	outline: 2px solid transparent;
 }
 
-.team__logo,
-.team__name {
-	left: 50%;
-	position: absolute;
-	top: 50%;
-	transform: translate(-50%, -50%);
+.team--selected {
+	background-color: #f0f3f7;
+	border-color: var(--theme-logo-border, #000);
+	border-width: 2px;
+	padding: 7px 9px;
 }
 
-.team__name {
+@supports (background-color: color-mix(in srgb, white, black)) {
+	.team--selected {
+		background-color: color-mix(in srgb, var(--theme-logo-border, #1a5f9e) 14%, #fff);
+		box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--theme-logo-border, #1a5f9e) 35%, transparent);
+	}
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.team:not(.team--selected):hover {
+		background-color: #f4f6f8;
+		border-color: var(--theme-logo-border, #000);
+	}
+
+	.team:not(.team--selected):hover:not(:focus-visible) {
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+	}
+
+	/* Omit box-shadow so .team--selected’s inset ring is not replaced. */
+	.team.team--selected:hover {
+		background-color: #e8ecf1;
+	}
+}
+
+@supports (background-color: color-mix(in srgb, white, black)) {
+	@media (hover: hover) and (pointer: fine) {
+		.team:not(.team--selected):hover {
+			background-color: color-mix(in srgb, var(--theme-logo-border, #1a5f9e) 9%, #fff);
+		}
+
+		.team:not(.team--selected):hover:not(:focus-visible) {
+			box-shadow: 0 1px 3px color-mix(in srgb, var(--theme-logo-border, #000) 10%, transparent);
+		}
+
+		.team.team--selected:hover {
+			background-color: color-mix(in srgb, var(--theme-logo-border, #1a5f9e) 20%, #fff);
+		}
+
+		.team.team--selected:hover:not(:focus-visible) {
+			box-shadow:
+				0 1px 4px color-mix(in srgb, var(--theme-logo-border, #000) 12%, transparent),
+				inset 0 0 0 1px color-mix(in srgb, var(--theme-logo-border, #1a5f9e) 38%, transparent);
+		}
+	}
+}
+
+.team__inner {
+	align-items: center;
+	display: flex;
+	gap: 8px;
+	min-width: 0;
 	width: 100%;
 }
 
+.team__name {
+	flex: 1 1 auto;
+	line-height: 1.25;
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+
+/* Sprite math is authored for a 30×30 viewport; scale from center so logos stay centered in the circle. */
 .team__logo {
+	border-radius: 50%;
+	box-shadow: 0 0 0 1px var(--theme-logo-border, #000);
+	flex-shrink: 0;
+	height: 26px;
+	overflow: hidden;
+	position: relative;
+	width: 26px;
+}
+
+.team__logo::before {
 	background-image: url('../assets/mlb-logos-1.0.svg');
 	background-position: var(--theme-logo-bg-pos, 0 0);
-	display: none;
-	padding-bottom: 30px;
+	background-repeat: no-repeat;
+	background-size: 900px 900px;
+	content: '';
+	height: 30px;
+	left: 50%;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%) scale(calc(26 / 30));
 	width: 30px;
-}
-
-.team:hover .team__name,
-.team:focus-within .team__name {
-	display: none;
-}
-
-.team:hover .team__logo,
-.team:focus-within .team__logo {
-	display: inline-block;
 }
 
 @media (max-width: 480px) {
 	.team {
 		font-size: 12px;
 	}
+
+	.team__inner {
+		gap: 6px;
+	}
+
+	.team__logo {
+		height: 22px;
+		width: 22px;
+	}
+
+	.team__logo::before {
+		transform: translate(-50%, -50%) scale(calc(22 / 30));
+	}
 }
 </style>
-

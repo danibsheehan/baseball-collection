@@ -31,8 +31,10 @@ defineProps({
 .card {
 	backface-visibility: hidden;
 	background-color: rgba(242, 247, 245, .5);
+	border-radius: 10px;
 	height: 100%;
 	left: 0;
+	overflow: hidden;
 	position: absolute;
 	top: 0;
 	width: 100%;

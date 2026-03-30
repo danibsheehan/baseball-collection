@@ -64,19 +64,25 @@ function onFlipKeydown(event) {
 </script>
 
 <style scoped>
+/* Card typography: var(--font-card) — see App.vue :root */
 .card__scene {
-	box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.6);
-	font-family: 'Montserrat', sans-serif;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 10px;
+	box-shadow:
+		0 1px 2px rgba(0, 0, 0, 0.05),
+		0 4px 10px rgba(0, 0, 0, 0.07),
+		0 10px 24px rgba(0, 0, 0, 0.06);
+	font-family: var(--font-card);
 	height: 300px;
-	margin: 15px;
 	perspective: 600px;
 	position: relative;
 	width: 250px;
 }
 .card__container {
+	border-radius: 10px;
 	cursor: pointer;
 	height: 100%;
-	transition: transform 1s;
+	transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 	transform-style: preserve-3d;
 	position: relative;
 	width: 100%;
