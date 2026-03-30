@@ -7,7 +7,9 @@
     "build": "vite build",
     "build:report": "vite build && node scripts/bundle-report.mjs",
     "preview": "vite preview",
-    "lint": "eslint src --ext .vue,.js",
+    "lint": "eslint src --ext .vue,.js,.ts",
+    "test": "vitest",
+    "test:run": "vitest run",
     "start": "node server.js",
     "api": "PORT=3000 node server.js",
     "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build"
@@ -21,11 +23,14 @@
     "vue": "^3.5.13"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.20",
+    "@typescript-eslint/parser": "^8.57.2",
     "@vitejs/plugin-vue": "^5.2.1",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
     "eslint-plugin-vue": "^9.32.0",
+    "typescript": "^5.9.3",
     "vite": "^6.0.7",
+    "vitest": "^3.2.4",
     "vue-eslint-parser": "^9.4.3"
   },
   "eslintConfig": {
@@ -46,7 +51,24 @@
     "rules": {
       "no-console": "off",
       "vue/multi-word-component-names": "off"
-    }
+    },
+    "overrides": [
+      {
+        "files": ["**/*.ts", "**/*.tsx"],
+        "parser": "@typescript-eslint/parser",
+        "parserOptions": {
+          "ecmaVersion": 2022,
+          "sourceType": "module"
+        }
+      },
+      {
+        "files": ["**/*.d.ts"],
+        "parser": "@typescript-eslint/parser",
+        "rules": {
+          "no-unused-vars": "off"
+        }
+      }
+    ]
   },
   "postcss": {
     "plugins": {

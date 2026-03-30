@@ -4,6 +4,10 @@ const https = require('https');
 const express = require('express');
 const axios = require('axios');
 const serveStatic = require('serve-static');
+const {
+	validatePersonIdsQuery,
+	validatePlayerIdParam
+} = require('./lib/peopleQueryValidation.cjs');
 
 const app = express();
 const baseURL = 'http://statsapi.mlb.com/api/v1/';
@@ -77,22 +81,19 @@ app.get('/teams/:teamId/roster', (req, res) => {
 /** Comma-separated MLB person IDs → single MLB batch request (personIds query). */
 app.get('/people', (req, res) => {
 	const raw = req.query.personIds ?? req.query.ids;
-	if (raw == null || typeof raw !== 'string' || !raw.trim()) {
-		res.status(400).json({ message: 'Missing or invalid personIds query (comma-separated person IDs).' });
+	const parsed = validatePersonIdsQuery(raw);
+	if (!parsed.ok) {
+		res.status(400).json({ message: parsed.message });
 		return;
 	}
-	const ids = raw.trim();
-	if (!/^\d+(,\d+)*$/.test(ids)) {
-		res.status(400).json({ message: 'personIds must be comma-separated numeric person IDs.' });
-		return;
-	}
-	const path = `people?personIds=${encodeURIComponent(ids)}`;
+	const path = `people?personIds=${encodeURIComponent(parsed.trimmedIds)}`;
 	proxyMlb(req, res, path, CACHE.people);
 });
 
 app.get('/people/:playerId', (req, res) => {
-	if (!/^\d+$/.test(req.params.playerId)) {
-		res.status(400).json({ message: 'Invalid player id.' });
+	const parsed = validatePlayerIdParam(req.params.playerId);
+	if (!parsed.ok) {
+		res.status(400).json({ message: parsed.message });
 		return;
 	}
 	proxyMlb(req, res, `people/${req.params.playerId}`, CACHE.people);

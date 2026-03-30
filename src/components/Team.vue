@@ -8,6 +8,13 @@
 <script setup>
 import { ref, computed } from 'vue';
 import http from '../http-common';
+import {
+	PEOPLE_BATCH_SIZE,
+	uniquePersonIds,
+	chunkPersonIds,
+	peopleByIdFromResponses,
+	enrichRosterWithPlayerInfo
+} from '../lib/rosterPeople';
 
 const props = defineProps({
 	team: {
@@ -21,23 +28,15 @@ const players = ref([]);
 
 const theme = computed(() => props.team.teamCode?.toLowerCase() || '');
 
-const PEOPLE_BATCH_SIZE = 50;
-
 function fetchPeopleByIds(personIds) {
-	const unique = [...new Set(personIds.filter(Boolean))];
-	const chunks = [];
-	for (let i = 0; i < unique.length; i += PEOPLE_BATCH_SIZE) {
-		chunks.push(unique.slice(i, i + PEOPLE_BATCH_SIZE));
-	}
+	const unique = uniquePersonIds(personIds);
+	const chunks = chunkPersonIds(unique, PEOPLE_BATCH_SIZE);
 	return Promise.all(
 		chunks.map((chunk) =>
 			http.get('people', { params: { personIds: chunk.join(',') } })
 		)
 	)
-		.then((responses) => {
-			const people = responses.flatMap((r) => r.data.people || []);
-			return Object.fromEntries(people.map((p) => [p.id, p]));
-		})
+		.then((responses) => peopleByIdFromResponses(responses))
 		.catch(() => ({}));
 }
 
@@ -54,10 +53,7 @@ function searchPlayers() {
 				return;
 			}
 			return fetchPeopleByIds(ids).then((byId) => {
-				const enriched = data.map((r) => ({
-					...r,
-					playerInfo: byId[r.person?.id] || {}
-				}));
+				const enriched = enrichRosterWithPlayerInfo(data, byId);
 				players.value = enriched;
 				emit('updatePlayers', enriched);
 			});

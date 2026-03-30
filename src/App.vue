@@ -32,6 +32,7 @@ import { ref, onMounted } from 'vue';
 import BaseballCard from './components/BaseballCard.vue';
 import Team from './components/Team.vue';
 import http from './http-common';
+import { filterMajorLeagueBaseballTeams } from './lib/filterMlbTeams';
 
 const players = ref([]);
 const teamName = ref('');
@@ -51,9 +52,7 @@ onMounted(() => {
 	teams.value = [];
 	http.get('teams')
 		.then((response) => {
-			const data = (response.data.teams || []).filter(
-				(t) => t.sport && t.sport.name === 'Major League Baseball'
-			);
+			const data = filterMajorLeagueBaseballTeams(response.data.teams || []);
 			teams.value = data;
 		})
 		.catch((err) => {
