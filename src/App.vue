@@ -33,8 +33,10 @@
 				</nav>
 			</div>
 			<section
+				ref="resultsSection"
 				class="album__results"
 				aria-label="Player cards"
+				tabindex="-1"
 				:aria-busy="rosterLoading ? true : undefined"
 			>
 				<p v-if="rosterLoading" class="album__results-status">
@@ -73,7 +75,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, watch, nextTick, onMounted } from 'vue';
 import BaseballCard from './components/BaseballCard.vue';
 import Team from './components/Team.vue';
 import http from './http-common';
@@ -88,6 +90,30 @@ const teamsLoading = ref(true);
 const teamsError = ref('');
 const liveRegionText = ref('');
 const rosterLoading = ref(false);
+const resultsSection = ref(null);
+
+function focusResultsSection() {
+	nextTick(() => {
+		const el = resultsSection.value;
+		if (!el || typeof el.focus !== 'function') {
+			return;
+		}
+		el.focus({ preventScroll: true });
+		el.scrollIntoView({ block: 'start', behavior: 'auto' });
+	});
+}
+
+watch(selectedTeamId, (id) => {
+	if (id != null) {
+		focusResultsSection();
+	}
+});
+
+watch(rosterLoading, (loading, wasLoading) => {
+	if (!loading && wasLoading && selectedTeamId.value != null) {
+		focusResultsSection();
+	}
+});
 
 function loadPlayers(nextPlayers) {
 	players.value = nextPlayers;
@@ -251,6 +277,12 @@ body {
 	width: 1.125rem;
 }
 
+@media (prefers-reduced-motion: reduce) {
+	.album__spinner {
+		animation: none;
+	}
+}
+
 @keyframes album-spin {
 	to {
 		transform: rotate(360deg);
@@ -351,6 +383,17 @@ h2 {
 	justify-items: center;
 	margin: clamp(2rem, 6vw, 3rem) auto 0;
 	max-width: 1200px;
+	/* Clear sticky team nav when scrolling into view or focusing */
+	scroll-margin-top: calc(0.75rem + 48px + env(safe-area-inset-top, 0px));
+}
+
+.album__results:focus {
+	outline: none;
+}
+
+.album__results:focus-visible {
+	box-shadow: 0 0 0 3px #fff, 0 0 0 5px #1a5f9e;
+	outline: 2px solid transparent;
 }
 
 .album__results--title {

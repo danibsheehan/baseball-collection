@@ -90,6 +90,12 @@ function onFlipKeydown(event) {
 	width: 100%;
 }
 
+@media (prefers-reduced-motion: reduce) {
+	.card__container {
+		transition: none;
+	}
+}
+
 .card__container:focus {
 	outline: none;
 }
