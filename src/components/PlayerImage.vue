@@ -1,7 +1,21 @@
 <template>
-	<span ref="root" class="card__image">
+	<!-- Porthole: outer ring (padding) + inner clip; img in-flow so overflow:hidden reliably clips (no absolute + compositor bleed). -->
+	<div v-if="porthole" ref="root" class="card-porthole">
+		<div class="card-porthole__clip">
+			<img
+				v-if="shouldLoadImage && headshotSrc"
+				:src="headshotSrc"
+				class="card-porthole__img"
+				loading="eager"
+				fetchpriority="high"
+				decoding="async"
+				:alt="headshotAlt"
+			/>
+		</div>
+	</div>
+	<span v-else ref="root" class="card__image">
 		<img
-			v-if="shouldLoadImage"
+			v-if="shouldLoadImage && headshotSrc"
 			:src="headshotSrc"
 			class="card__image--player"
 			loading="lazy"
@@ -16,11 +30,16 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 
 const props = defineProps({
 	playerId: {
-		type: Number
+		type: [Number, String],
+		default: undefined
 	},
 	imageDescription: {
 		type: String,
 		default: ''
+	},
+	porthole: {
+		type: Boolean,
+		default: false
 	}
 });
 
@@ -32,15 +51,18 @@ const headshotAlt = computed(() => {
 const root = ref(null);
 const shouldLoadImage = ref(false);
 
-const headshotSrc = computed(
-	() =>
-		`https://img.mlbstatic.com/mlb/images/players/head_shot/${props.playerId}.jpg`
-);
+const headshotSrc = computed(() => {
+	const id = props.playerId;
+	if (id == null || id === '') {
+		return '';
+	}
+	return `https://img.mlbstatic.com/mlb/images/players/head_shot/${id}.jpg`;
+});
 
 let observer;
 
 onMounted(() => {
-	if (typeof IntersectionObserver === 'undefined') {
+	if (props.porthole || typeof IntersectionObserver === 'undefined') {
 		shouldLoadImage.value = true;
 		return;
 	}
@@ -93,6 +115,46 @@ onBeforeUnmount(() => {
 	position: absolute;
 	object-fit: contain;
 	top: 0;
+	width: 100%;
+}
+
+.card-porthole {
+	background: #fff;
+	border-radius: 50%;
+	box-shadow:
+		0 2px 8px rgba(0, 0, 0, 0.28),
+		inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+	box-sizing: border-box;
+	inset: 0;
+	min-height: 0;
+	padding: 3px;
+	position: absolute;
+}
+
+.card-porthole__clip {
+	border-radius: 50%;
+	height: 100%;
+	min-height: 0;
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+}
+
+.card-porthole__clip::after {
+	border-radius: 50%;
+	box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.14);
+	content: "";
+	inset: 0;
+	pointer-events: none;
+	position: absolute;
+	z-index: 1;
+}
+
+.card-porthole__img {
+	display: block;
+	height: 100%;
+	object-fit: cover;
+	object-position: center center;
 	width: 100%;
 }
 </style>

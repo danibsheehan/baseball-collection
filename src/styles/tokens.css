@@ -4,30 +4,50 @@
  * prefers-color-scheme: dark flips these so you tune light/dark in one place.
  */
 :root {
-	--font-ui: 'Mukta', sans-serif;
+	/* App chrome: late-50s print / gum-card counter display + Franklin-style UI. */
+	--font-ui: 'Libre Franklin', system-ui, sans-serif;
+	--font-ui-heading: 'Oswald', 'Arial Narrow', sans-serif;
 	--font-card: 'Montserrat', sans-serif;
 
-	--color-text: #1a1a1a;
-	--color-text-muted: #6b7280;
-	--color-surface: #f0efeb;
-	--color-surface-elevated: #ffffff;
-	--color-surface-nav: rgba(240, 239, 235, 0.94);
-	--color-surface-interactive: #f4f6f8;
-	--color-surface-selected: #f0f3f7;
-	--color-surface-selected-hover: #e8ecf1;
+	/* 1959 card footer; overridden per team for 4.5:1 vs --theme-1959-field (WCAG 2.2 AA body text). */
+	--theme-1959-caption-a: #ffffff;
+	--theme-1959-caption-b: #f3f4f6;
+	--theme-1959-caption-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 
-	/* Team grid chips: cool blue-slate (no warm greige), readable text + ≥3:1 vs --color-surface (WCAG 1.4.11). */
-	--color-team-button: #7d8a98;
+	--color-text: #1c1917;
+	--color-text-muted: #57534e;
+	--color-surface: #e8e2d6;
+	--color-surface-elevated: #f3eee6;
+	--color-surface-nav: #f0ebe2;
+	--color-surface-interactive: #e5dfd4;
+	--color-surface-selected: #ddd6c8;
+	--color-surface-selected-hover: #d4cdc0;
 
-	--color-border-subtle: rgba(0, 0, 0, 0.06);
-	--color-border-card: rgba(0, 0, 0, 0.1);
-	--color-border-medium: #d1d5db;
-	--color-border-strong: #000000;
+	/* Team grid: stock-tan “panel” vs page; 3:1+ vs --color-surface (WCAG 1.4.11). */
+	--color-team-button: #cfc6b8;
+	--color-team-button-text: var(--color-text);
+	--color-team-button-border: var(--color-border-strong);
+	--color-team-button-hover: var(--color-surface-interactive);
+	--color-team-chip-selected: var(--color-surface-selected);
+	--color-team-chip-selected-hover: var(--color-surface-selected-hover);
+	--color-team-selected-mix-base: var(--color-surface-elevated);
+	--color-team-logo-well: transparent;
+
+	--color-border-subtle: rgba(28, 25, 23, 0.08);
+	--color-border-card: rgba(28, 25, 23, 0.12);
+	--color-border-medium: #a8a29e;
+	--color-border-strong: #1c1917;
+
+	/* Wax-pack / Topps-adjacent accent for chrome only (focus, rules). */
+	--color-ui-ink: #0f172a;
+	--color-ui-crimson: #b91c1c;
+	--color-ui-gum: #1e3a5f;
 
 	--color-danger-bg: #fde8e8;
 	--color-danger-border: #c53030;
 	--color-danger-text: #742a2a;
 
+	/* Shared focus fallback (cards); shell chrome uses --color-ui-gum where needed. */
 	--color-accent: #1a5f9e;
 	--color-focus-ring: #ffffff;
 
@@ -43,6 +63,27 @@
 		0 2px 6px rgba(0, 0, 0, 0.055);
 	--shadow-team-hover: 0 1px 3px rgba(0, 0, 0, 0.07);
 
+	/* Baseball card polish (CSS-only; see BaseballCard / CardFront). */
+	--card-lift-hover: 14px;
+	--card-lift-hover-many: 6px;
+	--card-sheen-highlight: rgba(255, 255, 255, 0.38);
+	--card-sheen-mid: rgba(255, 255, 255, 0.12);
+	--card-sheen-edge: rgba(255, 255, 255, 0.06);
+	--card-vignette: rgba(0, 0, 0, 0.04);
+
+	/* Card back — warm buff (light mode: readable, not blown out). */
+	--card-back-paper: #ebe4d8;
+	--card-back-paper-raised: #f3ede4;
+	--card-back-paper-shade: #dfd6c9;
+	--card-back-paper-bloom: rgba(255, 252, 246, 0.52);
+	--card-back-paper-honey: rgba(230, 195, 150, 0.11);
+	--card-back-paper-edge: rgba(100, 82, 62, 0.055);
+	--card-back-ink: #1c1917;
+	--card-back-accent: #9f2d2d;
+	--card-back-rule: rgba(28, 25, 23, 0.35);
+	--card-back-rule-strong: rgba(28, 25, 23, 0.55);
+	--card-back-fine: #5a544e;
+
 	--space-1: 0.25rem;
 	--space-2: 0.375rem;
 	--space-3: 0.5rem;
@@ -53,21 +94,36 @@
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--color-text: #ececec;
-		--color-text-muted: #9ca3af;
-		--color-surface: #121212;
-		--color-surface-elevated: #1c1c1c;
-		--color-surface-nav: rgba(18, 18, 18, 0.94);
-		--color-surface-interactive: #252525;
-		--color-surface-selected: #262626;
-		--color-surface-selected-hover: #2e2e2e;
+		--color-text: #e7e5e4;
+		--color-text-muted: #a8a29e;
+		--color-surface: #1c1917;
+		--color-surface-elevated: #292524;
+		--color-surface-nav: #231f1d;
+		--color-surface-interactive: #2f2a28;
+		--color-surface-selected: #3a342f;
+		--color-surface-selected-hover: #44403c;
 
-		--color-team-button: #5e626c;
+		/*
+		 * Team grid in dark UI: light “wax tile” chips so full-color SVG crests read clearly
+		 * (dark-on-dark cells were washing logos out).
+		 */
+		--color-team-button: #cfcac2;
+		--color-team-button-text: #1a1714;
+		--color-team-button-border: #2f2a26;
+		--color-team-button-hover: #c2bcb3;
+		--color-team-chip-selected: #b0a89e;
+		--color-team-chip-selected-hover: #a39b91;
+		--color-team-selected-mix-base: var(--color-team-button);
+		--color-team-logo-well: #faf8f5;
 
-		--color-border-subtle: rgba(255, 255, 255, 0.08);
-		--color-border-card: rgba(255, 255, 255, 0.12);
-		--color-border-medium: #4b5563;
-		--color-border-strong: rgba(255, 255, 255, 0.38);
+		--color-border-subtle: rgba(231, 229, 228, 0.1);
+		--color-border-card: rgba(231, 229, 228, 0.14);
+		--color-border-medium: #57534e;
+		--color-border-strong: rgba(255, 252, 248, 0.55);
+
+		--color-ui-ink: #e7e5e4;
+		--color-ui-crimson: #f87171;
+		--color-ui-gum: #93c5fd;
 
 		--color-danger-bg: #3a1f1f;
 		--color-danger-border: #c45c5c;
@@ -83,5 +139,22 @@
 			0 1px 2px rgba(0, 0, 0, 0.4),
 			0 3px 10px rgba(0, 0, 0, 0.32);
 		--shadow-team-hover: 0 1px 3px rgba(0, 0, 0, 0.35);
+
+		--card-sheen-highlight: rgba(255, 255, 255, 0.14);
+		--card-sheen-mid: rgba(255, 255, 255, 0.06);
+		--card-sheen-edge: rgba(255, 255, 255, 0.03);
+		--card-vignette: rgba(0, 0, 0, 0.18);
+
+		--card-back-paper: #5a5651;
+		--card-back-paper-raised: #66615c;
+		--card-back-paper-shade: #504c48;
+		--card-back-paper-honey: rgba(255, 205, 165, 0.09);
+		--card-back-paper-bloom: rgba(255, 246, 232, 0.2);
+		--card-back-paper-edge: rgba(0, 0, 0, 0.12);
+		--card-back-ink: #ece8e3;
+		--card-back-accent: #f0a0a0;
+		--card-back-rule: rgba(236, 232, 227, 0.28);
+		--card-back-rule-strong: rgba(236, 232, 227, 0.45);
+		--card-back-fine: #b8b3ad;
 	}
 }

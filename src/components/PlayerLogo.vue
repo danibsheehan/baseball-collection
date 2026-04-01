@@ -1,6 +1,20 @@
 <template>
-	<span class="card__logo" aria-hidden="true"></span>
+	<span
+		class="card__logo"
+		:class="{ 'card__logo--start': align === 'start' }"
+		aria-hidden="true"
+	></span>
 </template>
+
+<script setup>
+defineProps({
+	align: {
+		type: String,
+		default: 'end',
+		validator: (v) => v === 'start' || v === 'end'
+	}
+});
+</script>
 
 <style scoped>
 /* Match .team__logo: sprite is authored for a 30×30 cell; scale from center inside the circle. */
@@ -13,6 +27,11 @@
 	position: absolute;
 	right: 5px;
 	width: 30px;
+}
+
+.card__logo--start {
+	left: 5px;
+	right: auto;
 }
 
 .card__logo::before {
