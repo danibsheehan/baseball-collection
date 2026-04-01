@@ -102,7 +102,10 @@
 						v-for="(player, dealIndex) in players"
 						:key="player.person.id"
 						class="album__card-deal"
-						:class="{ 'album__card-deal--many': players.length > 30 }"
+						:class="[
+							players.length > 30 ? 'album__card-deal--many' : '',
+							cardDealPhaseClass
+						]"
 						:style="dealEnterStyle(dealIndex)"
 					>
 						<BaseballCard
@@ -147,6 +150,22 @@ const rosterLoading = ref(false);
 const resultsSection = ref(null);
 const teamSearchQuery = ref('');
 
+/** idle: no roster cards | measuring: layout, hidden | ready: run deal anim | static: reduced motion */
+const dealPhase = ref('idle');
+
+const cardDealPhaseClass = computed(() => {
+	switch (dealPhase.value) {
+		case 'measuring':
+			return 'album__card-deal--measuring';
+		case 'ready':
+			return 'album__card-deal--animate';
+		case 'static':
+			return 'album__card-deal--static';
+		default:
+			return 'album__card-deal--idle';
+	}
+});
+
 const teamPickerSections = computed(() => buildTeamPickerSections(teams.value));
 
 const filteredTeamSections = computed(() =>
@@ -184,6 +203,100 @@ watch(rosterLoading, (loading, wasLoading) => {
 	}
 });
 
+function doubleRaf() {
+	return new Promise((resolve) => {
+		requestAnimationFrame(() => {
+			requestAnimationFrame(resolve);
+		});
+	});
+}
+
+/** Match final scroll position before measuring card centers vs viewport “deck” point. */
+function prepareResultsForDealMeasure() {
+	const el = resultsSection.value;
+	if (!el) {
+		return;
+	}
+	if (typeof el.focus === 'function') {
+		el.focus({ preventScroll: true });
+	}
+	if (typeof el.scrollIntoView === 'function') {
+		el.scrollIntoView({ block: 'start', behavior: 'auto' });
+	}
+}
+
+function measureDealOffsetsFromViewport() {
+	const root = resultsSection.value;
+	if (!root || typeof window === 'undefined') {
+		return false;
+	}
+	const wrappers = root.querySelectorAll('.album__card-deal');
+	if (!wrappers.length) {
+		return false;
+	}
+	const total = players.value.length;
+	const many = total > 30;
+	const staggerMs = many ? 28 : 56;
+	const maxDelayMs = many ? 650 : 1250;
+
+	const deckX = window.innerWidth / 2;
+	/* Stack point: upper-middle of the viewport. */
+	const deckY = window.innerHeight * 0.38;
+
+	/* Top grid row first, then down; within a row, left to right. */
+	const items = Array.from(wrappers).map((el) => {
+		const rect = el.getBoundingClientRect();
+		return {
+			el,
+			top: rect.top,
+			left: rect.left,
+			cx: rect.left + rect.width / 2,
+			cy: rect.top + rect.height / 2
+		};
+	});
+	/* Bucket tops so one CSS grid row stays one deal row despite subpixel layout. */
+	const rowBucket = (top) => Math.round(top / 40);
+	items.sort((a, b) => {
+		const ra = rowBucket(a.top);
+		const rb = rowBucket(b.top);
+		if (ra !== rb) {
+			return ra - rb;
+		}
+		return a.left - b.left;
+	});
+
+	items.forEach(({ el, cx, cy }, orderIndex) => {
+		el.style.setProperty('--deal-dx', `${deckX - cx}px`);
+		el.style.setProperty('--deal-dy', `${deckY - cy}px`);
+		const delay = Math.min(orderIndex * staggerMs, maxDelayMs);
+		el.style.setProperty('--deal-delay', `${delay}ms`);
+	});
+	return true;
+}
+
+watch(
+	[players, rosterLoading],
+	async () => {
+		if (rosterLoading.value || players.value.length === 0) {
+			dealPhase.value = 'idle';
+			return;
+		}
+		if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			dealPhase.value = 'static';
+			return;
+		}
+		dealPhase.value = 'measuring';
+		await nextTick();
+		/* Let rosterLoading watcher’s nextTick (focus + scrollIntoView) run first. */
+		await nextTick();
+		prepareResultsForDealMeasure();
+		await doubleRaf();
+		measureDealOffsetsFromViewport();
+		dealPhase.value = 'ready';
+	},
+	{ flush: 'post' }
+);
+
 function loadPlayers(nextPlayers) {
 	players.value = nextPlayers;
 }
@@ -202,16 +315,10 @@ function setRosterLoading(loading) {
 	rosterLoading.value = loading;
 }
 
-/** Stagger + twist for “deal from stack” entry; cap delay on huge rosters. */
+/** Twist only; stagger (--deal-delay) is set after layout so the top grid row deals first. */
 function dealEnterStyle(index) {
-	const total = players.value.length;
-	const many = total > 30;
-	const staggerMs = many ? 22 : 46;
-	const maxDelayMs = many ? 520 : 1100;
 	const twist = ((index % 11) - 5) * 2.15;
-	const delay = Math.min(index * staggerMs, maxDelayMs);
 	return {
-		'--deal-delay': `${delay}ms`,
 		'--deal-twist': `${twist}deg`
 	};
 }
@@ -611,43 +718,65 @@ h2 {
 	--shadow-card: var(--shadow-card-large-roster);
 }
 
-/* Roster cards: staggered “deal” from stack → grid */
+/* Roster cards: staggered “deal” from viewport deck point → grid (offsets via --deal-dx/--deal-dy from JS) */
 @keyframes album-card-deal {
 	0% {
 		opacity: 0;
-		transform: translateY(var(--deal-rise, min(26vh, 8.5rem))) scale(0.93) rotateZ(var(--deal-twist, 0deg));
+		transform: translate(var(--deal-dx, 0px), var(--deal-dy, 0px)) scale(0.93) rotateZ(var(--deal-twist, 0deg));
 	}
 	55% {
 		opacity: 1;
 	}
 
 	72% {
-		transform: translateY(-5px) scale(1.012) rotateZ(calc(var(--deal-twist, 0deg) * 0.12));
+		transform: translate(-2px, -5px) scale(1.012) rotateZ(calc(var(--deal-twist, 0deg) * 0.12));
 	}
 
 	100% {
 		opacity: 1;
-		transform: translateY(0) scale(1) rotateZ(0deg);
+		transform: translate(0, 0) scale(1) rotateZ(0deg);
 	}
 }
 
 .album__card-deal {
-	--deal-rise: min(26vh, 8.5rem);
-	animation: album-card-deal 0.74s cubic-bezier(0.24, 0.92, 0.32, 1) both;
-	animation-delay: var(--deal-delay, 0ms);
 	justify-self: center;
 	max-width: 280px;
+	transform-origin: 50% 50%;
 	width: 100%;
 }
 
-.album__card-deal--many {
-	--deal-rise: min(17vh, 5.25rem);
-	animation-duration: 0.5s;
+.album__card-deal--idle {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.album__card-deal--measuring {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.album__card-deal--animate {
+	animation: album-card-deal 1.15s cubic-bezier(0.24, 0.92, 0.32, 1) both;
+	animation-delay: var(--deal-delay, 0ms);
+}
+
+.album__card-deal--static {
+	opacity: 1;
+}
+
+.album__card-deal--many.album__card-deal--animate {
+	animation-duration: 0.8s;
 	animation-timing-function: cubic-bezier(0.28, 0.88, 0.36, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.album__card-deal {
+	.album__card-deal--idle,
+	.album__card-deal--measuring {
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.album__card-deal--animate {
 		animation: none;
 		opacity: 1;
 		transform: none;
