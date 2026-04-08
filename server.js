@@ -33,6 +33,18 @@ const CACHE = {
 	people: 'public, max-age=300, stale-while-revalidate=120'
 };
 
+function validateNumericId(id) {
+	if (typeof id !== 'string') {
+		return null;
+	}
+	const trimmed = id.trim();
+	// Only allow positive integer IDs to be used in upstream paths.
+	if (!/^[0-9]+$/.test(trimmed)) {
+		return null;
+	}
+	return trimmed;
+}
+
 function pipeMlbToResponse(upstream, res, cacheControl) {
 	const ct = upstream.headers['content-type'];
 	if (ct) {
@@ -75,7 +87,12 @@ app.get('/teams', (req, res) => {
 });
 
 app.get('/teams/:teamId/roster', (req, res) => {
-	proxyMlb(req, res, `teams/${req.params.teamId}/roster`, CACHE.roster);
+	const teamId = validateNumericId(req.params.teamId);
+	if (!teamId) {
+		res.status(400).json({ message: 'Invalid teamId' });
+		return;
+	}
+	proxyMlb(req, res, `teams/${teamId}/roster`, CACHE.roster);
 });
 
 /** Comma-separated MLB person IDs → single MLB batch request (personIds query). */
@@ -96,7 +113,12 @@ app.get('/people/:playerId', (req, res) => {
 		res.status(400).json({ message: parsed.message });
 		return;
 	}
-	proxyMlb(req, res, `people/${req.params.playerId}`, CACHE.people);
+	const playerId = validateNumericId(req.params.playerId);
+	if (!playerId) {
+		res.status(400).json({ message: 'Invalid playerId' });
+		return;
+	}
+	proxyMlb(req, res, `people/${playerId}`, CACHE.people);
 });
 
 app.listen(port, () => {
