@@ -24,7 +24,8 @@ void main() {
 		0.52 + 0.48 * cos(ang * 2.75 + 2.25),
 		0.52 + 0.48 * cos(ang * 2.75 + 4.05)
 	);
-	float edge = smoothstep(0.68, 0.32, r);
+	/* Wide soft falloff so iridescence reads across most of the face, not a tight center spot */
+	float edge = 1.0 - smoothstep(0.18, 0.78, r);
 	float a = wave * u_intensity * edge;
 	gl_FragColor = vec4(col, a);
 }

@@ -184,7 +184,7 @@ function onFlipKeydown(event) {
 	width: 100%;
 }
 
-/* Card typography: var(--font-card) — see src/styles/tokens.css */
+/* Card typography: var(--font-card) — Archivo; see src/styles/tokens.css */
 .card__scene {
 	aspect-ratio: 5 / 6;
 	border: 1px solid var(--color-border-card);
@@ -193,6 +193,7 @@ function onFlipKeydown(event) {
 	font-family: var(--font-card);
 	height: auto;
 	max-width: 280px;
+	/* Do not clip: 3D lift + logos need room; rounded chrome comes from faces + border-radius */
 	perspective: 720px;
 	position: relative;
 	/* Avoid filter + 3D: Chrome can composite a bogus full-viewport gray layer. Hover pop = shadow + lift. */
@@ -262,7 +263,8 @@ function onFlipKeydown(event) {
 	border-radius: 10px;
 	cursor: pointer;
 	height: 100%;
-	transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+	/* Flip: long ease at the end — cardstock flex, not a snappy cube */
+	transition: transform 0.78s cubic-bezier(0.2, 0.62, 0.1, 1);
 	transform-style: preserve-3d;
 	position: relative;
 	width: 100%;

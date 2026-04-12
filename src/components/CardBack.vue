@@ -134,10 +134,14 @@ defineProps({
 
 .card__container--back {
 	box-sizing: border-box;
+	container-name: card-back;
+	container-type: size;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
-	padding: 0.35rem 0.45rem 0.3rem;
+	min-height: 0;
+	overflow: hidden;
+	padding: 0.3rem 0.4rem 0.35rem;
 	position: relative;
 	z-index: 1;
 }

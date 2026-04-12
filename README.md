@@ -90,7 +90,10 @@ Upstream: **MLB Stats API** — `https://statsapi.mlb.com/api/v1/`. Response sha
 
 ```bash
 npm run lint
+npm run test:run
 ```
+
+Use `npm run test` for Vitest in watch mode while you change code. Tests live next to sources (`src/**/*.test.{js,ts}`, `lib/**/*.test.mjs` per `vite.config.mjs`).
 
 ## Performance checklist (optional)
 
@@ -102,15 +105,17 @@ Use when checking load time, network cost, or regressions.
 4. **Vue DevTools** — Flip cards and switch teams; avoid excessive re-renders on large lists.
 5. **Repeat visits** — With cache on, static assets should be `304` or memory-cached; API responses may reflect `Cache-Control` from `server.js` when using the proxy.
 
+### Motion, accessibility, and animation cost
+
+- **`prefers-reduced-motion`** — Not only “turn off CSS.” The roster deal **skips** the pack Lottie and the flying peel: `dealPhase` jumps straight to `static` (instant grid). The pack component **does not load** the JSON when reduced motion is on; it emits unwrap immediately and never instantiates the Lottie player. The cards region gets a **short opacity fade** (~220ms); the pennant title and completeness row use **brief opacity keyframes** instead of translate/scale entrances. Defensive CSS still forces resting transforms if a user toggles mid-session.
+- **Layout / compositing** — `measureAlbumRevealOffsets` runs **once** per animated deal (after unwrap, before `ready`): it batches `getBoundingClientRect` reads, then writes per-card custom properties, avoiding interleaved measure/layout thrash. **`will-change: transform`** applies only while `.album__card-deal--animate` runs; it returns to `auto` on the settled/static classes. Parent deal keyframes avoid animating `filter: blur` on the peel (brightness-only micro-settle on the cap card).
+- **Large rosters (>30 players)** — **Shorter** peel duration and stagger cap, **smaller** fly vectors and fan angles (see `getRevealTiming` / `measureAlbumRevealOffsets`), and a denser grid shadow token — same “deal” idea with a lower per-frame budget.
+
 **Serve built app with Express** (static `dist` plus proxy):
 
 ```bash
 npm start
 ```
-
-## Screenshots
-
-<img src="./src/assets/CartophilesHome.png" width="250" alt="Home screen"/> <img src="./src/assets/CartophilesTeam.png" width="250" alt="Team selection"/> <img src="./src/assets/CartophilesCard.png" width="250" alt="Sample card"/>
 
 ## Attributions & disclaimer
 

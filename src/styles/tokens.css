@@ -1,30 +1,37 @@
 /*
  * Global design tokens (neutrals, spacing, radii, shadows).
  * Team accents stay in team-themes.css via [data-theme] (--theme-*).
+ * Light mode: warm newsprint stock, navy + crimson letterpress, cream “gloss” (--color-paper-gloss).
  * prefers-color-scheme: dark flips these so you tune light/dark in one place.
  */
 :root {
-	/* App chrome: late-50s print / gum-card counter display + Franklin-style UI. */
-	--font-ui: 'Libre Franklin', system-ui, sans-serif;
+	/* App chrome: Newsreader (UI body / scorecard copy), Oswald (labels), Bebas (display), Archivo (pasteboards). */
+	--font-ui: 'Newsreader', Georgia, 'Times New Roman', serif;
 	--font-ui-heading: 'Oswald', 'Arial Narrow', sans-serif;
-	--font-card: 'Montserrat', sans-serif;
+	--font-ui-display: 'Bebas Neue', 'Oswald', 'Arial Narrow', sans-serif;
+	--font-card: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
 
 	/* 1959 card footer; overridden per team for 4.5:1 vs --theme-1959-field (WCAG 2.2 AA body text). */
-	--theme-1959-caption-a: #ffffff;
-	--theme-1959-caption-b: #f3f4f6;
+	/* Gloss / mat — 1950s stock & enamel, not pure white (team themes may still set brighter captions). */
+	--color-paper-gloss: #faf4e8;
+	--color-paper-gloss-soft: rgba(250, 244, 232, 0.92);
+	--theme-1959-caption-a: #faf6ef;
+	--theme-1959-caption-b: #f0ebe0;
 	--theme-1959-caption-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 
 	--color-text: #1c1917;
-	--color-text-muted: #57534e;
-	--color-surface: #e8e2d6;
-	--color-surface-elevated: #f3eee6;
-	--color-surface-nav: #f0ebe2;
-	--color-surface-interactive: #e5dfd4;
-	--color-surface-selected: #ddd6c8;
-	--color-surface-selected-hover: #d4cdc0;
+	/* Sepia ink — letterpress second read vs neutral UI gray */
+	--color-text-muted: #5a4f42;
+	/* Newsprint / gum-card stock: warmer yellow–red, imperfect sheet */
+	--color-surface: #e8dfc8;
+	--color-surface-elevated: #f1e6d4;
+	--color-surface-nav: #ede3d2;
+	--color-surface-interactive: #e4d8c4;
+	--color-surface-selected: #dac9b0;
+	--color-surface-selected-hover: #d0c0a6;
 
 	/* Team grid: stock-tan “panel” vs page; 3:1+ vs --color-surface (WCAG 1.4.11). */
-	--color-team-button: #cfc6b8;
+	--color-team-button: #cbbfaa;
 	--color-team-button-text: var(--color-text);
 	--color-team-button-border: var(--color-border-strong);
 	--color-team-button-hover: var(--color-surface-interactive);
@@ -33,12 +40,13 @@
 	--color-team-selected-mix-base: var(--color-surface-elevated);
 	--color-team-logo-well: transparent;
 
-	--color-border-subtle: rgba(28, 25, 23, 0.08);
-	--color-border-card: rgba(28, 25, 23, 0.12);
-	--color-border-medium: #a8a29e;
+	--color-border-subtle: rgba(30, 58, 95, 0.07);
+	--color-border-card: rgba(28, 25, 23, 0.14);
+	/* Navy second-color rule + warm paper (not flat greige) */
+	--color-border-medium: rgba(30, 58, 95, 0.26);
 	--color-border-strong: #1c1917;
 
-	/* Wax-pack / Topps-adjacent accent for chrome only (focus, rules). */
+	/* Two-color letterpress: navy ink + crimson rule (solids + thin rules). */
 	--color-ui-ink: #0f172a;
 	--color-ui-crimson: #b91c1c;
 	--color-ui-gum: #1e3a5f;
@@ -47,9 +55,9 @@
 	--color-danger-border: #c53030;
 	--color-danger-text: #742a2a;
 
-	/* Shared focus fallback (cards); shell chrome uses --color-ui-gum where needed. */
-	--color-accent: #1a5f9e;
-	--color-focus-ring: #ffffff;
+	/* Second accent = navy ink (pairs with crimson chrome). */
+	--color-accent: var(--color-ui-gum);
+	--color-focus-ring: var(--color-paper-gloss);
 
 	--radius-sm: 0.375rem;
 
@@ -66,23 +74,23 @@
 	/* Baseball card polish (CSS-only; see BaseballCard / CardFront). */
 	--card-lift-hover: 14px;
 	--card-lift-hover-many: 6px;
-	--card-sheen-highlight: rgba(255, 255, 255, 0.38);
-	--card-sheen-mid: rgba(255, 255, 255, 0.12);
-	--card-sheen-edge: rgba(255, 255, 255, 0.06);
+	--card-sheen-highlight: rgba(252, 247, 236, 0.4);
+	--card-sheen-mid: rgba(252, 247, 236, 0.12);
+	--card-sheen-edge: rgba(245, 236, 220, 0.08);
 	--card-vignette: rgba(0, 0, 0, 0.04);
 
 	/* Card back — warm buff (light mode: readable, not blown out). */
-	--card-back-paper: #ebe4d8;
-	--card-back-paper-raised: #f3ede4;
-	--card-back-paper-shade: #dfd6c9;
-	--card-back-paper-bloom: rgba(255, 252, 246, 0.52);
+	--card-back-paper: #ebe0cd;
+	--card-back-paper-raised: #f2e9d8;
+	--card-back-paper-shade: #dfd2bc;
+	--card-back-paper-bloom: rgba(252, 246, 234, 0.5);
 	--card-back-paper-honey: rgba(230, 195, 150, 0.11);
 	--card-back-paper-edge: rgba(100, 82, 62, 0.055);
 	--card-back-ink: #1c1917;
 	--card-back-accent: #9f2d2d;
 	--card-back-rule: rgba(28, 25, 23, 0.35);
 	--card-back-rule-strong: rgba(28, 25, 23, 0.55);
-	--card-back-fine: #5a544e;
+	--card-back-fine: #5c4f42;
 
 	--space-1: 0.25rem;
 	--space-2: 0.375rem;
@@ -90,18 +98,103 @@
 	--space-4: 0.75rem;
 	--space-5: 1rem;
 	--space-6: 1.25rem;
+
+	/* Album shell: masthead band, checklist rail, felt tabletop, binder page. */
+	--album-masthead-bg: #f7f0e2;
+	--album-masthead-accent: var(--color-ui-crimson);
+	--album-rail-paper: #f0e6d4;
+	--album-rail-paper-edge: rgba(28, 25, 23, 0.12);
+	--album-felt-base: #d9e4d6;
+	--album-felt-overlay: linear-gradient(
+			168deg,
+			rgba(45, 72, 58, 0.11) 0%,
+			transparent 42%
+		),
+		radial-gradient(ellipse 90% 55% at 50% 0%, rgba(30, 72, 52, 0.14), transparent 52%);
+	/* Felt “cloth”: edge pool + soft highlight + faint weave (reads as depth under the binder) */
+	--album-felt-texture:
+		radial-gradient(ellipse 92% 78% at 50% 112%, rgba(22, 48, 36, 0.1), transparent 52%),
+		radial-gradient(ellipse 68% 48% at 72% 18%, rgba(255, 255, 255, 0.14), transparent 46%),
+		repeating-linear-gradient(
+			-22deg,
+			transparent 0 5px,
+			rgba(28, 48, 38, 0.028) 5px 6px
+		),
+		repeating-linear-gradient(
+			68deg,
+			transparent 0 7px,
+			rgba(255, 255, 255, 0.018) 7px 8px
+		);
+	--album-binder-page: var(--color-surface-elevated);
+	/* Paper stack: cream sheen + shade + visible fiber / fleck (letterpress stock) */
+	--album-binder-depth:
+		radial-gradient(ellipse 100% 58% at 50% -8%, rgba(252, 246, 234, 0.52), transparent 55%),
+		linear-gradient(
+			180deg,
+			rgba(58, 42, 30, 0.05) 0%,
+			transparent 32%,
+			rgba(42, 36, 30, 0.065) 100%
+		),
+		repeating-radial-gradient(
+			circle at 0.6px 0.6px,
+			rgba(42, 36, 30, 0.038) 0 0.5px,
+			transparent 0.88px
+		),
+		repeating-radial-gradient(
+			circle at 2.1px 2.8px,
+			rgba(90, 62, 44, 0.034) 0 0.35px,
+			transparent 1.05px
+		),
+		repeating-radial-gradient(
+			circle at 1.5px 0.4px,
+			rgba(185, 28, 28, 0.02) 0 0.28px,
+			transparent 0.72px
+		);
+	--album-binder-hole: rgba(15, 23, 42, 0.22);
+	--album-binder-margin-line: rgba(185, 28, 28, 0.35);
+	/* Checklist rail + league columns — same letterpress rule family as binder margin */
+	--album-checklist-margin-line: rgba(185, 28, 28, 0.34);
+	--album-league-rule: rgba(30, 58, 95, 0.32);
+
+	/* Team picker “wax pack” strip (merch counter, not a plain form). */
+	--teams-pack-strip-bg-a: #ecdcc4;
+	--teams-pack-strip-bg-b: #dec9a8;
+	--teams-pack-strip-rule: var(--color-ui-crimson);
+	--teams-pack-strip-perf: rgba(28, 25, 23, 0.22);
+
+	/* Roster title “pennant” + completeness strip (1950s packaging adj.). */
+	--album-roster-pennant-a: #f4ead8;
+	--album-roster-pennant-b: #e5d6bf;
+	--album-roster-pennant-shadow: rgba(28, 25, 23, 0.12);
+	--album-roster-completeness-track: rgba(28, 25, 23, 0.14);
+	--album-roster-completeness-glow: rgba(185, 28, 28, 0.25);
+
+	/* Page stock — extra fleck under halftone (see App.vue body). */
+	--app-body-fiber-a:
+		repeating-radial-gradient(
+			circle at 0.9px 1.2px,
+			rgba(74, 52, 40, 0.045) 0 0.48px,
+			transparent 0.82px
+		);
+	--app-body-fiber-b:
+		repeating-radial-gradient(
+			circle at 2.4px 3.1px,
+			rgba(30, 58, 95, 0.03) 0 0.32px,
+			transparent 1.02px
+		);
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
 		--color-text: #e7e5e4;
-		--color-text-muted: #a8a29e;
-		--color-surface: #1c1917;
-		--color-surface-elevated: #292524;
-		--color-surface-nav: #231f1d;
-		--color-surface-interactive: #2f2a28;
-		--color-surface-selected: #3a342f;
-		--color-surface-selected-hover: #44403c;
+		--color-text-muted: #b5aea6;
+		/* Night game: deep infield; cards / elevated surfaces read warmer under “lights” */
+		--color-surface: #1a1816;
+		--color-surface-elevated: #2f2925;
+		--color-surface-nav: #1e2229;
+		--color-surface-interactive: #332e2a;
+		--color-surface-selected: #3d3732;
+		--color-surface-selected-hover: #47403a;
 
 		/*
 		 * Team grid in dark UI: light “wax tile” chips so full-color SVG crests read clearly
@@ -145,9 +238,9 @@
 		--card-sheen-edge: rgba(255, 255, 255, 0.03);
 		--card-vignette: rgba(0, 0, 0, 0.18);
 
-		--card-back-paper: #5a5651;
-		--card-back-paper-raised: #66615c;
-		--card-back-paper-shade: #504c48;
+		--card-back-paper: #5e5953;
+		--card-back-paper-raised: #6a645d;
+		--card-back-paper-shade: #524d47;
 		--card-back-paper-honey: rgba(255, 205, 165, 0.09);
 		--card-back-paper-bloom: rgba(255, 246, 232, 0.2);
 		--card-back-paper-edge: rgba(0, 0, 0, 0.12);
@@ -156,5 +249,76 @@
 		--card-back-rule: rgba(236, 232, 227, 0.28);
 		--card-back-rule-strong: rgba(236, 232, 227, 0.45);
 		--card-back-fine: #b8b3ad;
+
+		--album-masthead-bg: #262320;
+		--album-rail-paper: #2f2b28;
+		--album-rail-paper-edge: rgba(231, 229, 228, 0.14);
+		--album-felt-base: #1a221e;
+		--album-felt-overlay: linear-gradient(
+				168deg,
+				rgba(120, 180, 150, 0.07) 0%,
+				transparent 45%
+			),
+			radial-gradient(ellipse 90% 55% at 50% 0%, rgba(80, 140, 110, 0.12), transparent 52%);
+		--album-felt-texture:
+			radial-gradient(ellipse 95% 80% at 50% 115%, rgba(0, 0, 0, 0.3), transparent 55%),
+			radial-gradient(ellipse 62% 44% at 28% 22%, rgba(255, 255, 255, 0.05), transparent 48%),
+			repeating-linear-gradient(
+				-22deg,
+				transparent 0 5px,
+				rgba(0, 0, 0, 0.04) 5px 6px
+			),
+			repeating-linear-gradient(
+				68deg,
+				transparent 0 7px,
+				rgba(255, 255, 255, 0.025) 7px 8px
+			);
+		--album-binder-page: var(--color-surface-elevated);
+		--album-binder-depth:
+			radial-gradient(ellipse 100% 52% at 50% -6%, rgba(255, 252, 246, 0.07), transparent 58%),
+			linear-gradient(
+				180deg,
+				rgba(0, 0, 0, 0.22) 0%,
+				transparent 38%,
+				rgba(0, 0, 0, 0.35) 100%
+			),
+			repeating-radial-gradient(
+				circle at 0.6px 0.6px,
+				rgba(0, 0, 0, 0.14) 0 0.5px,
+				transparent 0.88px
+			),
+			repeating-radial-gradient(
+				circle at 2px 2.6px,
+				rgba(0, 0, 0, 0.09) 0 0.32px,
+				transparent 1px
+			);
+		--album-binder-hole: rgba(0, 0, 0, 0.45);
+		--album-binder-margin-line: rgba(248, 113, 113, 0.35);
+		--album-checklist-margin-line: rgba(248, 113, 113, 0.32);
+		--album-league-rule: rgba(147, 197, 253, 0.28);
+
+		--teams-pack-strip-bg-a: #3a332d;
+		--teams-pack-strip-bg-b: #2e2823;
+		--teams-pack-strip-rule: #f87171;
+		--teams-pack-strip-perf: rgba(231, 229, 228, 0.2);
+
+		--album-roster-pennant-a: #3d3630;
+		--album-roster-pennant-b: #2f2925;
+		--album-roster-pennant-shadow: rgba(0, 0, 0, 0.35);
+		--album-roster-completeness-track: rgba(231, 229, 228, 0.12);
+		--album-roster-completeness-glow: rgba(248, 113, 113, 0.22);
+
+		--app-body-fiber-a:
+			repeating-radial-gradient(
+				circle at 0.9px 1.2px,
+				rgba(255, 252, 246, 0.035) 0 0.48px,
+				transparent 0.82px
+			);
+		--app-body-fiber-b:
+			repeating-radial-gradient(
+				circle at 2.4px 3.1px,
+				rgba(147, 197, 253, 0.04) 0 0.32px,
+				transparent 1.02px
+			);
 	}
 }

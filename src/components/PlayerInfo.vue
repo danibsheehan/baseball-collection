@@ -1,13 +1,15 @@
 <template>
 	<div class="player__back" v-if="playerInfo">
-		<header class="player__masthead">
-			<h2 class="player__name">{{ displayName }}</h2>
-			<div class="player__role" role="group" :aria-label="`${positionLabel}, ${teamName || ''}`">
-				<span class="player__position">{{ positionLabel }}</span>
-				<span class="player__role-sep" aria-hidden="true" />
-				<span class="player__team">{{ teamName }}</span>
-			</div>
-		</header>
+		<div class="player__masthead-row">
+			<header class="player__masthead">
+				<p class="player__name">{{ displayName }}</p>
+				<div class="player__role" role="group" :aria-label="`${positionLabel}, ${teamName || ''}`">
+					<span class="player__position">{{ positionLabel }}</span>
+					<span class="player__role-sep" aria-hidden="true" />
+					<span class="player__team">{{ teamName }}</span>
+				</div>
+			</header>
+		</div>
 
 		<div class="player__panel" role="region" aria-label="Player vitals">
 			<div class="player__row">
@@ -57,14 +59,10 @@
 						<span class="player__val player__val--wrap">{{ nicknameDisplay }}</span>
 					</div>
 				</div>
-				<div v-if="showUniformDraftRow" class="player__row player__row--tail">
-					<div class="player__cell">
+				<div v-if="showUniformRow" class="player__row player__row--full player__row--tail">
+					<div class="player__cell player__cell--block">
 						<span class="player__label">Uniform</span>
 						<span class="player__val">{{ uniformDisplay }}</span>
-					</div>
-					<div class="player__cell">
-						<span class="player__label">Draft year</span>
-						<span class="player__val">{{ draftYearDisplay }}</span>
 					</div>
 				</div>
 				<div class="player__watermark" aria-hidden="true">
@@ -106,14 +104,6 @@ const props = defineProps({
 	}
 });
 
-const nicknameDisplay = computed(() => {
-	const n = props.playerInfo?.nickName;
-	if (n == null || String(n).trim() === '') {
-		return '';
-	}
-	return String(n).trim().toUpperCase();
-});
-
 const uniformDisplay = computed(() => {
 	const roster = props.jerseyNumber != null && String(props.jerseyNumber).trim() !== ''
 		? String(props.jerseyNumber).trim()
@@ -125,19 +115,15 @@ const uniformDisplay = computed(() => {
 	return n ? `#${n}` : '—';
 });
 
-const draftYearDisplay = computed(() => {
-	const y = props.playerInfo?.draftYear;
-	if (y == null || y === '') {
-		return '—';
+const nicknameDisplay = computed(() => {
+	const n = props.playerInfo?.nickName;
+	if (n == null || String(n).trim() === '') {
+		return '';
 	}
-	return String(y);
+	return String(n).trim().toUpperCase();
 });
 
-const showUniformDraftRow = computed(() => {
-	const hasJersey = uniformDisplay.value !== '—';
-	const hasDraft = draftYearDisplay.value !== '—';
-	return hasJersey || hasDraft;
-});
+const showUniformRow = computed(() => uniformDisplay.value !== '—');
 
 const displayName = computed(() =>
 	String(props.fullName || props.playerInfo?.fullName || "").toUpperCase()
@@ -232,9 +218,17 @@ const debutDisplay = computed(() => {
 </script>
 
 <style scoped>
-/* Reserve top band for CardBack .card__art-panel: top 6px + height 38px + small gap */
+/*
+ * Align with CardBack .card__art-panel: left 6px, top 6px, 38×38 — masthead shares that row
+ * (margin-left clears the logo); no tall empty band above.
+ */
 .player__back {
-	--card-back-logo-slot: calc(6px + 38px + 6px);
+	--card-back-logo-offset-x: 6px;
+	--card-back-logo-size: 38px;
+	--card-back-logo-gap: 0.45rem;
+	--card-back-masthead-inset: calc(
+		var(--card-back-logo-offset-x) + var(--card-back-logo-size) + var(--card-back-logo-gap)
+	);
 
 	box-sizing: border-box;
 	color: var(--card-back-ink);
@@ -242,25 +236,41 @@ const debutDisplay = computed(() => {
 	flex: 1 1 auto;
 	flex-direction: column;
 	font-family: var(--font-card);
+	height: 100%;
 	min-height: 0;
-	padding: var(--card-back-logo-slot) 0.1rem 0;
+	overflow: hidden;
+	padding: 0 0.08rem 0;
 	text-transform: uppercase;
 	width: 100%;
 }
 
+.player__masthead-row {
+	align-items: center;
+	display: flex;
+	flex-shrink: 0;
+	min-height: calc(var(--card-back-logo-offset-x) + var(--card-back-logo-size));
+	padding: var(--card-back-logo-offset-x) 0 0.28rem;
+}
+
 .player__masthead {
 	border-bottom: 2px solid var(--card-back-accent);
-	margin-bottom: 0.35rem;
-	padding-bottom: 0.3rem;
+	box-sizing: border-box;
+	flex: 1;
+	margin-bottom: 0.18rem;
+	margin-left: var(--card-back-masthead-inset);
+	min-width: 0;
+	padding-bottom: 0.2rem;
+	width: auto;
 }
 
 .player__name {
 	color: var(--card-back-ink);
-	font-size: clamp(0.62rem, 2.4vw, 0.72rem);
+	font-size: 0.54rem;
+	font-size: clamp(0.5rem, min(5cqi, 3.6cqb), 0.66rem);
 	font-weight: 800;
-	letter-spacing: 0.06em;
-	line-height: 1.15;
-	margin: 0 0 0.2rem;
+	letter-spacing: 0.05em;
+	line-height: 1.12;
+	margin: 0 0 0.12rem;
 }
 
 .player__role {
@@ -268,11 +278,12 @@ const debutDisplay = computed(() => {
 	color: var(--card-back-ink);
 	display: flex;
 	flex-wrap: wrap;
-	font-size: clamp(0.52rem, 2vw, 0.58rem);
+	font-size: 0.48rem;
+	font-size: clamp(0.42rem, min(4cqi, 3cqb), 0.54rem);
 	font-weight: 700;
-	gap: 0.2rem 0.35rem;
-	letter-spacing: 0.1em;
-	line-height: 1.2;
+	gap: 0.12rem 0.28rem;
+	letter-spacing: 0.08em;
+	line-height: 1.15;
 }
 
 .player__role-sep {
@@ -288,6 +299,7 @@ const debutDisplay = computed(() => {
 	flex: 1 1 auto;
 	flex-direction: column;
 	min-height: 0;
+	overflow: hidden;
 }
 
 .player__row {
@@ -305,9 +317,9 @@ const debutDisplay = computed(() => {
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
-	gap: 0.08rem;
+	gap: 0.05rem;
 	min-width: 0;
-	padding: 0.28rem 0.32rem;
+	padding: 0.16rem 0.22rem;
 }
 
 .player__panel > .player__row .player__cell:nth-child(2n) {
@@ -320,19 +332,21 @@ const debutDisplay = computed(() => {
 
 .player__label {
 	color: var(--card-back-accent);
-	font-size: clamp(0.45rem, 1.65vw, 0.5rem);
+	font-size: 0.38rem;
+	font-size: clamp(0.34rem, min(3.4cqi, 2.5cqb), 0.46rem);
 	font-weight: 800;
-	letter-spacing: 0.14em;
-	line-height: 1.1;
+	letter-spacing: 0.12em;
+	line-height: 1.05;
 }
 
 .player__val {
 	color: var(--card-back-ink);
-	font-size: clamp(0.5rem, 1.85vw, 0.56rem);
+	font-size: 0.42rem;
+	font-size: clamp(0.38rem, min(3.8cqi, 2.8cqb), 0.5rem);
 	font-variant-numeric: tabular-nums;
 	font-weight: 700;
-	letter-spacing: 0.04em;
-	line-height: 1.2;
+	letter-spacing: 0.03em;
+	line-height: 1.12;
 }
 
 .player__val--wrap {
@@ -351,7 +365,7 @@ const debutDisplay = computed(() => {
 	margin-top: 1px;
 }
 
-/* Fills panel below origin: extra vitals + vintage at-bat watermark */
+/* Uniform row + watermark; watermark pinned to tail bottom without flex-grow eating height */
 .player__tail {
 	border-top: 1px solid var(--card-back-rule);
 	display: flex;
@@ -359,6 +373,7 @@ const debutDisplay = computed(() => {
 	flex-direction: column;
 	justify-content: flex-start;
 	min-height: 0;
+	overflow: hidden;
 }
 
 .player__row--tail .player__cell {
@@ -387,19 +402,18 @@ const debutDisplay = computed(() => {
 }
 
 /*
- * Watermark: fixed rem size (no % of parent) so dimensions match every card.
- * Tail row count varies; flex-end pins the art to the bottom of the tail so
- * placement is consistent relative to the panel edge.
+ * Compact watermark at bottom of tail — no flex-grow so stats keep vertical room.
  */
 .player__watermark {
-	align-items: center;
+	align-items: flex-end;
 	align-self: stretch;
 	box-sizing: border-box;
 	display: flex;
-	flex: 1 1 auto;
+	flex: 0 0 auto;
 	justify-content: flex-end;
-	min-height: 0;
-	padding: 0.2rem 0.35rem 0.42rem;
+	margin-top: auto;
+	/* Inset from panel / card edge — was tight against the border */
+	padding: 0.15rem 0.42rem 0.42rem;
 	pointer-events: none;
 }
 
@@ -407,12 +421,12 @@ const debutDisplay = computed(() => {
 	display: block;
 	flex-shrink: 0;
 	height: auto;
-	max-height: 5rem;
+	max-height: min(2.75rem, 18cqb);
 	max-width: 100%;
 	mix-blend-mode: multiply;
 	object-fit: contain;
 	opacity: 0.14;
-	width: 5.25rem;
+	width: min(3.25rem, 42cqi);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -447,11 +461,12 @@ const debutDisplay = computed(() => {
 .player__fine {
 	color: var(--card-back-fine);
 	flex-shrink: 0;
-	font-size: clamp(0.38rem, 1.35vw, 0.44rem);
+	font-size: 0.32rem;
+	font-size: clamp(0.3rem, min(2.6cqi, 2cqb), 0.38rem);
 	font-weight: 600;
-	letter-spacing: 0.06em;
-	line-height: 1.25;
-	margin: 0.35rem 0 0;
+	letter-spacing: 0.05em;
+	line-height: 1.2;
+	margin: 0.2rem 0 0;
 	text-transform: uppercase;
 }
 </style>

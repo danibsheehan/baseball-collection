@@ -35,7 +35,7 @@ const props = defineProps({
 	}
 });
 
-const emit = defineEmits(['updatePlayers', 'updateTeam', 'liveMessage', 'rosterLoading']);
+const emit = defineEmits(['updatePlayers', 'updateTeam', 'liveMessage', 'rosterLoading', 'rosterLoadStage']);
 
 const players = ref([]);
 
@@ -57,7 +57,8 @@ function searchPlayers() {
 	players.value = [];
 	emit('updateTeam', props.team);
 	emit('updatePlayers', []);
-	emit('liveMessage', `Loading roster for ${props.team.name}.`);
+	emit('liveMessage', `Pulling the sheet for ${props.team.name}.`);
+	emit('rosterLoadStage', 'pulling');
 	emit('rosterLoading', true);
 
 	http.get(`teams/${props.team.id}/roster`)
@@ -66,9 +67,10 @@ function searchPlayers() {
 			const ids = data.map((r) => r.person?.id).filter(Boolean);
 			if (!ids.length) {
 				emit('updatePlayers', []);
-				emit('liveMessage', `No players listed for ${props.team.name}.`);
+				emit('liveMessage', `No pasteboards listed for ${props.team.name}.`);
 				return;
 			}
+			emit('rosterLoadStage', 'faces');
 			return fetchPeopleByIds(ids).then((byId) => {
 				const enriched = enrichRosterWithPlayerInfo(data, byId);
 				const sorted = [...enriched].sort((a, b) => {
@@ -87,7 +89,7 @@ function searchPlayers() {
 		.catch(() => {
 			players.value = [];
 			emit('updatePlayers', []);
-			emit('liveMessage', `Could not load roster for ${props.team.name}.`);
+			emit('liveMessage', `Could not load the sheet for ${props.team.name}.`);
 		})
 		.finally(() => {
 			emit('rosterLoading', false);
@@ -111,7 +113,12 @@ function searchPlayers() {
 	min-height: 5.5rem;
 	min-width: 0;
 	padding: var(--space-4) var(--space-3);
+	position: relative;
 	text-align: center;
+	transition:
+		border-color 0.16s ease,
+		background-color 0.16s ease,
+		box-shadow 0.16s ease;
 	width: 100%;
 }
 
@@ -124,6 +131,23 @@ function searchPlayers() {
 		0 0 0 3px var(--color-focus-ring),
 		0 0 0 5px var(--color-ui-gum);
 	outline: 2px solid transparent;
+}
+
+/* Rubber-stamp / keycap press — scale inner so App.vue stamp rotation stays intact */
+.team:active .team__inner {
+	transform: scale(0.98);
+}
+
+.team:not(.team--selected):active {
+	border-color: color-mix(in srgb, var(--color-text) 24%, var(--color-team-button-border));
+}
+
+.team.team--selected:active {
+	border-color: color-mix(
+		in srgb,
+		var(--theme-logo-border, var(--color-team-button-border)) 58%,
+		var(--color-text) 42%
+	);
 }
 
 .team--selected {
@@ -142,6 +166,44 @@ function searchPlayers() {
 		);
 		box-shadow: inset 0 0 0 1px
 			color-mix(in srgb, var(--theme-logo-border, var(--color-accent)) 35%, transparent);
+	}
+}
+
+/* Shelf-tag glint: thin inset ring opacity pulse (pauses on hover so it stays calm under the pointer) */
+.team.team--selected::after {
+	animation: team-shelf-tag-pulse 2s ease-in-out infinite;
+	box-shadow: inset 0 0 0 1px
+		color-mix(in srgb, var(--theme-logo-border, var(--color-accent)) 72%, transparent);
+	content: '';
+	inset: 0;
+	opacity: 0.42;
+	pointer-events: none;
+	position: absolute;
+	z-index: 1;
+}
+
+@keyframes team-shelf-tag-pulse {
+	0%,
+	100% {
+		opacity: 0.28;
+	}
+
+	50% {
+		opacity: 0.88;
+	}
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.team.team--selected:hover::after {
+		animation-play-state: paused;
+		opacity: 0.55;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.team.team--selected::after {
+		animation: none;
+		opacity: 0.48;
 	}
 }
 
@@ -201,7 +263,10 @@ function searchPlayers() {
 	gap: var(--space-3);
 	justify-content: center;
 	min-width: 0;
+	position: relative;
+	transition: transform 0.14s cubic-bezier(0.34, 1, 0.36, 1);
 	width: 100%;
+	z-index: 2;
 }
 
 .team__name {

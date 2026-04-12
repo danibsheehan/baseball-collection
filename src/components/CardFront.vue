@@ -2,13 +2,15 @@
 	<div class="card card--1959" :class="{ 'card--many': manyPlayers }">
 		<div class="card__1959-frame">
 			<p class="card__1959-name">{{ displayName }}</p>
-			<div class="card__1959-porthole">
-				<div class="card__1959-photo">
-					<PlayerImage
-						:playerId="player.person.id"
-						:imageDescription="player.person.fullName"
-						porthole
-					/>
+			<div class="card__1959-photo-slot">
+				<div class="card__1959-porthole">
+					<div class="card__1959-photo">
+						<PlayerImage
+							:playerId="player.person.id"
+							:imageDescription="player.person.fullName"
+							porthole
+						/>
+					</div>
 				</div>
 			</div>
 			<div class="card__1959-bottom">
@@ -46,21 +48,20 @@ const props = defineProps({
 });
 
 const displayName = computed(() =>
-	String(props.player?.person?.fullName ?? '').toLowerCase()
+	String(props.player?.person?.fullName ?? '').trim()
 );
 </script>
 
 <style scoped>
-/* 1959 Topps–inspired: team-color field, white mat, circular photo, angled script name. */
+/* 1959 Topps–inspired: team-color field, white mat, circular photo, angled name (Archivo). */
 .card {
 	backface-visibility: hidden;
 	background-color: var(--theme-1959-field, var(--theme-card-top-border, #1a2740));
 	border-radius: 10px;
-	box-shadow: inset 0 0 0 3px #fff;
+	box-shadow: inset 0 0 0 3px var(--color-paper-gloss);
 	height: 100%;
 	left: 0;
-	/* overflow:visible — hidden breaks <img> paint inside preserve-3d (tilt/flip) in WebKit/Blink */
-	overflow: visible;
+	overflow: hidden;
 	position: absolute;
 	top: 0;
 	width: 100%;
@@ -72,24 +73,24 @@ const displayName = computed(() =>
 		linear-gradient(125deg, var(--card-sheen-edge) 0%, transparent 38%),
 		linear-gradient(
 			305deg,
-			transparent 32%,
-			var(--card-sheen-mid) 47%,
-			var(--card-sheen-highlight) 50.5%,
-			var(--card-sheen-mid) 54%,
-			transparent 68%
+			transparent 22%,
+			var(--card-sheen-mid) 42%,
+			var(--card-sheen-highlight) 50%,
+			var(--card-sheen-mid) 58%,
+			transparent 78%
 		),
-		radial-gradient(130% 85% at 50% -5%, var(--card-sheen-highlight), transparent 52%);
+		radial-gradient(145% 95% at 50% -8%, var(--card-sheen-highlight), transparent 62%);
 	border-radius: 10px;
 	content: "";
 	inset: 0;
-	opacity: 0.42;
+	opacity: 0.52;
 	pointer-events: none;
 	position: absolute;
 	z-index: 0;
 }
 
 .card--many::after {
-	opacity: 0.22;
+	opacity: 0.34;
 }
 
 :global(html[data-card-foil-webgl]) .card::after {
@@ -104,49 +105,73 @@ const displayName = computed(() =>
 	align-items: stretch;
 	backface-visibility: hidden;
 	box-sizing: border-box;
+	container-name: card-face;
+	container-type: inline-size;
 	display: flex;
 	flex-direction: column;
+	gap: 0.12rem;
 	height: 100%;
 	isolation: isolate;
-	padding: 4% 3% 6%;
+	min-height: 0;
+	/* Tight bottom inset so crest / position / team sit near the lower edge */
+	padding: 3.25% 3% 0.2rem;
 	position: relative;
 	z-index: 1;
 }
 
 .card__1959-name {
-	color: var(--theme-1959-name, #fff);
+	color: var(--theme-1959-name, var(--color-paper-gloss));
 	font-family: var(--font-card);
-	font-size: clamp(0.95rem, 3.8vw, 1.15rem);
+	font-size: 0.95rem;
+	/* cqi scales with card width, not the viewport */
+	font-size: clamp(0.82rem, 7.5cqi, 1.08rem);
 	font-style: italic;
 	font-weight: 700;
 	letter-spacing: 0.04em;
 	line-height: 1.15;
-	margin: 0 0 0.35rem;
+	margin: 0;
 	padding: 0 2%;
 	text-align: center;
 	text-shadow:
 		0 1px 0 rgba(0, 0, 0, 0.45),
 		0 2px 6px rgba(0, 0, 0, 0.25);
-	text-transform: lowercase;
+	text-transform: none;
 	transform: rotate(-4deg);
 }
 
-/* Diameter = full inner width of the card (padding is on .card__1959-frame). */
+/* Fills space between name and footer; size query = largest square that fits */
+.card__1959-photo-slot {
+	align-items: center;
+	box-sizing: border-box;
+	container-name: card-photo;
+	container-type: size;
+	display: flex;
+	flex: 1 1 auto;
+	justify-content: center;
+	min-height: 0;
+	overflow: hidden;
+}
+
+/* Square inscribed in the slot (min of slot width & height) */
 .card__1959-porthole {
 	aspect-ratio: 1;
-	flex: 0 0 auto;
+	box-sizing: border-box;
+	flex-shrink: 0;
 	margin: 0;
-	max-width: 100%;
-	min-height: 0;
-	min-width: 0;
+	max-height: 100%;
 	position: relative;
 	width: 100%;
 }
 
-.card--many .card__1959-porthole {
-	margin-inline: auto;
-	max-width: 100%;
-	width: 92%;
+@supports (width: min(1cqw, 1cqh)) {
+	.card__1959-porthole {
+		max-height: none;
+		width: min(100cqw, 100cqh);
+	}
+
+	.card--many .card__1959-porthole {
+		width: min(92cqw, 100cqh);
+	}
 }
 
 /* Photo fills the square; PlayerImage root (.card-porthole) is a circle inside */
@@ -156,13 +181,12 @@ const displayName = computed(() =>
 }
 
 .card__1959-bottom {
-	align-items: flex-end;
+	align-items: center;
 	display: flex;
-	flex: 0 0 auto;
+	flex-shrink: 0;
 	gap: 0.35rem;
 	justify-content: space-between;
-	margin-top: 0.25rem;
-	min-height: 1.75rem;
+	min-height: 2.35rem;
 	padding: 0;
 	position: relative;
 }
@@ -173,7 +197,7 @@ const displayName = computed(() =>
 	flex-direction: column;
 	gap: 0.1rem;
 	line-height: 1.1;
-	padding-bottom: 2px;
+	padding-bottom: 0;
 	text-align: right;
 	text-transform: uppercase;
 }
@@ -195,7 +219,7 @@ const displayName = computed(() =>
 }
 
 .card__1959-bottom :deep(.card__logo) {
-	background-color: rgba(255, 255, 255, 0.92);
+	background-color: var(--color-paper-gloss-soft);
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 	position: relative;
 	bottom: auto;

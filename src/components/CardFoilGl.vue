@@ -172,7 +172,7 @@ function loop() {
 	if (props.faceBack) {
 		tiltY = -tiltY;
 	}
-	const baseIntensity = props.manyPlayers ? 0.24 : 0.42;
+	const baseIntensity = props.manyPlayers ? 0.34 : 0.55;
 	const intensity = props.faceBack ? baseIntensity * 0.9 : baseIntensity;
 	const t = reduceMotion.value ? 0 : (performance.now() - startTime) / 1000;
 

@@ -66,4 +66,11 @@ describe('enrichRosterWithPlayerInfo', () => {
 		expect(out[0].playerInfo).toEqual({ id: 10, fullName: 'Pitcher' });
 		expect(out[1].playerInfo).toEqual({});
 	});
+
+	it('uses empty playerInfo when row has no person or id', () => {
+		const roster = [{ role: 'DH' }, { person: {}, role: 'P' }];
+		const out = enrichRosterWithPlayerInfo(roster, { 1: { id: 1, fullName: 'X' } });
+		expect(out[0].playerInfo).toEqual({});
+		expect(out[1].playerInfo).toEqual({});
+	});
 });

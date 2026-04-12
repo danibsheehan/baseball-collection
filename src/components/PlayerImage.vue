@@ -119,7 +119,7 @@ onBeforeUnmount(() => {
 }
 
 .card-porthole {
-	background: #fff;
+	background: var(--color-paper-gloss);
 	border-radius: 50%;
 	box-shadow:
 		0 2px 8px rgba(0, 0, 0, 0.28),
