@@ -1,12 +1,16 @@
-import { ref, computed, watch, onMounted, onBeforeUnmount, unref } from 'vue';
+import { ref, computed, watch, onMounted, onBeforeUnmount, unref, type Ref } from 'vue';
 
-const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
+const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
+
+type DeviceOrientationCtor = typeof DeviceOrientationEvent & {
+	requestPermission?: () => Promise<'granted' | 'denied' | 'prompt'>;
+};
 
 /**
  * Pointer-driven tilt with optional deviceorientation (coarse pointer auto-start;
  * iOS requires permission, requested on first pointerdown on the card).
  */
-export function useCardTilt(sceneRef, manyPlayersRef) {
+export function useCardTilt(sceneRef: Ref<HTMLElement | null>, manyPlayersRef: Ref<boolean>) {
 	const reduceMotion = ref(false);
 	const tiltX = ref(0);
 	const tiltY = ref(0);
@@ -14,8 +18,9 @@ export function useCardTilt(sceneRef, manyPlayersRef) {
 	const orientationListening = ref(false);
 
 	let iosPermissionRequested = false;
-	let orientHandler = null;
-	let rafId = null;
+	// eslint-disable-next-line no-unused-vars -- name only for DeviceOrientationEvent typing
+	let orientHandler: ((event: DeviceOrientationEvent) => void) | null = null;
+	let rafId: number | null = null;
 	let pendingTx = 0;
 	let pendingTy = 0;
 
@@ -29,12 +34,12 @@ export function useCardTilt(sceneRef, manyPlayersRef) {
 		return unref(manyPlayersRef) ? 5 : 9;
 	}
 
-	function applyTiltImmediate(tx, ty) {
+	function applyTiltImmediate(tx: number, ty: number) {
 		tiltX.value = tx;
 		tiltY.value = ty;
 	}
 
-	function schedulePointerTilt(tx, ty) {
+	function schedulePointerTilt(tx: number, ty: number) {
 		pendingTx = tx;
 		pendingTy = ty;
 		if (rafId != null) {
@@ -47,7 +52,7 @@ export function useCardTilt(sceneRef, manyPlayersRef) {
 		});
 	}
 
-	function onPointerMove(event) {
+	function onPointerMove(event: PointerEvent) {
 		if (reduceMotion.value) {
 			return;
 		}
@@ -87,7 +92,7 @@ export function useCardTilt(sceneRef, manyPlayersRef) {
 			return;
 		}
 		orientationListening.value = true;
-		orientHandler = (e) => {
+		orientHandler = (e: DeviceOrientationEvent) => {
 			if (reduceMotion.value || pointerOver.value) {
 				return;
 			}
@@ -108,7 +113,7 @@ export function useCardTilt(sceneRef, manyPlayersRef) {
 		if (reduceMotion.value || orientationListening.value) {
 			return;
 		}
-		const DO = globalThis.DeviceOrientationEvent;
+		const DO = globalThis.DeviceOrientationEvent as DeviceOrientationCtor | undefined;
 		if (!DO) {
 			return;
 		}
@@ -134,13 +139,14 @@ export function useCardTilt(sceneRef, manyPlayersRef) {
 			return;
 		}
 		const coarse = window.matchMedia('(pointer: coarse)').matches;
-		const needsGesture = typeof DeviceOrientationEvent?.requestPermission === 'function';
+		const ctor = globalThis.DeviceOrientationEvent as DeviceOrientationCtor | undefined;
+		const needsGesture = typeof ctor?.requestPermission === 'function';
 		if (coarse && !needsGesture) {
 			startOrientation();
 		}
 	}
 
-	let mql;
+	let mql: MediaQueryList | undefined;
 
 	onMounted(() => {
 		readReduceMotion();

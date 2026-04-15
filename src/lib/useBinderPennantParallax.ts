@@ -1,26 +1,42 @@
-import { onMounted, onBeforeUnmount, unref, watch } from 'vue';
+import { onMounted, onBeforeUnmount, unref, watch, type Ref } from 'vue';
 
-const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
 /** Smoothstep — soft edges on scroll phase (less “linear slide” feel) */
-function smoothstep01(t) {
+function smoothstep01(t: number) {
 	const x = clamp(t, 0, 1);
 	return x * x * (3 - 2 * x);
 }
+
+export type BinderPennantParallaxOptions = {
+	/** Set false to keep binder/pennant static (print-like UI). */
+	enabled?: boolean;
+	binderMaxY?: number;
+	pennantMaxX?: number;
+	pennantMaxY?: number;
+	pennantMaxRz?: number;
+	pointerLerp?: number;
+	scrollLerp?: number;
+};
+
+export type UseBinderPennantParallaxArgs = {
+	binderRef: Ref<HTMLElement | null>;
+	pennantRef: Ref<HTMLElement | null>;
+	feltRailRef: Ref<HTMLElement | null>;
+	options?: BinderPennantParallaxOptions;
+};
 
 /**
  * Scroll- + pointer-driven parallax for the album binder and roster pennant (CSS variables).
  * Scroll and pointer targets are both exponentially smoothed; rAF chains until motion settles
  * so pointer-out decay is actually visible.
- *
- * @param {object} args
- * @param {import('vue').Ref<HTMLElement | null>} args.binderRef
- * @param {import('vue').Ref<HTMLElement | null>} args.pennantRef
- * @param {import('vue').Ref<HTMLElement | null>} args.feltRailRef
- * @param {object} [args.options]
- * @param {boolean} [args.options.enabled=true] — set false to keep binder/pennant static (print-like UI).
  */
-export function useBinderPennantParallax({ binderRef, pennantRef, feltRailRef, options = {} }) {
+export function useBinderPennantParallax({
+	binderRef,
+	pennantRef,
+	feltRailRef,
+	options = {}
+}: UseBinderPennantParallaxArgs) {
 	const parallaxEnabled = options.enabled !== false;
 	const binderMaxY = options.binderMaxY ?? 6;
 	const pennantMaxX = options.pennantMaxX ?? 9;
@@ -73,16 +89,14 @@ export function useBinderPennantParallax({ binderRef, pennantRef, feltRailRef, o
 		return clamp((vh * 0.78 - rect.top) / (vh * 1.05), 0, 1);
 	}
 
-	function applyPointerDeadZone(x, y) {
+	function applyPointerDeadZone(x: number, y: number) {
 		const dz = 0.055;
 		const sx = Math.abs(x) < dz ? 0 : Math.sign(x) * ((Math.abs(x) - dz) / (1 - dz));
 		const sy = Math.abs(y) < dz ? 0 : Math.sign(y) * ((Math.abs(y) - dz) / (1 - dz));
 		return { x: clamp(sx, -1, 1), y: clamp(sy, -1, 1) };
 	}
 
-	/**
-	 * @returns {boolean} true if another frame should run (smoothing not settled)
-	 */
+	/** @returns true if another frame should run (smoothing not settled) */
 	function applyFrame() {
 		if (reduceMotion || !parallaxEnabled) {
 			return false;
@@ -162,7 +176,7 @@ export function useBinderPennantParallax({ binderRef, pennantRef, feltRailRef, o
 		schedule();
 	}
 
-	function onPointerMove(ev) {
+	function onPointerMove(ev: PointerEvent) {
 		const felt = unref(feltRailRef);
 		if (!felt) {
 			return;
@@ -207,7 +221,7 @@ export function useBinderPennantParallax({ binderRef, pennantRef, feltRailRef, o
 		}
 	}
 
-	let mqReduce = null;
+	let mqReduce: MediaQueryList | null = null;
 
 	watch(
 		pennantRef,

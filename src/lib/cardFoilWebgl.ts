@@ -31,7 +31,7 @@ void main() {
 }
 `;
 
-function compileShader(gl, type, source) {
+function compileShader(gl: WebGLRenderingContext, type: number, source: string): WebGLShader | null {
 	const sh = gl.createShader(type);
 	if (!sh) {
 		return null;
@@ -45,7 +45,11 @@ function compileShader(gl, type, source) {
 	return sh;
 }
 
-function createProgram(gl, vsSource, fsSource) {
+function createProgram(
+	gl: WebGLRenderingContext,
+	vsSource: string,
+	fsSource: string
+): WebGLProgram | null {
 	const vs = compileShader(gl, gl.VERTEX_SHADER, vsSource);
 	const fs = compileShader(gl, gl.FRAGMENT_SHADER, fsSource);
 	if (!vs || !fs) {
@@ -67,11 +71,16 @@ function createProgram(gl, vsSource, fsSource) {
 	return prog;
 }
 
-/**
- * @param {HTMLCanvasElement} canvas
- * @returns {{ draw: Function, dispose: Function } | null}
- */
-export function createCardFoilRenderer(canvas) {
+export type CardFoilRenderer = {
+	gl: WebGLRenderingContext;
+	draw: DrawCardFoilFn;
+	dispose: () => void;
+};
+
+// eslint-disable-next-line no-unused-vars -- six-number draw signature (WebGL uniforms)
+export type DrawCardFoilFn = (..._: [number, number, number, number, number, number]) => void;
+
+export function createCardFoilRenderer(canvas: HTMLCanvasElement): CardFoilRenderer | null {
 	const gl = canvas.getContext('webgl', {
 		alpha: true,
 		premultipliedAlpha: false,
@@ -88,6 +97,10 @@ export function createCardFoilRenderer(canvas) {
 	}
 
 	const buf = gl.createBuffer();
+	if (!buf) {
+		gl.deleteProgram(program);
+		return null;
+	}
 	gl.bindBuffer(gl.ARRAY_BUFFER, buf);
 	gl.bufferData(
 		gl.ARRAY_BUFFER,
@@ -100,7 +113,14 @@ export function createCardFoilRenderer(canvas) {
 	const locTime = gl.getUniformLocation(program, 'u_time');
 	const locIntensity = gl.getUniformLocation(program, 'u_intensity');
 
-	function draw(tiltXDeg, tiltYDeg, timeSec, intensity, pixelW, pixelH) {
+	function draw(
+		tiltXDeg: number,
+		tiltYDeg: number,
+		timeSec: number,
+		intensity: number,
+		pixelW: number,
+		pixelH: number
+	) {
 		gl.viewport(0, 0, pixelW, pixelH);
 		gl.clearColor(0, 0, 0, 0);
 		gl.clear(gl.COLOR_BUFFER_BIT);
@@ -128,8 +148,7 @@ export function createCardFoilRenderer(canvas) {
 	return { gl, draw, dispose };
 }
 
-/** @param {string} value */
-export function parseCssDeg(value) {
+export function parseCssDeg(value: string | undefined | null): number {
 	const m = String(value || '')
 		.trim()
 		.match(/^(-?[\d.]+)deg$/i);

@@ -10,7 +10,7 @@ Personal Vue 3 + Vite app with a small Express server that proxies MLB Stats API
 ## Layout
 
 - **Cursor**: `.cursor/rules/` (always-on project rule), `.cursor/skills/` (optional Agent skills: `doc-writer`, `test-generator`, `github-pages-deploy`, `bundle-performance`, `api-proxy-hardening`, `accessibility-a11y` — each folder has `SKILL.md`).
-- **UI**: `src/` — `main.js`, `App.vue`, `components/*.vue`, shared logic in `src/lib/` (`.js`, `.ts`, tests colocated as `*.test.ts`).
+- **UI**: `src/` — `main.ts`, `App.vue`, `components/*.vue`, shared logic in `src/lib/` (`.ts`, tests colocated as `*.test.ts`).
 - **API**: `server.js` — Express, `dotenv`, axios proxy to `http://statsapi.mlb.com/api/v1/`. Shared validation lives under `lib/` (e.g. `peopleQueryValidation` consumed as `.cjs` from the server).
 - **Tooling**: `vite.config.mjs` (Vue plugin, Vitest `environment: 'node'`, dev proxy to `127.0.0.1:3000` for `/teams` and `/people`), `scripts/bundle-report.mjs`, static assets under `public/`.
 

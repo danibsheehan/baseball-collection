@@ -299,7 +299,7 @@ import {
 	buildTeamPickerSections,
 	filterTeamPickerSections
 } from './lib/teamPickerSections';
-import { useBinderPennantParallax } from './lib/useBinderPennantParallax.js';
+import { useBinderPennantParallax } from './lib/useBinderPennantParallax';
 
 const players = ref([]);
 const teamName = ref('');
@@ -1161,7 +1161,7 @@ body {
 	padding: clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 3vw, 2rem)
 		clamp(2.35rem, 4.5vw, 2.85rem);
 	position: relative;
-	/* Parallax off — static print; settle keyframes only touch shadow (see useBinderPennantParallax.js). */
+	/* Parallax off — static print; settle keyframes only touch shadow (see useBinderPennantParallax.ts). */
 	backface-visibility: hidden;
 	transform: translate3d(0, var(--binder-parallax-y, 0px), 0.01px);
 }

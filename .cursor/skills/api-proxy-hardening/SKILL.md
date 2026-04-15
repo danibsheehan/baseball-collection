@@ -17,7 +17,7 @@ description: >
 | **Express + `dist`** (`npm start`) | `location.origin` | Same-origin; `server.js` serves static files and proxies MLB. |
 | **GitHub Pages** | `VITE_API_BASE` (MLB root) | **No** `server.js`; browser calls MLB directly (CORS). |
 
-Changes to **`server.js`** affect **local / Node hosting only**. Production Pages behavior depends on **`src/http-common.js`** and env—keep paths and query shapes **consistent** with what the SPA already calls.
+Changes to **`server.js`** affect **local / Node hosting only**. Production Pages behavior depends on **`src/http-common.ts`** and env—keep paths and query shapes **consistent** with what the SPA already calls.
 
 ## Current server contract (`server.js`)
 

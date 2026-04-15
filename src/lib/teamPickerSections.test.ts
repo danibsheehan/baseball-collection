@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildTeamPickerSections, filterTeamPickerSections } from './teamPickerSections.js';
+import { buildTeamPickerSections, filterTeamPickerSections } from './teamPickerSections';
 
 describe('buildTeamPickerSections', () => {
 	it('returns an empty array for empty or missing input', () => {

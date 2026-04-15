@@ -1,8 +1,7 @@
 /** When set on `<html>`, CardFront dials back CSS `::after` sheen (WebGL foil is active). */
 export const CARD_FOIL_WEBGL_ATTR = 'data-card-foil-webgl';
 
-/** @param {boolean} active */
-export function setCardFoilWebglDomActive(active) {
+export function setCardFoilWebglDomActive(active: boolean) {
 	if (typeof document === 'undefined') {
 		return;
 	}

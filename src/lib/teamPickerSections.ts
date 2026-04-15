@@ -1,15 +1,36 @@
+export type PickerTeam = {
+	name?: string;
+	league?: { id?: number; name?: string };
+	locationName?: string;
+	teamName?: string;
+	shortName?: string;
+	venue?: { name?: string };
+};
+
+export type TeamPickerSection = {
+	id: string;
+	label: string | null;
+	teams: PickerTeam[];
+};
+
+type LeagueBucket = {
+	leagueId: number | undefined;
+	label: string | null;
+	teams: PickerTeam[];
+};
+
 /**
  * Group MLB-shaped teams into picker sections (AL / NL when league ids differ).
- * @param {Array<{ name?: string, league?: { id?: number, name?: string }, locationName?: string, teamName?: string, shortName?: string, venue?: { name?: string } }>} sortedTeams
- * @returns {Array<{ id: string, label: string | null, teams: typeof sortedTeams }>}
  */
-export function buildTeamPickerSections(sortedTeams) {
+export function buildTeamPickerSections(
+	sortedTeams: PickerTeam[] | null | undefined
+): TeamPickerSection[] {
 	const list = sortedTeams || [];
 	if (!list.length) {
 		return [];
 	}
 
-	const byKey = new Map();
+	const byKey = new Map<string, LeagueBucket>();
 	for (const t of list) {
 		const lid = t.league?.id;
 		const key = lid != null ? `id:${lid}` : '_';
@@ -20,27 +41,27 @@ export function buildTeamPickerSections(sortedTeams) {
 				teams: []
 			});
 		}
-		byKey.get(key).teams.push(t);
+		byKey.get(key)!.teams.push(t);
 	}
 
 	if (byKey.size <= 1) {
 		return [{ id: 'picker-all', label: null, teams: list }];
 	}
 
-	const sortByName = (a, b) =>
+	const sortByName = (a: PickerTeam, b: PickerTeam) =>
 		String(a.name || '').localeCompare(String(b.name || ''), undefined, { sensitivity: 'base' });
 
 	/** MLB Stats API convention: 103 = AL, 104 = NL */
 	const orderIds = [103, 104];
-	const out = [];
-	const consumed = new Set();
+	const out: TeamPickerSection[] = [];
+	const consumed = new Set<string>();
 
 	for (const lid of orderIds) {
 		const key = `id:${lid}`;
 		if (!byKey.has(key)) {
 			continue;
 		}
-		const block = byKey.get(key);
+		const block = byKey.get(key)!;
 		out.push({
 			id: `league-${lid}`,
 			label: block.label || (lid === 103 ? 'American League' : 'National League'),
@@ -64,11 +85,10 @@ export function buildTeamPickerSections(sortedTeams) {
 	return out;
 }
 
-/**
- * @param {ReturnType<typeof buildTeamPickerSections>} sections
- * @param {string} query
- */
-export function filterTeamPickerSections(sections, query) {
+export function filterTeamPickerSections(
+	sections: TeamPickerSection[],
+	query: string
+): TeamPickerSection[] {
 	const q = String(query || '')
 		.trim()
 		.toLowerCase();
@@ -76,14 +96,8 @@ export function filterTeamPickerSections(sections, query) {
 		return sections;
 	}
 
-	const matches = (t) => {
-		const hay = [
-			t.name,
-			t.teamName,
-			t.locationName,
-			t.shortName,
-			t.venue?.name
-		]
+	const matches = (t: PickerTeam) => {
+		const hay = [t.name, t.teamName, t.locationName, t.shortName, t.venue?.name]
 			.filter(Boolean)
 			.join(' ')
 			.toLowerCase();
