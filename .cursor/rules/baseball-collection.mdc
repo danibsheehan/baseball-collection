@@ -16,7 +16,7 @@ Personal Vue 3 + Vite app with a small Express server that proxies MLB Stats API
 
 ## Commands
 
-- **Dev (client)**: `npm run dev` — Vite; API routes expect the Express app reachable (e.g. `npm run api` on port 3000 per `vite.config.mjs` proxy).
+- **Dev**: `npm run dev` — `concurrently` runs `npm run api` (port 3000) and Vite; `npm run dev:client` is Vite only if the proxy is already running.
 - **Lint**: `npm run lint` — ESLint on `src` for `.vue`, `.js`, `.ts`.
 - **Tests**: `npm run test` / `npm run test:run` — Vitest; patterns in `vite.config.mjs` (`src/**/*.test.{js,ts}`, `lib/**/*.test.mjs`).
 - **Build**: `npm run build`; optional size check: `npm run build:report`.

@@ -27,17 +27,13 @@ Requires **Node.js 20** (matches `.github/workflows/deploy-pages.yml`).
 
 ## Quick Start
 
-**Development** — two terminals:
+**Development** — one command starts the Express proxy (port 3000) and the Vite dev server together:
 
 ```bash
-# Terminal 1 — Express proxy on port 3000 (forwards to MLB Stats API)
-npm run api
-
-# Terminal 2 — Vite dev server (proxies /teams and /people to the proxy)
 npm run dev
 ```
 
-Open the URL from `npm run dev` (usually `http://localhost:5173`).
+Open the URL Vite prints (usually `http://localhost:5173`). To run only the Vite dev server (for example if the API is already running), use `npm run dev:client`.
 
 **Production-style build** — set the client API root (see `.env.production`), then:
 
@@ -79,7 +75,7 @@ Upstream: **MLB Stats API** — `https://statsapi.mlb.com/api/v1/`. Response sha
 | `VITE_API_BASE` | string | *(empty in dev)* | Full MLB Stats API root, e.g. `https://statsapi.mlb.com/api/v1`. When unset, the client uses `location.origin` and relies on the dev proxy or Express routes. |
 | `VITE_PUBLIC_PATH` | string | `/` | Vite `base`; use `/repository-name/` for GitHub project Pages. |
 | `PORT` | number | `8080` | Port for `server.js` when using `npm start`. |
-| `npm run api` | — | `3000` | Sets `PORT=3000` for the local proxy used with `npm run dev`. |
+| `npm run api` | — | `3000` | Sets `PORT=3000` for the local proxy; `npm run dev` starts this automatically alongside Vite. |
 
 ## Deployment
 
