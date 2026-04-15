@@ -11,7 +11,30 @@ export default defineConfig(({ mode }) => {
 		base,
 		test: {
 			environment: 'node',
-			include: ['src/**/*.test.js', 'src/**/*.test.ts', 'lib/**/*.test.mjs']
+			include: ['src/**/*.test.js', 'src/**/*.test.ts', 'lib/**/*.test.mjs'],
+			coverage: {
+				provider: 'v8',
+				reporter: ['text', 'html', 'cobertura'],
+				reportsDirectory: './coverage',
+				// Only files loaded during tests; avoids failing on untested UI until tests grow.
+				all: false,
+				include: ['src/**/*.{js,ts,vue}', 'lib/**/*.{js,mjs,cjs}'],
+				exclude: [
+					'**/node_modules/**',
+					'**/*.test.{js,ts}',
+					'**/*.test.mjs',
+					'src/main.js',
+					'server.js',
+					'scripts/**',
+					'**/*.d.ts'
+				],
+				thresholds: {
+					lines: 95,
+					functions: 95,
+					branches: 85,
+					statements: 95
+				}
+			}
 		},
 		server: {
 			proxy: {

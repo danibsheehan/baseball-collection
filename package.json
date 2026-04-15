@@ -11,6 +11,8 @@
     "lint": "eslint src --ext .vue,.js,.ts",
     "test": "vitest",
     "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:watch": "vitest --coverage",
     "start": "node server.js",
     "api": "PORT=3000 node server.js",
     "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build"
@@ -27,8 +29,9 @@
   "devDependencies": {
     "@typescript-eslint/parser": "^8.57.2",
     "@vitejs/plugin-vue": "^5.2.1",
-    "concurrently": "^9.1.2",
+    "@vitest/coverage-v8": "^3.2.4",
     "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.2",
     "eslint": "^8.57.1",
     "eslint-plugin-vue": "^9.32.0",
     "typescript": "^5.9.3",

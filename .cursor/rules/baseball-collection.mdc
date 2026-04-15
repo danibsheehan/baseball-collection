@@ -18,7 +18,7 @@ Personal Vue 3 + Vite app with a small Express server that proxies MLB Stats API
 
 - **Dev**: `npm run dev` — `concurrently` runs `npm run api` (port 3000) and Vite; `npm run dev:client` is Vite only if the proxy is already running.
 - **Lint**: `npm run lint` — ESLint on `src` for `.vue`, `.js`, `.ts`.
-- **Tests**: `npm run test` / `npm run test:run` — Vitest; patterns in `vite.config.mjs` (`src/**/*.test.{js,ts}`, `lib/**/*.test.mjs`).
+- **Tests**: `npm run test` / `npm run test:run` — Vitest; `npm run test:coverage` (thresholds, HTML + `cobertura-coverage.xml` under `coverage/`); `npm run test:coverage:watch` for local watch. Patterns in `vite.config.mjs` (`src/**/*.test.{js,ts}`, `lib/**/*.test.mjs`). PRs and pushes to `main` run coverage via `.github/workflows/pull-request-tests.yml` (job summary: `irongut/CodeCoverageSummary`; same-repo PR comment: `5monkeys/cobertura-action`).
 - **Build**: `npm run build`; optional size check: `npm run build:report`.
 - **GitHub Pages**: push to `main` runs `.github/workflows/deploy-pages.yml` (see skill `github-pages-deploy` for env parity and checks).
 
