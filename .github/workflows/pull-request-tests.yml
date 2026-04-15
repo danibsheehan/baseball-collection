@@ -52,5 +52,6 @@ jobs:
           fail_below_threshold: false
           show_line: true
           show_branch: true
-          skip_covered: true
+          # cobertura-action defaults skip_covered to true, which hides 100%-covered files from the table.
+          skip_covered: false
           report_name: Unit tests (Vitest)
