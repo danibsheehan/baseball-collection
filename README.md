@@ -46,7 +46,9 @@ Same public feed for teams, roster, and player lines — errors stay visible, no
 | `--album-felt-base` | `#d9e4d6` | Infield felt under the binder |
 | `--card-back-paper` | `#ebe0cd` | Warm buff card reverse |
 
-![Cartophiles light :root palette swatches](docs/readme-ui-palette.svg)
+_Painted chips are only in the image below—the big `╔══╗` “program” frame at the top of this README is plain Markdown text and `░░` characters, not a color graphic._
+
+<img src="docs/readme-ui-palette.svg" alt="Cartophiles light :root palette: eleven paper and ink swatches left to right" width="880" />
 
 Per-franchise caps and fields: `--theme-*` in `src/styles/team-themes.css`. **When you change any light `:root` hex in `src/styles/tokens.css`, update the table above and `docs/readme-ui-palette.svg` together** (same order left → right in the strip) so the README and the swatch asset stay honest with the UI.
 

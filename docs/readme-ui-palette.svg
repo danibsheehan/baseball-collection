@@ -1,76 +1,64 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 96" role="img" aria-labelledby="readmePaletteTitle readmePaletteDesc">
-	<title id="readmePaletteTitle">Cartophiles light :root palette swatches</title>
-	<desc id="readmePaletteDesc">Eleven color chips matching the README palette table: paper gloss through card back paper. Source: src/styles/tokens.css :root.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 96" width="1100" height="96">
+	<title>Cartophiles light :root palette swatches</title>
+	<desc>Eleven color chips matching the README palette table: paper gloss through card back paper. Source: src/styles/tokens.css :root.</desc>
 	<rect width="1100" height="96" fill="#f0ebe3" stroke="#c9c1b6" stroke-width="1" />
-	<style>
-		.lbl {
-			font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-			font-size: 9px;
-			fill: #292524;
-		}
-		.var {
-			font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-			font-size: 8px;
-			fill: #57534e;
-		}
-	</style>
-	<!-- Order matches README Extra ink rows table (light :root). -->
+	<!-- Order matches README palette table (light :root). No style tag: GitHub SVG sanitization may strip internal CSS. -->
 	<g id="swatches">
 		<g transform="translate(5,8)">
-			<rect width="90" height="34" fill="#faf4e8" stroke="rgba(28,25,23,0.12)" stroke-width="1" rx="2" />
-			<text class="lbl" x="45" y="52" text-anchor="middle">#faf4e8</text>
-			<text class="var" x="45" y="66" text-anchor="middle">paper-gloss</text>
+			<rect width="90" height="34" fill="#faf4e8" stroke="#d4cdc0" stroke-width="1" rx="2" />
+			<text x="45" y="52" text-anchor="middle" fill="#292524" font-size="9" font-family="ui-monospace, Menlo, Consolas, monospace">#faf4e8</text>
+			<text x="45" y="66" text-anchor="middle" fill="#57534e" font-size="8" font-family="ui-monospace, Menlo, Consolas, monospace">paper-gloss</text>
 		</g>
 		<g transform="translate(105,8)">
-			<rect width="90" height="34" fill="#e8dfc8" stroke="rgba(28,25,23,0.12)" stroke-width="1" rx="2" />
-			<text class="lbl" x="45" y="52" text-anchor="middle">#e8dfc8</text>
-			<text class="var" x="45" y="66" text-anchor="middle">surface</text>
+			<rect width="90" height="34" fill="#e8dfc8" stroke="#d4cdc0" stroke-width="1" rx="2" />
+			<text x="45" y="52" text-anchor="middle" fill="#292524" font-size="9" font-family="ui-monospace, Menlo, Consolas, monospace">#e8dfc8</text>
+			<text x="45" y="66" text-anchor="middle" fill="#57534e" font-size="8" font-family="ui-monospace, Menlo, Consolas, monospace">surface</text>
 		</g>
 		<g transform="translate(205,8)">
-			<rect width="90" height="34" fill="#1c1917" stroke="rgba(255,252,248,0.2)" stroke-width="1" rx="2" />
-			<text class="lbl" x="45" y="52" text-anchor="middle">#1c1917</text>
-			<text class="var" x="45" y="66" text-anchor="middle">text</text>
+			<rect width="90" height="34" fill="#1c1917" stroke="#57534e" stroke-width="1" rx="2" />
+			<text x="45" y="52" text-anchor="middle" fill="#292524" font-size="9" font-family="ui-monospace, Menlo, Consolas, monospace">#1c1917</text>
+			<text x="45" y="66" text-anchor="middle" fill="#57534e" font-size="8" font-family="ui-monospace, Menlo, Consolas, monospace">text</text>
 		</g>
 		<g transform="translate(305,8)">
-			<rect width="90" height="34" fill="#5a4f42" stroke="rgba(255,252,248,0.15)" stroke-width="1" rx="2" />
-			<text class="lbl" x="45" y="52" text-anchor="middle">#5a4f42</text>
-			<text class="var" x="45" y="66" text-anchor="middle">text-muted</text>
+			<rect width="90" height="34" fill="#5a4f42" stroke="#78716c" stroke-width="1" rx="2" />
+			<text x="45" y="52" text-anchor="middle" fill="#292524" font-size="9" font-family="ui-monospace, Menlo, Consolas, monospace">#5a4f42</text>
+			<text x="45" y="66" text-anchor="middle" fill="#57534e" font-size="8" font-family="ui-monospace, Menlo, Consolas, monospace">text-muted</text>
 		</g>
 		<g transform="translate(405,8)">
-			<rect width="90" height="34" fill="#0f172a" stroke="rgba(255,252,248,0.2)" stroke-width="1" rx="2" />
-			<text class="lbl" x="45" y="52" text-anchor="middle">#0f172a</text>
-			<text class="var" x="45" y="66" text-anchor="middle">ui-ink</text>
+			<rect width="90" height="34" fill="#0f172a" stroke="#334155" stroke-width="1" rx="2" />
+			<text x="45" y="52" text-anchor="middle" fill="#292524" font-size="9" font-family="ui-monospace, Menlo, Consolas, monospace">#0f172a</text>
+			<text x="45" y="66" text-anchor="middle" fill="#57534e" font-size="8" font-family="ui-monospace, Menlo, Consolas, monospace">ui-ink</text>
 		</g>
 		<g transform="translate(505,8)">
-			<rect width="90" height="34" fill="#b91c1c" stroke="rgba(255,252,248,0.2)" stroke-width="1" rx="2" />
-			<text class="lbl" x="45" y="52" text-anchor="middle">#b91c1c</text>
-			<text class="var" x="45" y="66" text-anchor="middle">ui-crimson</text>
+			<rect width="90" height="34" fill="#b91c1c" stroke="#fecaca" stroke-width="1" rx="2" />
+			<text x="45" y="52" text-anchor="middle" fill="#292524" font-size="9" font-family="ui-monospace, Menlo, Consolas, monospace">#b91c1c</text>
+			<text x="45" y="66" text-anchor="middle" fill="#57534e" font-size="8" font-family="ui-monospace, Menlo, Consolas, monospace">ui-crimson</text>
 		</g>
 		<g transform="translate(605,8)">
-			<rect width="90" height="34" fill="#1e3a5f" stroke="rgba(255,252,248,0.2)" stroke-width="1" rx="2" />
-			<text class="lbl" x="45" y="52" text-anchor="middle">#1e3a5f</text>
-			<text class="var" x="45" y="66" text-anchor="middle">ui-gum</text>
+			<rect width="90" height="34" fill="#1e3a5f" stroke="#64748b" stroke-width="1" rx="2" />
+			<text x="45" y="52" text-anchor="middle" fill="#292524" font-size="9" font-family="ui-monospace, Menlo, Consolas, monospace">#1e3a5f</text>
+			<text x="45" y="66" text-anchor="middle" fill="#57534e" font-size="8" font-family="ui-monospace, Menlo, Consolas, monospace">ui-gum</text>
 		</g>
 		<g transform="translate(705,8)">
-			<rect width="90" height="34" fill="#f7f0e2" stroke="rgba(28,25,23,0.12)" stroke-width="1" rx="2" />
-			<text class="lbl" x="45" y="52" text-anchor="middle">#f7f0e2</text>
-			<text class="var" x="45" y="66" text-anchor="middle">masthead</text>
+			<rect width="90" height="34" fill="#f7f0e2" stroke="#d4cdc0" stroke-width="1" rx="2" />
+			<text x="45" y="52" text-anchor="middle" fill="#292524" font-size="9" font-family="ui-monospace, Menlo, Consolas, monospace">#f7f0e2</text>
+			<text x="45" y="66" text-anchor="middle" fill="#57534e" font-size="8" font-family="ui-monospace, Menlo, Consolas, monospace">masthead</text>
 		</g>
 		<g transform="translate(805,8)">
-			<rect width="90" height="34" fill="#f0e6d4" stroke="rgba(28,25,23,0.12)" stroke-width="1" rx="2" />
-			<text class="lbl" x="45" y="52" text-anchor="middle">#f0e6d4</text>
-			<text class="var" x="45" y="66" text-anchor="middle">rail</text>
+			<rect width="90" height="34" fill="#f0e6d4" stroke="#d4cdc0" stroke-width="1" rx="2" />
+			<text x="45" y="52" text-anchor="middle" fill="#292524" font-size="9" font-family="ui-monospace, Menlo, Consolas, monospace">#f0e6d4</text>
+			<text x="45" y="66" text-anchor="middle" fill="#57534e" font-size="8" font-family="ui-monospace, Menlo, Consolas, monospace">rail</text>
 		</g>
 		<g transform="translate(905,8)">
-			<rect width="90" height="34" fill="#d9e4d6" stroke="rgba(28,25,23,0.12)" stroke-width="1" rx="2" />
-			<text class="lbl" x="45" y="52" text-anchor="middle">#d9e4d6</text>
-			<text class="var" x="45" y="66" text-anchor="middle">felt</text>
+			<rect width="90" height="34" fill="#d9e4d6" stroke="#d4cdc0" stroke-width="1" rx="2" />
+			<text x="45" y="52" text-anchor="middle" fill="#292524" font-size="9" font-family="ui-monospace, Menlo, Consolas, monospace">#d9e4d6</text>
+			<text x="45" y="66" text-anchor="middle" fill="#57534e" font-size="8" font-family="ui-monospace, Menlo, Consolas, monospace">felt</text>
 		</g>
 		<g transform="translate(1005,8)">
-			<rect width="90" height="34" fill="#ebe0cd" stroke="rgba(28,25,23,0.12)" stroke-width="1" rx="2" />
-			<text class="lbl" x="45" y="52" text-anchor="middle">#ebe0cd</text>
-			<text class="var" x="45" y="66" text-anchor="middle">card-back</text>
+			<rect width="90" height="34" fill="#ebe0cd" stroke="#d4cdc0" stroke-width="1" rx="2" />
+			<text x="45" y="52" text-anchor="middle" fill="#292524" font-size="9" font-family="ui-monospace, Menlo, Consolas, monospace">#ebe0cd</text>
+			<text x="45" y="66" text-anchor="middle" fill="#57534e" font-size="8" font-family="ui-monospace, Menlo, Consolas, monospace">card-back</text>
 		</g>
 	</g>
-	<text class="var" x="8" y="90" text-anchor="start">src/styles/tokens.css ù :root (light)</text>
+	<text x="8" y="90" text-anchor="start" fill="#57534e" font-size="8" font-family="ui-monospace, Menlo, Consolas, monospace">src/styles/tokens.css ∑ :root (light)</text>
 </svg>
