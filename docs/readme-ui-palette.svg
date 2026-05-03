@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 96" width="1100" height="96">
 	<title>Cartophiles light :root palette swatches</title>
 	<desc>Eleven color chips matching the README palette table: paper gloss through card back paper. Source: src/styles/tokens.css :root.</desc>
@@ -60,5 +61,5 @@
 			<text x="45" y="66" text-anchor="middle" fill="#57534e" font-size="8" font-family="ui-monospace, Menlo, Consolas, monospace">card-back</text>
 		</g>
 	</g>
-	<text x="8" y="90" text-anchor="start" fill="#57534e" font-size="8" font-family="ui-monospace, Menlo, Consolas, monospace">src/styles/tokens.css · :root (light)</text>
+	<text x="8" y="90" text-anchor="start" fill="#57534e" font-size="8" font-family="ui-monospace, Menlo, Consolas, monospace">src/styles/tokens.css &#183; :root (light)</text>
 </svg>
