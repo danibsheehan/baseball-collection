@@ -15,6 +15,10 @@ Generates clear, consistent, production-quality documentation for JS/TS and Go p
 Covers three output types: **README files**, **API/function docs**, and **inline code comments**.
 All output is written in Markdown (`.md`) unless writing inline source annotations.
 
+### baseball-collection (Cartophiles)
+
+When editing **light `:root` palette** hex values in **`src/styles/tokens.css`**, keep **`README.md`** in sync: update the CSS variable table and **`docs/readme-ui-palette.svg`** (repo root; same left-to-right order as the strip; valid UTF-8 XML). See the README “Extra ink rows” section.
+
 ---
 
 ## Step 1: Classify the Request

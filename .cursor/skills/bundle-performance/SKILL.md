@@ -7,7 +7,7 @@ description: >
   `build:report`, `scripts/bundle-report.mjs`, or reducing JS/CSS cost.
 ---
 
-# Bundle and performance (baseball-collection)
+# Bundle and performance (baseball-collection / Cartophiles)
 
 ## Bundle size (CLI)
 

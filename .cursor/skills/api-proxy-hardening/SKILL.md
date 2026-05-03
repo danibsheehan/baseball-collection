@@ -13,11 +13,11 @@ description: >
 
 | Mode | Client `baseURL` | API traffic |
 |------|------------------|-------------|
-| **Vite dev** | `location.origin` | Vite proxies `/teams` and `/people` → `server.js` on `127.0.0.1:3000` (`vite.config.mjs`). |
-| **Express + `dist`** (`npm start`) | `location.origin` | Same-origin; `server.js` serves static files and proxies MLB. |
-| **GitHub Pages** | `VITE_API_BASE` (MLB root) | **No** `server.js`; browser calls MLB directly (CORS). |
+| **Vite dev** | `location.origin` | Vite proxies **`/teams`** and **`/people`** (prefix match) → `server.js` on `127.0.0.1:3000` (`vite.config.mjs`). That covers **`/teams`**, **`/teams/:teamId/roster`**, **`/people`**, **`/people/:playerId`**. |
+| **Express + `dist`** (`npm start`, default **8080**) | `location.origin` | Same-origin; `server.js` serves static files and proxies MLB. |
+| **GitHub Pages** | `VITE_API_BASE` (MLB root, e.g. `https://statsapi.mlb.com/api/v1`) | **No** `server.js`; browser calls MLB directly when CORS allows. |
 
-Changes to **`server.js`** affect **local / Node hosting only**. Production Pages behavior depends on **`src/http-common.ts`** and env—keep paths and query shapes **consistent** with what the SPA already calls.
+Changes to **`server.js`** affect **local / Node hosting only**. Production Pages behavior depends on **`src/http-common.ts`** and env—keep paths and query shapes **consistent** with what the SPA already calls (see **`README.md`** API table).
 
 ## Current server contract (`server.js`)
 
@@ -29,7 +29,7 @@ Changes to **`server.js`** affect **local / Node hosting only**. Production Page
 
 ## Validation (`lib/peopleQueryValidation.cjs`)
 
-- **`validatePersonIdsQuery(raw)`** — `raw` from `personIds` or **`ids`** query; must match **`^\d+(,\d+)*$`** after trim (no empty segments, no leading/trailing commas). On failure respond **400** JSON `{ message }` (same pattern as `server.js` today).
+- **`validatePersonIdsQuery(raw)`** — `raw` from `personIds` or **`ids`** query; must match **`^\d+(,\d+)*$`** after trim (no empty segments, no leading/trailing commas). App batches up to **50** IDs per request (see **`README.md`**). On failure respond **400** JSON `{ message }` (same pattern as `server.js` today).
 - **`validatePlayerIdParam(playerId)`** — digits only; else **400**.
 - **Tests**: `lib/peopleQueryValidation.test.mjs` (Vitest). **Extend tests** whenever validation rules change.
 

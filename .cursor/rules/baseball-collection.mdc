@@ -1,25 +1,31 @@
 ---
-description: Vue/Vite app conventions, MLB proxy server, tests, and env for baseball-collection
+description: Vue/Vite app conventions, MLB proxy server, tests, and env for baseball-collection (Cartophiles UI)
 alwaysApply: true
 ---
 
-# baseball-collection
+# baseball-collection (Cartophiles)
 
-Personal Vue 3 + Vite app with a small Express server that proxies MLB Stats API and serves `dist` in production.
+Vue 3 + Vite SPA (album shell, roster grid, card flip/tilt/foil, wax-pack deal) with a small Express server that proxies the **MLB Stats API** and serves `dist` in production. **Prereq:** Node.js **20** (matches CI).
 
 ## Layout
 
 - **Cursor**: `.cursor/rules/` (always-on project rule), `.cursor/skills/` (optional Agent skills: `doc-writer`, `test-generator`, `github-pages-deploy`, `bundle-performance`, `api-proxy-hardening`, `accessibility-a11y` — each folder has `SKILL.md`).
 - **UI**: `src/` — `main.ts`, `App.vue`, `components/*.vue`, shared logic in `src/lib/` (`.ts`, tests colocated as `*.test.ts`).
-- **API**: `server.js` — Express, `dotenv`, axios proxy to `http://statsapi.mlb.com/api/v1/`. Shared validation lives under `lib/` (e.g. `peopleQueryValidation` consumed as `.cjs` from the server).
+- **Global look**: `src/styles/tokens.css` (newsprint, album layers, motion tokens); `src/styles/team-themes.css` (`[data-theme]` on **BaseballCard**).
+- **HTTP client**: `src/http-common.ts` (Axios + short-lived cache); `src/lib/rosterPeople.ts` batches people for card backs.
+- **API**: `server.js` — Express, `dotenv`, axios proxy toward MLB Stats API v1; shared validation under `lib/` (e.g. `peopleQueryValidation` consumed as `.cjs` from the server).
 - **Tooling**: `vite.config.mjs` (Vue plugin, Vitest `environment: 'node'`, dev proxy to `127.0.0.1:3000` for `/teams` and `/people`), `scripts/bundle-report.mjs`, static assets under `public/`.
 
 ## Commands
 
-- **Dev**: `npm run dev` — `concurrently` runs `npm run api` (port 3000) and Vite; `npm run dev:client` is Vite only if the proxy is already running.
-- **Lint**: `npm run lint` — ESLint on `src` for `.vue`, `.js`, `.ts`.
-- **Tests**: `npm run test` / `npm run test:run` — Vitest; `npm run test:coverage` (thresholds, HTML + `cobertura-coverage.xml` under `coverage/`); `npm run test:coverage:watch` for local watch. Patterns in `vite.config.mjs` (`src/**/*.test.{js,ts}`, `lib/**/*.test.mjs`). PRs and pushes to `main` run coverage via `.github/workflows/pull-request-tests.yml` (job summary: `irongut/CodeCoverageSummary`; same-repo PR comment: `5monkeys/cobertura-action`).
+- **Dev**: `npm run dev` — `concurrently` runs `npm run api` (**PORT=3000**) and Vite (**http://localhost:5173**); `npm run dev:client` is Vite only if the proxy is already running.
+- **API only**: `npm run api` — Express on port **3000**.
+- **Lint**: `npm run lint` — ESLint on `src` for `.vue`, `.ts` (see `package.json`).
+- **Tests**: `npm run test` / `npm run test:run` — Vitest; `npm run test:coverage` (thresholds, HTML + `cobertura-coverage.xml` under `coverage/`); `npm run test:coverage:watch` for local watch. Include patterns in `vite.config.mjs` (`src/**/*.test.ts`, `lib/**/*.test.mjs`). PRs and pushes to `main` run coverage via `.github/workflows/pull-request-tests.yml` (job summary: `irongut/CodeCoverageSummary`; same-repo PR comment: `5monkeys/cobertura-action`).
 - **Build**: `npm run build`; optional size check: `npm run build:report`.
+- **Preview**: `npm run preview` — Vite preview (`VITE_API_BASE` baked at build time).
+- **Prod-like local**: `npm start` — `node server.js` serves `dist` + proxy routes (**PORT** default **8080**).
+- **Heroku**: `npm run heroku-postbuild` — dev deps + build for deploy.
 - **GitHub Pages**: push to `main` runs `.github/workflows/deploy-pages.yml` (see skill `github-pages-deploy` for env parity and checks).
 
 After non-trivial changes, run **lint** and **tests** when feasible; run **build** for dependency or bundling-sensitive edits.
@@ -34,7 +40,11 @@ After non-trivial changes, run **lint** and **tests** when feasible; run **build
 
 - Do not commit real API keys or personal tokens. Treat `.env`, `.env.local`, `.env.production`, and similar as **local-only**; suggest `.gitignore` if env files are ever tracked by mistake.
 - Client env vars exposed to the browser must use the **`VITE_`** prefix (see `vite.config.mjs` / `loadEnv`).
+- **`VITE_API_BASE`**: full MLB Stats API root, e.g. `https://statsapi.mlb.com/api/v1`. Empty in dev → same-origin `/teams` and `/people` via Vite → Express.
+- **`VITE_PUBLIC_PATH`**: Vite `base`; `/repository-name/` for GitHub project Pages.
+- **`PORT`**: `server.js` listen port (**8080** default for `npm start`; `npm run api` forces **3000**).
 
 ## Server behavior (summary)
 
-- Proxies: `/teams`, `/teams/:teamId/roster`, `/people` (batch `personIds`), `/people/:playerId` — streaming responses with cache headers. Invalid query/path params return **400** with a JSON `message`; upstream failures **502**.
+- Proxies: `GET /teams`, `GET /teams/:teamId/roster`, `GET /people` (batch up to **50** IDs via `personIds` or **`ids`** — comma-separated), `GET /people/:playerId` — streaming responses with cache headers. Invalid query/path params return **400** with a JSON `message`; upstream failures **502**.
+- Upstream contract matches **MLB Stats API** (`https://statsapi.mlb.com/api/v1/` in docs and `VITE_API_BASE`; axios `baseURL` in `server.js` is the implementation detail).

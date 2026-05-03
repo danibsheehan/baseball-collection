@@ -7,6 +7,12 @@ description: Generates Vitest unit tests for Vue 3 and TypeScript code. Use this
 
 Generate thorough, idiomatic **Vitest** tests for **Vue 3** (Composition API, `<script setup>`) and plain TypeScript modules.
 
+## baseball-collection defaults
+
+- **Vitest** is configured in **`vite.config.mjs`**: default test **`environment: 'node'`**; **`include`**: `src/**/*.test.ts`, `lib/**/*.test.mjs` (match these when adding files).
+- **Component / DOM tests**: add `// @vitest-environment jsdom` at the top of the test file (see **`README.md`** → CONTRIBUTING).
+- **Node**: **20** for local and CI parity.
+
 ---
 
 ## Prerequisites (component & SFC tests)

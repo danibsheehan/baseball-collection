@@ -21,7 +21,7 @@ description: >
 - **Meaningful images** — `PlayerImage.vue` uses **`headshotAlt`**; keep alt text descriptive or empty only when truly decorative (document the choice).
 - **Regions** — `PlayerInfo.vue`: `role="group"` / `role="region"` with **`aria-label`** for vitals; decorative watermark **`aria-hidden`**.
 - **Pack animation** — `AlbumPackLottie.vue`: **`role="img"`** + **`aria-label`**; respects **`prefers-reduced-motion: reduce`** (skip heavy animation / Lottie when reduced—see README “Motion, accessibility, and animation cost”).
-- **Motion elsewhere** — `prefers-reduced-motion` checks in `App.vue`, `CardFoilGl.vue`, `useCardTilt.js`, `useBinderPennantParallax.js`; CSS `@media (prefers-reduced-motion: reduce)` blocks across `App.vue`, `BaseballCard.vue`, `Team.vue`. **New motion** must follow the same pattern (instant or low-cost path, avoid loading Lottie JSON when reduced).
+- **Motion elsewhere** — `prefers-reduced-motion` checks in `App.vue`, `CardFoilGl.vue`, `useCardTilt.ts`, `useBinderPennantParallax.ts`; CSS `@media (prefers-reduced-motion: reduce)` blocks across `App.vue`, `BaseballCard.vue`, `Team.vue`. **New motion** must follow the same pattern (instant or low-cost path, avoid loading Lottie JSON when reduced).
 - **Focus rings** — `:focus-visible` with **`var(--color-focus-ring)`** on teams, search input, card container, album results (`App.vue`, `Team.vue`, `BaseballCard.vue`). Prefer **`:focus-visible`** over bare `:focus` for mouse users unless there is a deliberate exception.
 
 ## `index.html` baseline
