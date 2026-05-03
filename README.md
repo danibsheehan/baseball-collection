@@ -24,7 +24,7 @@ Same public feed for teams, roster, and player lines — errors stay visible, no
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ PROGRAM NOTES — **what this is, fast**
+## ⚾ PROGRAM NOTES — **what this is, fast**
 
 > **Vue 3** SPA: `App.vue` is the whole **album shell** (masthead, checklist rail, felt, binder, roster deal). **Axios** + cache adapter batch `GET /people?personIds=…` for card backs. **Global look** lives in `src/styles/tokens.css` (newsprint, letterpress rules, album layers, card sheen) and `src/styles/team-themes.css` (`[data-theme]` on each **BaseballCard**). **`prefers-reduced-motion: reduce`** skips pack Lottie load + flying peel; short opacity fades only — same spirit as the arcade README, but the volume knob is **stadium organ**, not neon.
 >
@@ -56,7 +56,7 @@ Per-franchise caps and fields: `--theme-*` in `src/styles/team-themes.css`. **Up
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ DUGOUT MAP — **where each folder points**
+## ⚾ DUGOUT MAP — **where each folder points**
 
 | ZONE | PATH |
 | ---- | ---- |
@@ -74,7 +74,7 @@ Per-franchise caps and fields: `--theme-*` in `src/styles/team-themes.css`. **Up
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ FEATURE ROLL CALL — **what ships in the box**
+## ⚾ FEATURE ROLL CALL — **what ships in the box**
 
 | TAG | WHAT HAPPENS |
 | --- | ------------ |
@@ -91,7 +91,7 @@ Per-franchise caps and fields: `--theme-*` in `src/styles/team-themes.css`. **Up
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ PREREQS — **install first**
+## ⚾ PREREQS — **install first**
 
 | REQUIREMENT | NOTES |
 | ----------- | ----- |
@@ -101,7 +101,7 @@ Per-franchise caps and fields: `--theme-*` in `src/styles/team-themes.css`. **Up
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ INSTALL · RUN · SHIP — **clone, dev, build**
+## ⚾ INSTALL · RUN · SHIP — **clone, dev, build**
 
 ### ═══ GRAB THE REPO ═══
 
@@ -153,7 +153,7 @@ npm start
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ SCRIPTS — **npm, decoded**
+## ⚾ SCRIPTS — **npm, decoded**
 
 | SCRIPT | WHAT IT DOES |
 | ------ | -------------- |
@@ -174,7 +174,7 @@ npm start
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ API ROUTES — **browser → origin**
+## ⚾ API ROUTES — **browser → origin**
 
 In development, Vite proxies `/teams` and `/people` to `server.js`. On GitHub Pages, `VITE_API_BASE` can point at MLB directly.
 
@@ -191,7 +191,7 @@ Upstream: **MLB Stats API** — `https://statsapi.mlb.com/api/v1/`. Response sha
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ CONFIGURATION — **Vite + server**
+## ⚾ CONFIGURATION — **Vite + server**
 
 | FIELD | WHERE | DESCRIPTION |
 | ----- | ----- | ----------- |
@@ -204,7 +204,7 @@ Upstream: **MLB Stats API** — `https://statsapi.mlb.com/api/v1/`. Response sha
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ DEPLOYMENT — **where it lands**
+## ⚾ DEPLOYMENT — **where it lands**
 
 | TARGET | NOTES |
 | ------ | ----- |
@@ -215,7 +215,7 @@ Upstream: **MLB Stats API** — `https://statsapi.mlb.com/api/v1/`. Response sha
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ CONTRIBUTING — **lint + test**
+## ⚾ CONTRIBUTING — **lint + test**
 
 ```bash
 npm run lint
@@ -228,7 +228,7 @@ Tests live next to sources: `src/**/*.test.{js,ts}`, `lib/**/*.test.mjs` (see `v
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
-## ★ PERFORMANCE CHECKLIST — **optional, for regressions**
+## ⚾ PERFORMANCE CHECKLIST — **optional, for regressions**
 
 1. **Lighthouse** — Performance (mobile + desktop): LCP, TBT, dependency tree.
 2. **Network** — Hard reload, pick a team: batched `GET /people?personIds=…` (or MLB URL in prod), not N single-player calls. Headshots lazy as cards approach viewport.
