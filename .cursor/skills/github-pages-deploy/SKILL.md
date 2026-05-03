@@ -7,9 +7,9 @@ description: >
   production build under a subpath, or fixing broken assets on Pages.
 ---
 
-# GitHub Pages deploy (baseball-collection)
+# GitHub Pages deploy (baseball-collection / Cartophiles)
 
-Same pattern as **danibsheehan/gotta-catch-em-all**: a **GitHub project site** lives at `https://<user>.github.io/<repository-name>/`. That repo uses Angular’s `npm run build:github-pages` for base href; **here**, Vite reads **`VITE_PUBLIC_PATH`** (and **`VITE_API_BASE`**) at build time—CI sets both so the static app matches production Pages.
+Same pattern as **danibsheehan/gotta-catch-em-all**: a **GitHub project site** lives at `https://<user>.github.io/<repository-name>/`. **Here**, Vite reads **`VITE_PUBLIC_PATH`** (and **`VITE_API_BASE`**) at build time—CI sets both so the static app matches production Pages (see **`README.md`** → CONFIGURATION / DEPLOYMENT).
 
 ## What runs in CI
 
