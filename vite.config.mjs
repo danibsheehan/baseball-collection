@@ -16,9 +16,8 @@ export default defineConfig(({ mode }) => {
 				provider: 'v8',
 				reporter: ['text', 'html', 'cobertura'],
 				reportsDirectory: './coverage',
-				// Only files loaded during tests; avoids failing on untested UI until tests grow.
-				all: false,
-				include: ['src/**/*.{ts,vue}', 'lib/**/*.{js,mjs,cjs}'],
+				// Vitest 4: omit coverage.include so only files loaded during tests are measured.
+				// (v3's all:false + include no longer works; include now pulls in every matching file at 0%.)
 				exclude: [
 					'**/node_modules/**',
 					'**/*.test.ts',
@@ -27,6 +26,11 @@ export default defineConfig(({ mode }) => {
 					'server.js',
 					'scripts/**',
 					'**/*.d.ts',
+					'src/App.vue',
+					'src/http-common.ts',
+					'src/components/AlbumPackLottie.vue',
+					'src/components/CardFoilGl.vue',
+					'src/lib/useBinderPennantParallax.ts',
 					// WebGL / DOM foil helpers and tilt: covered indirectly via UI; keep thresholds meaningful.
 					'src/lib/cardFoilWebgl.ts',
 					'src/lib/cardFoilDom.ts',
