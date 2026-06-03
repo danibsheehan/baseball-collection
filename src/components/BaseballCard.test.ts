@@ -104,6 +104,49 @@ describe('BaseballCard', () => {
 		wrapper.unmount();
 	});
 
+	it('keeps foil after pointer leave while the scene still matches :hover', async () => {
+		const clearSpy = vi.spyOn(foilBridge, 'clearCardFoilTarget');
+		const wrapper = mount(BaseballCard, {
+			props: { player, teamName: 'Club' },
+			attachTo: document.body,
+			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
+		});
+		const sceneEl = wrapper.find('.card__scene').element as HTMLElement;
+		vi.spyOn(sceneEl, 'matches').mockImplementation((selector) => selector === ':hover');
+
+		await wrapper.find('.card__scene').trigger('pointerenter');
+		await wrapper.find('.card__scene').trigger('pointerleave');
+		await flushPromises();
+
+		expect(clearSpy).not.toHaveBeenCalled();
+		clearSpy.mockRestore();
+		wrapper.unmount();
+	});
+
+	it('claims foil when focus moves inside the scene', async () => {
+		const spy = vi.spyOn(foilBridge, 'setCardFoilTarget');
+		const wrapper = mount(BaseballCard, {
+			props: { player, teamName: 'Club' },
+			attachTo: document.body,
+			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
+		});
+		const flip = wrapper.find('[role="button"]').element;
+		flip.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+		expect(spy).toHaveBeenCalled();
+		spy.mockRestore();
+		wrapper.unmount();
+	});
+
+	it('ignores flip keydown for keys other than Enter and Space', async () => {
+		const wrapper = mount(BaseballCard, {
+			props: { player, teamName: 'Club' },
+			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
+		});
+		const flip = wrapper.find('[role="button"]');
+		await flip.trigger('keydown', { key: 'Tab' });
+		expect(flip.attributes('aria-pressed')).toBe('false');
+	});
+
 	it('renders foil overlay when this card owns the foil target', async () => {
 		const scene = document.createElement('div');
 		foilBridge.cardFoilTarget.value = { el: scene, id: 501, manyPlayers: false };
