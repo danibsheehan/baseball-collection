@@ -5,7 +5,7 @@ alwaysApply: true
 
 # baseball-collection (Cartophiles)
 
-Vue 3 + Vite SPA (album shell, roster grid, card flip/tilt/foil, wax-pack deal) with a small Express server that proxies the **MLB Stats API** and serves `dist` in production. **Prereq:** Node.js **20** (matches CI).
+Vue 3 + Vite SPA (album shell, roster grid, card flip/tilt/foil, wax-pack deal) with a small Express server that proxies the **MLB Stats API** and serves `dist` in production. **Prereq:** Node.js **22** (see `.nvmrc`, `package.json` `engines`, CI).
 
 ## Layout
 

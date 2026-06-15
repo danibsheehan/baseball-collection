@@ -14,7 +14,7 @@ Same pattern as **danibsheehan/gotta-catch-em-all**: a **GitHub project site** l
 ## What runs in CI
 
 - **Workflow**: `.github/workflows/deploy-pages.yml` on **push to `main`**.
-- **Build**: Node **20**, `npm ci`, `npm run build` with:
+- **Build**: Node **22**, `npm ci`, `npm run build` with:
 
   - `VITE_API_BASE=https://statsapi.mlb.com/api/v1` — browser calls MLB directly (no Express proxy on Pages).
   - `VITE_PUBLIC_PATH=/${{ github.event.repository.name }}/` — **project Pages base** (leading slash, trailing slash).
