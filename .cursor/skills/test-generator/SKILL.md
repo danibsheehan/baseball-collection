@@ -11,7 +11,7 @@ Generate thorough, idiomatic **Vitest** tests for **Vue 3** (Composition API, `<
 
 - **Vitest** is configured in **`vite.config.mjs`**: default test **`environment: 'node'`**; **`include`**: `src/**/*.test.ts`, `lib/**/*.test.mjs` (match these when adding files).
 - **Component / DOM tests**: add `// @vitest-environment jsdom` at the top of the test file (see **`README.md`** → CONTRIBUTING).
-- **Node**: **20** for local and CI parity.
+- **Node**: **22** for local and CI parity (see `.nvmrc`).
 
 ---
 

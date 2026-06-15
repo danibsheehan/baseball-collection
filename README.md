@@ -95,7 +95,7 @@ Per-franchise caps and fields: `--theme-*` in `src/styles/team-themes.css`. **Up
 
 | REQUIREMENT | NOTES |
 | ----------- | ----- |
-| **Node.js 20** | Matches `.github/workflows/deploy-pages.yml` and local tooling expectations. |
+| **Node.js 22** | Matches `.nvmrc`, `package.json` `engines`, and CI workflows. |
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
