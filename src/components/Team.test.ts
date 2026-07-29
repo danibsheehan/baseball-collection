@@ -29,4 +29,15 @@ describe('Team', () => {
 		await wrapper.find('button').trigger('click');
 		expect(wrapper.emitted('select')?.[0]).toEqual([yankees]);
 	});
+
+	it('shows an album count badge when albumCount is positive', () => {
+		const wrapper = mount(Team, { props: { team: yankees, albumCount: 3 } });
+		expect(wrapper.find('.team__album-count').text()).toBe('3');
+		expect(wrapper.text()).toContain('3 in your album');
+	});
+
+	it('hides the album count badge when albumCount is zero', () => {
+		const wrapper = mount(Team, { props: { team: yankees, albumCount: 0 } });
+		expect(wrapper.find('.team__album-count').exists()).toBe(false);
+	});
 });

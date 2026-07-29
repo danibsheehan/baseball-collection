@@ -150,6 +150,50 @@ export function countCollectedOnRoster(
 	return n;
 }
 
+/** Count collected pasteboards tagged with each club id (from collect-time `teamId`). */
+export function countCollectedByTeamId(
+	store: AlbumStore | null | undefined
+): Record<number, number> {
+	const counts: Record<number, number> = {};
+	for (const entry of Object.values(store?.collected ?? {})) {
+		const teamId = entry?.teamId;
+		if (teamId == null || !Number.isFinite(teamId)) {
+			continue;
+		}
+		counts[teamId] = (counts[teamId] ?? 0) + 1;
+	}
+	return counts;
+}
+
+export function countCollectedForTeam(
+	store: AlbumStore | null | undefined,
+	teamId: number | null | undefined
+): number {
+	if (teamId == null || !Number.isFinite(teamId)) {
+		return 0;
+	}
+	return countCollectedByTeamId(store)[teamId] ?? 0;
+}
+
+export type RosterAlbumFilter = 'all' | 'album';
+
+export type RosterPlayerLike = {
+	person?: { id?: number | null };
+} & Record<string, unknown>;
+
+/** Filter a loaded roster to collected cards only when `filter === 'album'`. */
+export function filterRosterPlayersByAlbum<T extends RosterPlayerLike>(
+	players: T[] | null | undefined,
+	store: AlbumStore | null | undefined,
+	filter: RosterAlbumFilter = 'all'
+): T[] {
+	const list = players ?? [];
+	if (filter !== 'album') {
+		return list;
+	}
+	return list.filter((row) => isCollected(store, row?.person?.id));
+}
+
 /** Completeness fill width for the roster pennant strip. */
 export function rosterCompletenessFillPercent(owned: number, total: number): string {
 	if (!(total > 0) || !(owned > 0)) {

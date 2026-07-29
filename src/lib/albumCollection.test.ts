@@ -1,8 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
 	ALBUM_STORAGE_KEY,
+	countCollectedByTeamId,
+	countCollectedForTeam,
 	countCollectedOnRoster,
 	createEmptyAlbumStore,
+	filterRosterPlayersByAlbum,
 	isCollected,
 	normalizeAlbumStore,
 	readAlbumStore,
@@ -102,6 +105,49 @@ describe('countCollectedOnRoster', () => {
 		store = toggleCollected(store, 2).store;
 		store = toggleCollected(store, 99).store;
 		expect(countCollectedOnRoster(store, [1, 2, 2, null, 3])).toBe(2);
+	});
+});
+
+describe('countCollectedForTeam / countCollectedByTeamId', () => {
+	it('tallies collect-time team ids', () => {
+		let store = createEmptyAlbumStore();
+		store = toggleCollected(store, 1, { teamId: 147 }).store;
+		store = toggleCollected(store, 2, { teamId: 147 }).store;
+		store = toggleCollected(store, 3, { teamId: 111 }).store;
+		store = toggleCollected(store, 4).store;
+		expect(countCollectedByTeamId(store)).toEqual({ 147: 2, 111: 1 });
+		expect(countCollectedForTeam(store, 147)).toBe(2);
+		expect(countCollectedForTeam(store, 111)).toBe(1);
+		expect(countCollectedForTeam(store, 999)).toBe(0);
+		expect(countCollectedForTeam(store, null)).toBe(0);
+	});
+});
+
+describe('filterRosterPlayersByAlbum', () => {
+	const roster = [
+		{ person: { id: 1, fullName: 'A' } },
+		{ person: { id: 2, fullName: 'B' } },
+		{ person: { id: 3, fullName: 'C' } }
+	];
+
+	it('returns the full list for all / default', () => {
+		const store = toggleCollected(createEmptyAlbumStore(), 1).store;
+		expect(filterRosterPlayersByAlbum(roster, store, 'all')).toEqual(roster);
+		expect(filterRosterPlayersByAlbum(roster, store)).toEqual(roster);
+	});
+
+	it('keeps only collected players for album filter', () => {
+		let store = createEmptyAlbumStore();
+		store = toggleCollected(store, 2).store;
+		store = toggleCollected(store, 3).store;
+		expect(filterRosterPlayersByAlbum(roster, store, 'album').map((r) => r.person.id)).toEqual([
+			2, 3
+		]);
+	});
+
+	it('returns empty when nothing collected', () => {
+		expect(filterRosterPlayersByAlbum(roster, createEmptyAlbumStore(), 'album')).toEqual([]);
+		expect(filterRosterPlayersByAlbum(null, createEmptyAlbumStore(), 'album')).toEqual([]);
 	});
 });
 
