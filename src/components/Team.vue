@@ -5,7 +5,7 @@
 		:class="{ 'team--selected': selected }"
 		:data-theme="theme || undefined"
 		:aria-current="selected ? 'true' : undefined"
-		@click="searchPlayers"
+		@click="onSelect"
 	>
 		<span class="team__inner">
 			<span class="team__logo" aria-hidden="true"></span>
@@ -15,15 +15,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import http from '../http-common';
-import {
-	PEOPLE_BATCH_SIZE,
-	uniquePersonIds,
-	chunkPersonIds,
-	peopleByIdFromResponses,
-	enrichRosterWithPlayerInfo
-} from '../lib/rosterPeople';
+import { computed } from 'vue';
 
 const props = defineProps({
 	team: {
@@ -35,65 +27,12 @@ const props = defineProps({
 	}
 });
 
-const emit = defineEmits(['updatePlayers', 'updateTeam', 'liveMessage', 'rosterLoading', 'rosterLoadStage']);
-
-const players = ref([]);
+const emit = defineEmits(['select']);
 
 const theme = computed(() => props.team.teamCode?.toLowerCase() || '');
 
-function fetchPeopleByIds(personIds) {
-	const unique = uniquePersonIds(personIds);
-	const chunks = chunkPersonIds(unique, PEOPLE_BATCH_SIZE);
-	return Promise.all(
-		chunks.map((chunk) =>
-			http.get('people', { params: { personIds: chunk.join(',') } })
-		)
-	)
-		.then((responses) => peopleByIdFromResponses(responses))
-		.catch(() => ({}));
-}
-
-function searchPlayers() {
-	players.value = [];
-	emit('updateTeam', props.team);
-	emit('updatePlayers', []);
-	emit('liveMessage', `Pulling the sheet for ${props.team.name}.`);
-	emit('rosterLoadStage', 'pulling');
-	emit('rosterLoading', true);
-
-	http.get(`teams/${props.team.id}/roster`)
-		.then((response) => {
-			const data = response.data.roster || [];
-			const ids = data.map((r) => r.person?.id).filter(Boolean);
-			if (!ids.length) {
-				emit('updatePlayers', []);
-				emit('liveMessage', `No pasteboards listed for ${props.team.name}.`);
-				return;
-			}
-			emit('rosterLoadStage', 'faces');
-			return fetchPeopleByIds(ids).then((byId) => {
-				const enriched = enrichRosterWithPlayerInfo(data, byId);
-				const sorted = [...enriched].sort((a, b) => {
-					const an = String(a.playerInfo?.fullName ?? a.person?.fullName ?? '');
-					const bn = String(b.playerInfo?.fullName ?? b.person?.fullName ?? '');
-					return an.localeCompare(bn, undefined, { sensitivity: 'base' });
-				});
-				players.value = sorted;
-				emit('updatePlayers', sorted);
-				emit(
-					'liveMessage',
-					`Showing ${sorted.length} ${sorted.length === 1 ? 'card' : 'cards'} for ${props.team.name}.`
-				);
-			});
-		})
-		.catch(() => {
-			players.value = [];
-			emit('updatePlayers', []);
-			emit('liveMessage', `Could not load the sheet for ${props.team.name}.`);
-		})
-		.finally(() => {
-			emit('rosterLoading', false);
-		});
+function onSelect() {
+	emit('select', props.team);
 }
 </script>
 

@@ -125,11 +125,7 @@
 														:key="team.id"
 														:team="team"
 														:selected="selectedTeamId === team.id"
-														@updatePlayers="loadPlayers"
-														@updateTeam="loadTeam"
-														@liveMessage="setLiveMessage"
-														@rosterLoading="setRosterLoading"
-														@rosterLoadStage="setRosterLoadStage"
+														@select="onTeamSelect"
 													/>
 												</div>
 											</section>
@@ -295,11 +291,20 @@ import BaseballCard from './components/BaseballCard.vue';
 import Team from './components/Team.vue';
 import http from './http-common';
 import { filterMajorLeagueBaseballTeams } from './lib/filterMlbTeams';
+import { fetchEnrichedRoster } from './lib/rosterLoad';
 import {
 	buildTeamPickerSections,
 	filterTeamPickerSections
 } from './lib/teamPickerSections';
+import {
+	findTeamByTeamCode,
+	readTeamCodeFromLocation,
+	writeTeamCodeToHistory
+} from './lib/teamUrlState';
 import { useBinderPennantParallax } from './lib/useBinderPennantParallax';
+
+/** Bumps on each roster request so stale responses do not overwrite a newer club. */
+let rosterRequestId = 0;
 
 const players = ref([]);
 const teamName = ref('');
@@ -310,7 +315,7 @@ const teamsLoading = ref(true);
 const teamsError = ref('');
 const liveRegionText = ref('');
 const rosterLoading = ref(false);
-/** 'idle' | 'pulling' | 'faces' — from Team.vue while a roster request is in flight */
+/** 'idle' | 'pulling' | 'faces' — while a roster request is in flight */
 const rosterLoadStage = ref('idle');
 const resultsSection = ref(null);
 const binderRef = ref(null);
@@ -481,6 +486,7 @@ watch(
 );
 
 onUnmounted(() => {
+	window.removeEventListener('popstate', onTeamPopState);
 	if (dealCompleteTimer != null) {
 		clearTimeout(dealCompleteTimer);
 		dealCompleteTimer = null;
@@ -791,16 +797,6 @@ watch(
 	{ flush: 'post' }
 );
 
-function loadPlayers(nextPlayers) {
-	players.value = nextPlayers;
-}
-
-function loadTeam(team) {
-	selectedTeamId.value = team.id;
-	theme.value = team.teamCode?.toLowerCase() || '';
-	teamName.value = team.name;
-}
-
 function setLiveMessage(message) {
 	liveRegionText.value = message;
 }
@@ -816,7 +812,118 @@ function setRosterLoading(loading) {
 	}
 }
 
+function applySelectedTeam(team) {
+	selectedTeamId.value = team.id;
+	theme.value = team.teamCode?.toLowerCase() || '';
+	teamName.value = team.name;
+}
+
+function clearSelectedTeam() {
+	selectedTeamId.value = null;
+	theme.value = '';
+	teamName.value = '';
+	players.value = [];
+}
+
+/**
+ * Load a club roster (checklist click, URL hydrate, or browser history).
+ * @param {object} team
+ * @param {{ historyMode?: 'push' | 'replace' | 'none' }} [opts]
+ */
+async function selectTeam(team, opts = {}) {
+	const historyMode = opts.historyMode ?? 'push';
+	const requestId = ++rosterRequestId;
+
+	applySelectedTeam(team);
+	if (historyMode !== 'none') {
+		writeTeamCodeToHistory(team.teamCode?.toLowerCase() || null, historyMode);
+	}
+
+	players.value = [];
+	setLiveMessage(`Pulling the sheet for ${team.name}.`);
+	setRosterLoadStage('pulling');
+	setRosterLoading(true);
+
+	try {
+		const { players: nextPlayers, empty } = await fetchEnrichedRoster(http, team.id, {
+			onRosterLoaded: () => {
+				if (requestId === rosterRequestId) {
+					setRosterLoadStage('faces');
+				}
+			}
+		});
+		if (requestId !== rosterRequestId) {
+			return;
+		}
+		players.value = nextPlayers;
+		if (empty) {
+			setLiveMessage(`No pasteboards listed for ${team.name}.`);
+		} else {
+			setLiveMessage(
+				`Showing ${nextPlayers.length} ${nextPlayers.length === 1 ? 'card' : 'cards'} for ${team.name}.`
+			);
+		}
+	} catch {
+		if (requestId !== rosterRequestId) {
+			return;
+		}
+		players.value = [];
+		setLiveMessage(`Could not load the sheet for ${team.name}.`);
+	} finally {
+		if (requestId === rosterRequestId) {
+			setRosterLoading(false);
+		}
+	}
+}
+
+function onTeamSelect(team) {
+	if (team?.id == null) {
+		return;
+	}
+	const historyMode = selectedTeamId.value === team.id ? 'replace' : 'push';
+	selectTeam(team, { historyMode });
+}
+
+/**
+ * Apply `?team=` from the location (boot hydrate or popstate).
+ * @param {{ announceMissing?: boolean }} [opts]
+ */
+function syncTeamFromLocation(opts = {}) {
+	const announceMissing = opts.announceMissing !== false;
+	const code = readTeamCodeFromLocation();
+
+	if (!code) {
+		if (selectedTeamId.value != null) {
+			rosterRequestId += 1;
+			clearSelectedTeam();
+			setRosterLoading(false);
+			setLiveMessage('Club cleared. Pick one from the checklist to see the pasteboards.');
+		}
+		return;
+	}
+
+	const team = findTeamByTeamCode(teams.value, code);
+	if (!team) {
+		if (announceMissing) {
+			setLiveMessage(`No club on file for “${code}”.`);
+		}
+		writeTeamCodeToHistory(null, 'replace');
+		return;
+	}
+
+	if (selectedTeamId.value === team.id && (players.value.length > 0 || rosterLoading.value)) {
+		return;
+	}
+
+	selectTeam(team, { historyMode: 'none' });
+}
+
+function onTeamPopState() {
+	syncTeamFromLocation();
+}
+
 onMounted(() => {
+	window.addEventListener('popstate', onTeamPopState);
 	teams.value = [];
 	teamsLoading.value = true;
 	teamsError.value = '';
@@ -828,10 +935,18 @@ onMounted(() => {
 			);
 			teams.value = data;
 			teamsError.value = '';
-			liveRegionText.value =
-				data.length > 0
-					? `${data.length} clubs on file. Pick one from the checklist to see the pasteboards.`
-					: 'No teams available.';
+			const deepLinkCode = readTeamCodeFromLocation();
+			const deepLinkTeam = deepLinkCode ? findTeamByTeamCode(data, deepLinkCode) : undefined;
+			if (deepLinkTeam) {
+				liveRegionText.value = `Opening the sheet for ${deepLinkTeam.name}.`;
+			} else if (deepLinkCode) {
+				liveRegionText.value = `No club on file for “${deepLinkCode}”.`;
+			} else {
+				liveRegionText.value =
+					data.length > 0
+						? `${data.length} clubs on file. Pick one from the checklist to see the pasteboards.`
+						: 'No teams available.';
+			}
 		})
 		.catch((err) => {
 			console.error('teams request failed', err);
@@ -841,6 +956,9 @@ onMounted(() => {
 		})
 		.finally(() => {
 			teamsLoading.value = false;
+			nextTick(() => {
+				syncTeamFromLocation({ announceMissing: false });
+			});
 		});
 });
 </script>
