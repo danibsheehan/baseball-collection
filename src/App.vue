@@ -45,7 +45,7 @@
 					<div class="app__title-kicker-wrap">
 						<p class="app__title-kicker">Pasteboard album</p>
 					</div>
-					<h1 class="album__search--title">Club checklist</h1>
+					<h1 class="album__search--title">Clubs</h1>
 					<p class="app__title-subtitle">
 						American / National loop — one club, one roster. Pick your side and complete your run.
 					</p>
@@ -170,7 +170,7 @@
 								v-if="!rosterLoading && selectedTeamId === null"
 								class="album__results-placeholder"
 							>
-								Open the checklist — pick a club to start your run.
+								Pick a club to start your run.
 							</p>
 							<div
 								v-if="selectedTeamId !== null"
@@ -1020,7 +1020,7 @@ function syncTeamFromLocation(opts = {}) {
 			rosterRequestId += 1;
 			clearSelectedTeam();
 			setRosterLoading(false);
-			setLiveMessage('Club cleared. Pick one from the checklist to see the pasteboards.');
+			setLiveMessage('Club cleared. Pick a club to see the pasteboards.');
 		}
 		return;
 	}
@@ -1067,7 +1067,7 @@ onMounted(() => {
 			} else {
 				liveRegionText.value =
 					data.length > 0
-						? `${data.length} clubs on file. Pick one from the checklist to see the pasteboards.`
+						? `${data.length} clubs on file. Pick a club to see the pasteboards.`
 						: 'No teams available.';
 			}
 		})
@@ -2903,9 +2903,10 @@ h2 {
 }
 
 .album__roster-filter-btn {
-	background: color-mix(in srgb, var(--color-surface-elevated, #f7f3ea) 92%, transparent);
-	border: 1px solid color-mix(in srgb, var(--color-text) 28%, transparent);
-	color: var(--color-text-muted);
+	/* Body text on elevated stock — aim for WCAG AA normal text (≥4.5:1). */
+	background: var(--color-surface-elevated);
+	border: 1px solid color-mix(in srgb, var(--color-text) 35%, transparent);
+	color: var(--color-text);
 	cursor: pointer;
 	font-family: var(--font-ui-heading);
 	font-size: 0.6875rem;
@@ -2933,14 +2934,24 @@ h2 {
 }
 
 .album__roster-filter-btn[aria-pressed='true'] {
-	background: color-mix(in srgb, var(--theme-heading, var(--color-ui-crimson)) 14%, var(--color-surface-elevated, #f7f3ea));
-	border-color: var(--theme-heading, var(--color-ui-crimson));
-	color: var(--theme-heading, var(--color-ui-crimson));
+	/* Selected via fill + weight + border — keep ink text for contrast (not crimson-on-cream). */
+	background: var(--color-surface-selected);
+	border-color: var(--color-ui-ink);
+	color: var(--color-text);
+	font-weight: 700;
 }
 
 @media (prefers-color-scheme: dark) {
 	.album__roster-filter-btn {
-		background: color-mix(in srgb, var(--color-surface-elevated, #1c1917) 80%, transparent);
+		background: var(--color-surface-elevated);
+		border-color: color-mix(in srgb, var(--color-text) 40%, transparent);
+		color: var(--color-text);
+	}
+
+	.album__roster-filter-btn[aria-pressed='true'] {
+		background: var(--color-surface-selected);
+		border-color: var(--color-ui-ink);
+		color: var(--color-text);
 	}
 }
 
