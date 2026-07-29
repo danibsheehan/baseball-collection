@@ -10,6 +10,19 @@
 		<span class="team__inner">
 			<span class="team__logo" aria-hidden="true"></span>
 			<span class="team__name">{{ team.name }}</span>
+			<span
+				v-if="albumCount > 0"
+				class="visually-hidden"
+			>
+				, {{ albumCount }} in your album
+			</span>
+		</span>
+		<span
+			v-if="albumCount > 0"
+			class="team__album-count"
+			aria-hidden="true"
+		>
+			{{ albumCount }}
 		</span>
 	</button>
 </template>
@@ -24,6 +37,10 @@ const props = defineProps({
 	selected: {
 		type: Boolean,
 		default: false
+	},
+	albumCount: {
+		type: Number,
+		default: 0
 	}
 });
 
@@ -266,5 +283,35 @@ function onSelect() {
 	.team__logo::before {
 		transform: translate(-50%, -50%) scale(calc(26 / 30));
 	}
+}
+
+.team__album-count {
+	background: color-mix(in srgb, var(--theme-logo-border, var(--color-accent)) 18%, var(--color-surface-elevated, #f7f3ea));
+	border: 1px solid color-mix(in srgb, var(--theme-logo-border, var(--color-accent)) 55%, transparent);
+	bottom: 0.35rem;
+	color: var(--color-text);
+	font-family: var(--font-ui-heading, var(--font-card));
+	font-size: 0.625rem;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	line-height: 1;
+	min-width: 1.15rem;
+	padding: 0.2rem 0.28rem;
+	position: absolute;
+	right: 0.35rem;
+	text-align: center;
+	z-index: 3;
+}
+
+.visually-hidden {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
 }
 </style>

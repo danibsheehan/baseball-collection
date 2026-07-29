@@ -125,6 +125,7 @@
 														:key="team.id"
 														:team="team"
 														:selected="selectedTeamId === team.id"
+														:album-count="albumCountByTeamId[team.id] || 0"
 														@select="onTeamSelect"
 													/>
 												</div>
@@ -201,10 +202,32 @@
 													:style="{ width: rosterCompletenessFillPercent }"
 												></span>
 											</span>
-									</p>
-								</div>
+										</p>
+										<div
+											class="album__roster-filter"
+											role="group"
+											aria-label="Roster view"
+										>
+											<button
+												type="button"
+												class="album__roster-filter-btn"
+												:aria-pressed="rosterAlbumFilter === 'all' ? 'true' : 'false'"
+												@click="setRosterAlbumFilter('all')"
+											>
+												Full sheet
+											</button>
+											<button
+												type="button"
+												class="album__roster-filter-btn"
+												:aria-pressed="rosterAlbumFilter === 'album' ? 'true' : 'false'"
+												@click="setRosterAlbumFilter('album')"
+											>
+												In album
+											</button>
+										</div>
+									</div>
 								<div
-									v-if="players.length"
+									v-if="displayedPlayers.length"
 									class="album__results-cards-region"
 									:class="{
 										'album__results-cards-region--rm-reveal': dealPhase === 'static'
@@ -222,7 +245,7 @@
 									></div>
 									<Transition name="album-pack-out">
 										<div
-											v-if="dealPhase === 'opening'"
+											v-if="dealPhase === 'opening' && rosterAlbumFilter === 'all'"
 											class="album__pack-stage album__pack-stage--deal-act1"
 										>
 											<AlbumPackLottie
@@ -234,7 +257,7 @@
 										</div>
 									</Transition>
 									<div
-										v-for="player in players"
+										v-for="player in displayedPlayers"
 										:key="player.person.id"
 										class="album__card-deal"
 										:class="[
@@ -253,7 +276,20 @@
 									</div>
 								</div>
 								<p
-									v-if="!players.length"
+									v-if="showAlbumFilterEmpty"
+									class="album__results-empty album__results-empty--filter"
+								>
+									No pasteboards in your album for the {{ teamName }} yet.
+									<button
+										type="button"
+										class="album__results-empty-action"
+										@click="setRosterAlbumFilter('all')"
+									>
+										Show full sheet
+									</button>
+								</p>
+								<p
+									v-else-if="!players.length"
 									class="album__results-empty"
 								>
 									No pasteboards on file for the {{ teamName }}.
@@ -295,7 +331,9 @@ import http from './http-common';
 import { filterMajorLeagueBaseballTeams } from './lib/filterMlbTeams';
 import { fetchEnrichedRoster } from './lib/rosterLoad';
 import {
+	countCollectedByTeamId,
 	countCollectedOnRoster,
+	filterRosterPlayersByAlbum,
 	isCollected,
 	readAlbumStore,
 	rosterCompletenessFillPercent as albumCompletenessFillPercent,
@@ -327,6 +365,8 @@ const liveRegionText = ref('');
 const rosterLoading = ref(false);
 /** Client-only album (localStorage); no backend. */
 const albumStore = ref(readAlbumStore(typeof localStorage !== 'undefined' ? localStorage : null));
+/** 'all' | 'album' — which pasteboards to show for the open club. */
+const rosterAlbumFilter = ref('all');
 /** 'idle' | 'pulling' | 'faces' — while a roster request is in flight */
 const rosterLoadStage = ref('idle');
 const resultsSection = ref(null);
@@ -400,7 +440,23 @@ const teamsSectionsLayoutClass = computed(() => {
 	return 'teams__sections--multi';
 });
 
-/** Full “album page” at 40 cards; bar is a collecting metaphor, not league totals. */
+/** Owned counts per club from collect-time teamId tags. */
+const albumCountByTeamId = computed(() => countCollectedByTeamId(albumStore.value));
+
+/** Roster rows after Full sheet / In album filter. */
+const displayedPlayers = computed(() =>
+	filterRosterPlayersByAlbum(players.value, albumStore.value, rosterAlbumFilter.value)
+);
+
+const showAlbumFilterEmpty = computed(
+	() =>
+		!rosterLoading.value &&
+		players.value.length > 0 &&
+		rosterAlbumFilter.value === 'album' &&
+		displayedPlayers.value.length === 0
+);
+
+/** Completeness uses the full club sheet; filter only changes which cards render. */
 const rosterOwnedCount = computed(() =>
 	countCollectedOnRoster(
 		albumStore.value,
@@ -830,6 +886,26 @@ function isPlayerCollected(personId) {
 	return isCollected(albumStore.value, personId);
 }
 
+function setRosterAlbumFilter(next) {
+	if (next !== 'all' && next !== 'album') {
+		return;
+	}
+	if (rosterAlbumFilter.value === next) {
+		return;
+	}
+	rosterAlbumFilter.value = next;
+	if (next === 'album') {
+		const n = displayedPlayers.value.length;
+		setLiveMessage(
+			n > 0
+				? `Showing ${n} ${n === 1 ? 'card' : 'cards'} in your album for the ${teamName.value}.`
+				: `No pasteboards in your album for the ${teamName.value} yet.`
+		);
+	} else {
+		setLiveMessage(`Showing the full sheet for the ${teamName.value}.`);
+	}
+}
+
 function onToggleCollect(personId) {
 	if (personId == null) {
 		return;
@@ -861,6 +937,7 @@ function applySelectedTeam(team) {
 	selectedTeamId.value = team.id;
 	theme.value = team.teamCode?.toLowerCase() || '';
 	teamName.value = team.name;
+	rosterAlbumFilter.value = 'all';
 }
 
 function clearSelectedTeam() {
@@ -868,6 +945,7 @@ function clearSelectedTeam() {
 	theme.value = '';
 	teamName.value = '';
 	players.value = [];
+	rosterAlbumFilter.value = 'all';
 }
 
 /**
@@ -1528,6 +1606,37 @@ body {
 	margin: 0;
 	text-align: center;
 	width: 100%;
+}
+
+.album__results-empty--filter {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	padding-block: var(--space-4);
+}
+
+.album__results-empty-action {
+	background: color-mix(in srgb, var(--color-surface-elevated, #f7f3ea) 88%, var(--color-ui-crimson));
+	border: 2px solid var(--color-ui-ink, var(--color-text));
+	color: var(--color-text);
+	cursor: pointer;
+	font-family: var(--font-ui-heading);
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	padding: 0.45rem 0.85rem;
+	text-transform: uppercase;
+}
+
+.album__results-empty-action:focus {
+	outline: none;
+}
+
+.album__results-empty-action:focus-visible {
+	box-shadow:
+		0 0 0 3px var(--color-focus-ring),
+		0 0 0 5px var(--color-accent);
 }
 
 .teams__nav {
@@ -2784,6 +2893,55 @@ h2 {
 	margin: 0;
 	max-width: min(26rem, 100%);
 	width: 100%;
+}
+
+.album__roster-filter {
+	display: inline-flex;
+	gap: 0;
+	margin: 0.15rem 0 0;
+	max-width: 100%;
+}
+
+.album__roster-filter-btn {
+	background: color-mix(in srgb, var(--color-surface-elevated, #f7f3ea) 92%, transparent);
+	border: 1px solid color-mix(in srgb, var(--color-text) 28%, transparent);
+	color: var(--color-text-muted);
+	cursor: pointer;
+	font-family: var(--font-ui-heading);
+	font-size: 0.6875rem;
+	font-weight: 600;
+	letter-spacing: 0.1em;
+	line-height: 1;
+	padding: 0.4rem 0.7rem;
+	text-transform: uppercase;
+}
+
+.album__roster-filter-btn + .album__roster-filter-btn {
+	border-left-width: 0;
+}
+
+.album__roster-filter-btn:focus {
+	outline: none;
+}
+
+.album__roster-filter-btn:focus-visible {
+	box-shadow:
+		0 0 0 3px var(--color-focus-ring),
+		0 0 0 5px var(--color-accent);
+	position: relative;
+	z-index: 1;
+}
+
+.album__roster-filter-btn[aria-pressed='true'] {
+	background: color-mix(in srgb, var(--theme-heading, var(--color-ui-crimson)) 14%, var(--color-surface-elevated, #f7f3ea));
+	border-color: var(--theme-heading, var(--color-ui-crimson));
+	color: var(--theme-heading, var(--color-ui-crimson));
+}
+
+@media (prefers-color-scheme: dark) {
+	.album__roster-filter-btn {
+		background: color-mix(in srgb, var(--color-surface-elevated, #1c1917) 80%, transparent);
+	}
 }
 
 .album__results-completeness-count {

@@ -78,7 +78,9 @@ Per-franchise caps and fields: `--theme-*` in `src/styles/team-themes.css`. **Up
 
 | TAG | WHAT HAPPENS |
 | --- | ------------ |
-| **CLUB CHECKLIST** | MLB teams filtered to `sport.name === 'Major League Baseball'`; AL / NL sections + search |
+| **CLUB CHECKLIST** | MLB teams filtered to `sport.name === 'Major League Baseball'`; AL / NL sections + search; per-club album count badges |
+| **SHAREABLE CLUB** | `?team=<teamCode>` deep links (History API); refresh / share / back-forward restore the sheet |
+| **LOCAL ALBUM** | Collect pasteboards in the browser (`localStorage`); completeness is owned vs roster; Full sheet / In album filter |
 | **ROSTER GRID** | One **1959-style** card per active player; team crest + theme on the front |
 | **FLIP** | Click / keyboard flip; back pulls bat/ball stats lines from batched people payload |
 | **TILT + FOIL** | Pointer tilt on the scene; optional WebGL foil path on a single “chase” card target |
@@ -86,6 +88,8 @@ Per-franchise caps and fields: `--theme-*` in `src/styles/team-themes.css`. **Up
 | **BATCH PEOPLE** | Up to **50** IDs per `GET /people?personIds=…` (proxy also accepts `ids`) |
 | **CACHE** | Short-lived Axios cache adapter on the client |
 | **DARK NIGHT GAME** | `prefers-color-scheme: dark` retints `:root` in `tokens.css` (warmer cards under “lights”) |
+
+> **Product note:** Club URLs are shareable; your album stays on-device only (no account / database). Sharing `?team=bos` opens the Red Sox sheet — not someone else’s collection.
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
