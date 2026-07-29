@@ -5,7 +5,7 @@
  * prefers-color-scheme: dark flips these so you tune light/dark in one place.
  */
 :root {
-	/* App chrome: Newsreader (UI body / scorecard copy), Oswald (labels), Bebas (display), Archivo (pasteboards). */
+	/* App chrome: Newsreader (UI body / scorecard copy), Oswald (labels), Bebas (display), Archivo (cards). */
 	--font-ui: 'Newsreader', Georgia, 'Times New Roman', serif;
 	--font-ui-heading: 'Oswald', 'Arial Narrow', sans-serif;
 	--font-ui-display: 'Bebas Neue', 'Oswald', 'Arial Narrow', sans-serif;

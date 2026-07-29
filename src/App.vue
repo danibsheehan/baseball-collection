@@ -43,11 +43,11 @@
 				</div>
 				<div class="app__title-text">
 					<div class="app__title-kicker-wrap">
-						<p class="app__title-kicker">Pasteboard album</p>
+						<p class="app__title-kicker">Card album</p>
 					</div>
 					<h1 class="album__search--title">Clubs</h1>
 					<p class="app__title-subtitle">
-						Pick a club, flip the pasteboards, and collect a few into your album.
+						Pick a club, flip the cards, and collect a few into your album.
 					</p>
 				</div>
 			</div>
@@ -279,7 +279,7 @@
 									v-if="showAlbumFilterEmpty"
 									class="album__results-empty album__results-empty--filter"
 								>
-									No pasteboards in your album for the {{ teamName }} yet.
+									No cards in your album for the {{ teamName }} yet.
 									<button
 										type="button"
 										class="album__results-empty-action"
@@ -292,7 +292,7 @@
 									v-else-if="!players.length"
 									class="album__results-empty"
 								>
-									No pasteboards on file for the {{ teamName }}.
+									No cards on file for the {{ teamName }}.
 								</p>
 								</div>
 								<Transition name="album-skel-fade">
@@ -365,7 +365,7 @@ const liveRegionText = ref('');
 const rosterLoading = ref(false);
 /** Client-only album (localStorage); no backend. */
 const albumStore = ref(readAlbumStore(typeof localStorage !== 'undefined' ? localStorage : null));
-/** 'all' | 'album' — which pasteboards to show for the open club. */
+/** 'all' | 'album' — which cards to show for the open club. */
 const rosterAlbumFilter = ref('all');
 /** 'idle' | 'pulling' | 'faces' — while a roster request is in flight */
 const rosterLoadStage = ref('idle');
@@ -899,7 +899,7 @@ function setRosterAlbumFilter(next) {
 		setLiveMessage(
 			n > 0
 				? `Showing ${n} ${n === 1 ? 'card' : 'cards'} in your album for the ${teamName.value}.`
-				: `No pasteboards in your album for the ${teamName.value} yet.`
+				: `No cards in your album for the ${teamName.value} yet.`
 		);
 	} else {
 		setLiveMessage(`Showing the full sheet for the ${teamName.value}.`);
@@ -980,7 +980,7 @@ async function selectTeam(team, opts = {}) {
 		}
 		players.value = nextPlayers;
 		if (empty) {
-			setLiveMessage(`No pasteboards listed for ${team.name}.`);
+			setLiveMessage(`No cards listed for ${team.name}.`);
 		} else {
 			setLiveMessage(
 				`Showing ${nextPlayers.length} ${nextPlayers.length === 1 ? 'card' : 'cards'} for ${team.name}.`
@@ -1020,7 +1020,7 @@ function syncTeamFromLocation(opts = {}) {
 			rosterRequestId += 1;
 			clearSelectedTeam();
 			setRosterLoading(false);
-			setLiveMessage('Club cleared. Pick a club to see the pasteboards.');
+			setLiveMessage('Club cleared. Pick a club to see the cards.');
 		}
 		return;
 	}
@@ -1067,7 +1067,7 @@ onMounted(() => {
 			} else {
 				liveRegionText.value =
 					data.length > 0
-						? `${data.length} clubs on file. Pick a club to see the pasteboards.`
+						? `${data.length} clubs on file. Pick a club to see the cards.`
 						: 'No teams available.';
 			}
 		})
@@ -1089,7 +1089,7 @@ onMounted(() => {
 <style>
 /*
  * Typography: tokens.css — Newsreader (UI body), Oswald (chrome labels), Bebas Neue (display h1/h2),
- * Archivo (cards / pasteboard type).
+ * Archivo (card type).
  * Motion: pack unwrap + card deal only; masthead / chrome / roster stay static (print + broadcast).
  */
 html {

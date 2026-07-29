@@ -150,7 +150,7 @@ export function countCollectedOnRoster(
 	return n;
 }
 
-/** Count collected pasteboards tagged with each club id (from collect-time `teamId`). */
+/** Count collected cards tagged with each club id (from collect-time `teamId`). */
 export function countCollectedByTeamId(
 	store: AlbumStore | null | undefined
 ): Record<number, number> {
