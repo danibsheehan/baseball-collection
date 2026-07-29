@@ -16,13 +16,15 @@ description: >
 - **Loading** — `role="status"` for teams/roster loading copy.
 - **Navigation** — `nav` with `aria-label="Major League Baseball teams"`; team rows use **`aria-current`** when selected (`Team.vue`).
 - **Sections** — Picker groups use `role="group"` / `aria-labelledby` where a section label exists; player cards region **`aria-label="Player cards"`**, **`tabindex="-1"`** for programmatic focus after team/roster actions (`focusResultsSection` in `App.vue`).
+- **Roster filter** — `App.vue`: All cards / In album controls sit in **`role="group"`** with **`aria-label="Roster view"`**; each toggle is a native **`button`** with **`aria-pressed`** for the active view. Keep visible labels; do not replace pressed state with color alone (selected stock still needs readable contrast).
 - **Flippable cards** — `BaseballCard.vue`: inner control is **`role="button"`**, **`tabindex="0"`**, **`aria-pressed`**, **`aria-label`** from `flipAriaLabel`, **`@keydown`** for Space/Enter (pattern for custom interactive widgets).
+- **Collect control** — `BaseballCard.vue`: Collect / Album sits **below** the flip scene (not over the card face). Native **`button`** with **`aria-pressed`** for collected state and **`aria-label`** from `collectAriaLabel` (add/remove from album). Keep keyboard reachability and pressed naming when changing collect UX.
 - **Decorative chrome** — `aria-hidden="true"` on logos, folio numbers, ornaments, foil layers where appropriate (`Team.vue`, `PlayerLogo.vue`, `CardFoilGl.vue`, `CardBack.vue`, etc.).
 - **Meaningful images** — `PlayerImage.vue` uses **`headshotAlt`**; keep alt text descriptive or empty only when truly decorative (document the choice).
 - **Regions** — `PlayerInfo.vue`: `role="group"` / `role="region"` with **`aria-label`** for vitals; decorative watermark **`aria-hidden`**.
 - **Pack animation** — `AlbumPackLottie.vue`: **`role="img"`** + **`aria-label`**; respects **`prefers-reduced-motion: reduce`** (skip heavy animation / Lottie when reduced—see README “Motion, accessibility, and animation cost”).
 - **Motion elsewhere** — `prefers-reduced-motion` checks in `App.vue`, `CardFoilGl.vue`, `useCardTilt.ts`, `useBinderPennantParallax.ts`; CSS `@media (prefers-reduced-motion: reduce)` blocks across `App.vue`, `BaseballCard.vue`, `Team.vue`. **New motion** must follow the same pattern (instant or low-cost path, avoid loading Lottie JSON when reduced).
-- **Focus rings** — `:focus-visible` with **`var(--color-focus-ring)`** on teams, search input, card container, album results (`App.vue`, `Team.vue`, `BaseballCard.vue`). Prefer **`:focus-visible`** over bare `:focus` for mouse users unless there is a deliberate exception.
+- **Focus rings** — `:focus-visible` with **`var(--color-focus-ring)`** on teams, search input, card container, album results, roster filter, and collect control (`App.vue`, `Team.vue`, `BaseballCard.vue`). Prefer **`:focus-visible`** over bare `:focus` for mouse users unless there is a deliberate exception.
 
 ## `index.html` baseline
 
@@ -33,14 +35,14 @@ description: >
 
 1. **Keyboard** — Full path without a mouse; **Tab** order logical; **Space/Enter** on custom controls; no stuck **focus** on hidden/disabled content.
 2. **Names** — Every interactive control has a **visible label** or **`aria-label` / `aria-labelledby`**; form-like inputs are associated with labels where applicable.
-3. **State** — Busy/loading (`aria-busy` where used), expanded/collapsed, pressed (e.g. flip) exposed to assistive tech.
+3. **State** — Busy/loading (`aria-busy` where used), expanded/collapsed, pressed (e.g. flip, roster filter, collect) exposed to assistive tech.
 4. **Motion** — Honor **`prefers-reduced-motion`**; do not rely on motion alone to convey essential information.
 5. **Color** — Do not rely on color alone for status; check **contrast** for text and focus rings on team-themed surfaces.
 6. **Headings** — Preserve a sensible **heading** hierarchy if you introduce new sections (screen reader navigation).
 
 ## Verification (manual)
 
-- **Keyboard-only** pass on the changed flow (including roster deal and card flip).
+- **Keyboard-only** pass on the changed flow (including roster deal, card flip, roster filter, and collect).
 - **VoiceOver** (macOS) or **NVDA** (Windows) spot-check on the changed region.
 - Optional: **axe DevTools** or **Lighthouse** accessibility audit on `npm run preview` (use **GitHub Pages–shaped** `VITE_PUBLIC_PATH` if testing subpath behavior).
 
