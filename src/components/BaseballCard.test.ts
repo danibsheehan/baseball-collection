@@ -35,7 +35,7 @@ describe('BaseballCard', () => {
 			props: { player, teamName: 'Club', theme: 'bos' },
 			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
 		});
-		const flip = wrapper.find('[role="button"]');
+		const flip = wrapper.find('.card__container');
 		expect(flip.attributes('aria-label')).toContain('Test Hitter');
 		expect(flip.attributes('aria-pressed')).toBe('false');
 	});
@@ -45,7 +45,7 @@ describe('BaseballCard', () => {
 			props: { player, teamName: 'Club' },
 			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
 		});
-		const flip = wrapper.find('[role="button"]');
+		const flip = wrapper.find('.card__container');
 		await flip.trigger('click');
 		expect(flip.attributes('aria-pressed')).toBe('true');
 		expect(flip.classes()).toContain('card__container--flipped');
@@ -58,7 +58,7 @@ describe('BaseballCard', () => {
 			props: { player, teamName: 'Club' },
 			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
 		});
-		const flip = wrapper.find('[role="button"]');
+		const flip = wrapper.find('.card__container');
 		await flip.trigger('focus');
 		await flip.trigger('keydown', { key: 'Enter' });
 		expect(flip.attributes('aria-pressed')).toBe('true');
@@ -69,9 +69,33 @@ describe('BaseballCard', () => {
 			props: { player, teamName: 'Club' },
 			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
 		});
-		const flip = wrapper.find('[role="button"]');
+		const flip = wrapper.find('.card__container');
 		await flip.trigger('keydown', { key: ' ' });
 		expect(flip.attributes('aria-pressed')).toBe('true');
+	});
+
+	it('exposes a collect control outside the flip target', async () => {
+		const wrapper = mount(BaseballCard, {
+			props: { player, teamName: 'Club', collected: false },
+			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
+		});
+		const collect = wrapper.find('.card__collect');
+		expect(collect.attributes('aria-label')).toBe('Add Test Hitter to your album');
+		expect(collect.attributes('aria-pressed')).toBe('false');
+		await collect.trigger('click');
+		expect(wrapper.emitted('toggle-collect')?.[0]).toEqual([501]);
+		expect(wrapper.find('.card__container').attributes('aria-pressed')).toBe('false');
+	});
+
+	it('labels collect as remove when the card is already in the album', () => {
+		const wrapper = mount(BaseballCard, {
+			props: { player, teamName: 'Club', collected: true },
+			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
+		});
+		expect(wrapper.find('.card__collect').attributes('aria-label')).toBe(
+			'Remove Test Hitter from your album'
+		);
+		expect(wrapper.find('.card__shell').classes()).toContain('card__shell--collected');
 	});
 
 	it('claims the foil target when the scene receives pointer enter', async () => {
@@ -130,7 +154,7 @@ describe('BaseballCard', () => {
 			attachTo: document.body,
 			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
 		});
-		const flip = wrapper.find('[role="button"]').element;
+		const flip = wrapper.find('.card__container').element;
 		flip.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
 		expect(spy).toHaveBeenCalled();
 		spy.mockRestore();
@@ -142,7 +166,7 @@ describe('BaseballCard', () => {
 			props: { player, teamName: 'Club' },
 			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
 		});
-		const flip = wrapper.find('[role="button"]');
+		const flip = wrapper.find('.card__container');
 		await flip.trigger('keydown', { key: 'Tab' });
 		expect(flip.attributes('aria-pressed')).toBe('false');
 	});
