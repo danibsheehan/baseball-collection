@@ -47,10 +47,10 @@ Proxy / validation work: confirm tests under `lib/**/*.test.mjs` still pass via 
 
 ### 2. PR description
 
-There is no repo PR template file; still include:
+Use the repo PR template (`.github/pull_request_template.md`):
 
 - **Summary** — what changed and why (1–3 bullets)
-- **Test plan** — commands run (`lint` / `test:coverage` / `build`) and UI paths to exercise (team picker, roster deal, card flip), or `N/A` for tooling-only
+- **How to verify** — commands run (`lint` / `test:coverage` / `build`) and UI paths to exercise (team picker, roster deal, card flip), or `N/A` for tooling-only
 
 Do not push or create the PR unless the user asked.
 
