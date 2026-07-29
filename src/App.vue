@@ -193,7 +193,7 @@
 										</h2>
 										<p class="album__results-completeness">
 											<span class="album__results-completeness-count">
-												{{ players.length }} {{ players.length === 1 ? 'card' : 'cards' }}
+												{{ rosterAlbumCountLabel }}
 											</span>
 											<span class="album__results-completeness-track" aria-hidden="true">
 												<span
@@ -247,6 +247,8 @@
 											:theme="theme"
 											:teamName="teamName"
 											:manyPlayers="players.length > 30"
+											:collected="isPlayerCollected(player.person?.id)"
+											@toggle-collect="onToggleCollect"
 										/>
 									</div>
 								</div>
@@ -293,6 +295,14 @@ import http from './http-common';
 import { filterMajorLeagueBaseballTeams } from './lib/filterMlbTeams';
 import { fetchEnrichedRoster } from './lib/rosterLoad';
 import {
+	countCollectedOnRoster,
+	isCollected,
+	readAlbumStore,
+	rosterCompletenessFillPercent as albumCompletenessFillPercent,
+	toggleCollected,
+	writeAlbumStore
+} from './lib/albumCollection';
+import {
 	buildTeamPickerSections,
 	filterTeamPickerSections
 } from './lib/teamPickerSections';
@@ -315,6 +325,8 @@ const teamsLoading = ref(true);
 const teamsError = ref('');
 const liveRegionText = ref('');
 const rosterLoading = ref(false);
+/** Client-only album (localStorage); no backend. */
+const albumStore = ref(readAlbumStore(typeof localStorage !== 'undefined' ? localStorage : null));
 /** 'idle' | 'pulling' | 'faces' — while a roster request is in flight */
 const rosterLoadStage = ref('idle');
 const resultsSection = ref(null);
@@ -389,13 +401,26 @@ const teamsSectionsLayoutClass = computed(() => {
 });
 
 /** Full “album page” at 40 cards; bar is a collecting metaphor, not league totals. */
-const rosterCompletenessFillPercent = computed(() => {
-	const n = players.value.length;
-	if (n <= 0) {
-		return '0%';
+const rosterOwnedCount = computed(() =>
+	countCollectedOnRoster(
+		albumStore.value,
+		players.value.map((row) => row?.person?.id)
+	)
+);
+
+const rosterAlbumCountLabel = computed(() => {
+	const total = players.value.length;
+	if (total <= 0) {
+		return '0 cards';
 	}
-	return `${Math.min(100, (n / 40) * 100)}%`;
+	const owned = rosterOwnedCount.value;
+	const cardWord = total === 1 ? 'card' : 'cards';
+	return `${owned} of ${total} ${cardWord} in your album`;
 });
+
+const rosterCompletenessFillPercent = computed(() =>
+	albumCompletenessFillPercent(rosterOwnedCount.value, players.value.length)
+);
 
 const rosterLoadingHeadline = computed(() => {
 	if (rosterLoadStage.value === 'faces') {
@@ -799,6 +824,26 @@ watch(
 
 function setLiveMessage(message) {
 	liveRegionText.value = message;
+}
+
+function isPlayerCollected(personId) {
+	return isCollected(albumStore.value, personId);
+}
+
+function onToggleCollect(personId) {
+	if (personId == null) {
+		return;
+	}
+	const player = players.value.find((row) => row?.person?.id === personId);
+	const name = player?.person?.fullName || player?.playerInfo?.fullName || 'Player';
+	const result = toggleCollected(albumStore.value, personId, {
+		teamId: selectedTeamId.value
+	});
+	albumStore.value = result.store;
+	writeAlbumStore(result.store, typeof localStorage !== 'undefined' ? localStorage : null);
+	setLiveMessage(
+		result.collected ? `Added ${name} to your album.` : `Removed ${name} from your album.`
+	);
 }
 
 function setRosterLoadStage(stage) {
