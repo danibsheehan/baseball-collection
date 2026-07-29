@@ -47,7 +47,7 @@
 					</div>
 					<h1 class="album__search--title">Clubs</h1>
 					<p class="app__title-subtitle">
-						American / National loop — one club, one roster. Pick your side and complete your run.
+						Pick a club, flip the pasteboards, and collect a few into your album.
 					</p>
 				</div>
 			</div>
