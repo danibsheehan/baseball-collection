@@ -2,7 +2,7 @@
 
 # CARTOPHILES
 
-**Pasteboard album · Club checklist · Late-50s gum card chrome**
+**Card album · Clubs · Late-50s gum card chrome**
 
 </div>
 
@@ -26,7 +26,7 @@ Same public feed for teams, roster, and player lines — errors stay visible, no
 
 ## ⚾ PROGRAM NOTES — **what this is, fast**
 
-> **Vue 3** SPA: `App.vue` is the whole **album shell** (masthead, checklist rail, felt, binder, roster deal). **Axios** + cache adapter batch `GET /people?personIds=…` for card backs. **Global look** lives in `src/styles/tokens.css` (newsprint, letterpress rules, album layers, card sheen) and `src/styles/team-themes.css` (`[data-theme]` on each **BaseballCard**). **`prefers-reduced-motion: reduce`** skips pack Lottie load + flying peel; short opacity fades only — same spirit as the arcade README, but the volume knob is **stadium organ**, not neon.
+> **Vue 3** SPA: `App.vue` is the whole **album shell** (masthead, clubs rail, felt, binder, roster deal). **Axios** + cache adapter batch `GET /people?personIds=…` for card backs. **Global look** lives in `src/styles/tokens.css` (newsprint, letterpress rules, album layers, card sheen) and `src/styles/team-themes.css` (`[data-theme]` on each **BaseballCard**). **`prefers-reduced-motion: reduce`** skips pack Lottie load + flying peel; short opacity fades only — same spirit as the arcade README, but the volume knob is **stadium organ**, not neon.
 >
 > **Dev** hits the API through **same-origin** `/teams` and `/people` via Vite → Express. **Production / Pages** can point `VITE_API_BASE` straight at MLB when CORS allows.
 
@@ -78,9 +78,9 @@ Per-franchise caps and fields: `--theme-*` in `src/styles/team-themes.css`. **Up
 
 | TAG | WHAT HAPPENS |
 | --- | ------------ |
-| **CLUB CHECKLIST** | MLB teams filtered to `sport.name === 'Major League Baseball'`; AL / NL sections + search; per-club album count badges |
-| **SHAREABLE CLUB** | `?team=<teamCode>` deep links (History API); refresh / share / back-forward restore the sheet |
-| **LOCAL ALBUM** | Collect pasteboards in the browser (`localStorage`); completeness is owned vs roster; Full sheet / In album filter |
+| **CLUBS** | MLB teams filtered to `sport.name === 'Major League Baseball'`; AL / NL sections + search; per-club album count badges |
+| **SHAREABLE CLUB** | `?team=<teamCode>` deep links (History API); refresh / share / back-forward restore the club |
+| **LOCAL ALBUM** | Collect cards in the browser (`localStorage`); completeness is owned vs roster; All cards / In album filter |
 | **ROSTER GRID** | One **1959-style** card per active player; team crest + theme on the front |
 | **FLIP** | Click / keyboard flip; back pulls bat/ball stats lines from batched people payload |
 | **TILT + FOIL** | Pointer tilt on the scene; optional WebGL foil path on a single “chase” card target |
@@ -89,7 +89,7 @@ Per-franchise caps and fields: `--theme-*` in `src/styles/team-themes.css`. **Up
 | **CACHE** | Short-lived Axios cache adapter on the client |
 | **DARK NIGHT GAME** | `prefers-color-scheme: dark` retints `:root` in `tokens.css` (warmer cards under “lights”) |
 
-> **Product note:** Club URLs are shareable; your album stays on-device only (no account / database). Sharing `?team=bos` opens the Red Sox sheet — not someone else’s collection.
+> **Product note:** Club URLs are shareable; your album stays on-device only (no account / database). Sharing `?team=bos` opens the Red Sox cards — not someone else’s collection.
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓

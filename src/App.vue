@@ -43,11 +43,11 @@
 				</div>
 				<div class="app__title-text">
 					<div class="app__title-kicker-wrap">
-						<p class="app__title-kicker">Pasteboard album</p>
+						<p class="app__title-kicker">Card album</p>
 					</div>
-					<h1 class="album__search--title">Club checklist</h1>
+					<h1 class="album__search--title">Clubs</h1>
 					<p class="app__title-subtitle">
-						American / National loop — one club, one roster. Pick your side and complete your run.
+						Pick a club, flip the cards, and collect a few into your album.
 					</p>
 				</div>
 			</div>
@@ -60,7 +60,7 @@
 						<p v-if="teamsLoading" class="album__status" role="status">
 							<span class="album__loading-row">
 								<span class="album__loading-copy">
-									Working the league sheet
+									Working the league
 									<span class="album__type-caret" aria-hidden="true"></span>
 								</span>
 								<span class="album__print-dots" aria-hidden="true">
@@ -170,7 +170,7 @@
 								v-if="!rosterLoading && selectedTeamId === null"
 								class="album__results-placeholder"
 							>
-								Open the checklist — pick a club to start your run.
+								Pick a club to see the cards.
 							</p>
 							<div
 								v-if="selectedTeamId !== null"
@@ -214,7 +214,7 @@
 												:aria-pressed="rosterAlbumFilter === 'all' ? 'true' : 'false'"
 												@click="setRosterAlbumFilter('all')"
 											>
-												Full sheet
+												All cards
 											</button>
 											<button
 												type="button"
@@ -279,20 +279,20 @@
 									v-if="showAlbumFilterEmpty"
 									class="album__results-empty album__results-empty--filter"
 								>
-									No pasteboards in your album for the {{ teamName }} yet.
+									No cards in your album for the {{ teamName }} yet.
 									<button
 										type="button"
 										class="album__results-empty-action"
 										@click="setRosterAlbumFilter('all')"
 									>
-										Show full sheet
+										Show all cards
 									</button>
 								</p>
 								<p
 									v-else-if="!players.length"
 									class="album__results-empty"
 								>
-									No pasteboards on file for the {{ teamName }}.
+									No cards on file for the {{ teamName }}.
 								</p>
 								</div>
 								<Transition name="album-skel-fade">
@@ -365,7 +365,7 @@ const liveRegionText = ref('');
 const rosterLoading = ref(false);
 /** Client-only album (localStorage); no backend. */
 const albumStore = ref(readAlbumStore(typeof localStorage !== 'undefined' ? localStorage : null));
-/** 'all' | 'album' — which pasteboards to show for the open club. */
+/** 'all' | 'album' — which cards to show for the open club. */
 const rosterAlbumFilter = ref('all');
 /** 'idle' | 'pulling' | 'faces' — while a roster request is in flight */
 const rosterLoadStage = ref('idle');
@@ -443,7 +443,7 @@ const teamsSectionsLayoutClass = computed(() => {
 /** Owned counts per club from collect-time teamId tags. */
 const albumCountByTeamId = computed(() => countCollectedByTeamId(albumStore.value));
 
-/** Roster rows after Full sheet / In album filter. */
+/** Roster rows after All cards / In album filter. */
 const displayedPlayers = computed(() =>
 	filterRosterPlayersByAlbum(players.value, albumStore.value, rosterAlbumFilter.value)
 );
@@ -456,7 +456,7 @@ const showAlbumFilterEmpty = computed(
 		displayedPlayers.value.length === 0
 );
 
-/** Completeness uses the full club sheet; filter only changes which cards render. */
+/** Completeness uses the full club roster; filter only changes which cards render. */
 const rosterOwnedCount = computed(() =>
 	countCollectedOnRoster(
 		albumStore.value,
@@ -482,7 +482,7 @@ const rosterLoadingHeadline = computed(() => {
 	if (rosterLoadStage.value === 'faces') {
 		return 'Mounting portraits…';
 	}
-	return 'Pulling the club sheet…';
+	return 'Loading the roster…';
 });
 
 /** Placeholder card-backs while the roster / people requests run */
@@ -899,10 +899,10 @@ function setRosterAlbumFilter(next) {
 		setLiveMessage(
 			n > 0
 				? `Showing ${n} ${n === 1 ? 'card' : 'cards'} in your album for the ${teamName.value}.`
-				: `No pasteboards in your album for the ${teamName.value} yet.`
+				: `No cards in your album for the ${teamName.value} yet.`
 		);
 	} else {
-		setLiveMessage(`Showing the full sheet for the ${teamName.value}.`);
+		setLiveMessage(`Showing all cards for the ${teamName.value}.`);
 	}
 }
 
@@ -963,7 +963,7 @@ async function selectTeam(team, opts = {}) {
 	}
 
 	players.value = [];
-	setLiveMessage(`Pulling the sheet for ${team.name}.`);
+	setLiveMessage(`Loading cards for ${team.name}.`);
 	setRosterLoadStage('pulling');
 	setRosterLoading(true);
 
@@ -980,7 +980,7 @@ async function selectTeam(team, opts = {}) {
 		}
 		players.value = nextPlayers;
 		if (empty) {
-			setLiveMessage(`No pasteboards listed for ${team.name}.`);
+			setLiveMessage(`No cards listed for ${team.name}.`);
 		} else {
 			setLiveMessage(
 				`Showing ${nextPlayers.length} ${nextPlayers.length === 1 ? 'card' : 'cards'} for ${team.name}.`
@@ -991,7 +991,7 @@ async function selectTeam(team, opts = {}) {
 			return;
 		}
 		players.value = [];
-		setLiveMessage(`Could not load the sheet for ${team.name}.`);
+		setLiveMessage(`Could not load cards for ${team.name}.`);
 	} finally {
 		if (requestId === rosterRequestId) {
 			setRosterLoading(false);
@@ -1020,7 +1020,7 @@ function syncTeamFromLocation(opts = {}) {
 			rosterRequestId += 1;
 			clearSelectedTeam();
 			setRosterLoading(false);
-			setLiveMessage('Club cleared. Pick one from the checklist to see the pasteboards.');
+			setLiveMessage('Club cleared. Pick a club to see the cards.');
 		}
 		return;
 	}
@@ -1050,7 +1050,7 @@ onMounted(() => {
 	teams.value = [];
 	teamsLoading.value = true;
 	teamsError.value = '';
-	liveRegionText.value = 'Opening the league sheet.';
+	liveRegionText.value = 'Loading clubs.';
 	http.get('teams')
 		.then((response) => {
 			const data = filterMajorLeagueBaseballTeams(response.data.teams || []).sort(
@@ -1061,13 +1061,13 @@ onMounted(() => {
 			const deepLinkCode = readTeamCodeFromLocation();
 			const deepLinkTeam = deepLinkCode ? findTeamByTeamCode(data, deepLinkCode) : undefined;
 			if (deepLinkTeam) {
-				liveRegionText.value = `Opening the sheet for ${deepLinkTeam.name}.`;
+				liveRegionText.value = `Loading cards for ${deepLinkTeam.name}.`;
 			} else if (deepLinkCode) {
 				liveRegionText.value = `No club on file for “${deepLinkCode}”.`;
 			} else {
 				liveRegionText.value =
 					data.length > 0
-						? `${data.length} clubs on file. Pick one from the checklist to see the pasteboards.`
+						? `${data.length} clubs on file. Pick a club to see the cards.`
 						: 'No teams available.';
 			}
 		})
@@ -1089,7 +1089,7 @@ onMounted(() => {
 <style>
 /*
  * Typography: tokens.css — Newsreader (UI body), Oswald (chrome labels), Bebas Neue (display h1/h2),
- * Archivo (cards / pasteboard type).
+ * Archivo (card type).
  * Motion: pack unwrap + card deal only; masthead / chrome / roster stay static (print + broadcast).
  */
 html {
@@ -2903,9 +2903,10 @@ h2 {
 }
 
 .album__roster-filter-btn {
-	background: color-mix(in srgb, var(--color-surface-elevated, #f7f3ea) 92%, transparent);
-	border: 1px solid color-mix(in srgb, var(--color-text) 28%, transparent);
-	color: var(--color-text-muted);
+	/* Body text on elevated stock — aim for WCAG AA normal text (≥4.5:1). */
+	background: var(--color-surface-elevated);
+	border: 1px solid color-mix(in srgb, var(--color-text) 35%, transparent);
+	color: var(--color-text);
 	cursor: pointer;
 	font-family: var(--font-ui-heading);
 	font-size: 0.6875rem;
@@ -2933,14 +2934,24 @@ h2 {
 }
 
 .album__roster-filter-btn[aria-pressed='true'] {
-	background: color-mix(in srgb, var(--theme-heading, var(--color-ui-crimson)) 14%, var(--color-surface-elevated, #f7f3ea));
-	border-color: var(--theme-heading, var(--color-ui-crimson));
-	color: var(--theme-heading, var(--color-ui-crimson));
+	/* Selected via fill + weight + border — keep ink text for contrast (not crimson-on-cream). */
+	background: var(--color-surface-selected);
+	border-color: var(--color-ui-ink);
+	color: var(--color-text);
+	font-weight: 700;
 }
 
 @media (prefers-color-scheme: dark) {
 	.album__roster-filter-btn {
-		background: color-mix(in srgb, var(--color-surface-elevated, #1c1917) 80%, transparent);
+		background: var(--color-surface-elevated);
+		border-color: color-mix(in srgb, var(--color-text) 40%, transparent);
+		color: var(--color-text);
+	}
+
+	.album__roster-filter-btn[aria-pressed='true'] {
+		background: var(--color-surface-selected);
+		border-color: var(--color-ui-ink);
+		color: var(--color-text);
 	}
 }
 
