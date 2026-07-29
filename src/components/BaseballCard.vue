@@ -4,18 +4,6 @@
 			class="card__shell"
 			:class="{ 'card__shell--collected': collected }"
 		>
-			<button
-				type="button"
-				class="card__collect"
-				:aria-pressed="collected ? 'true' : 'false'"
-				:aria-label="collectAriaLabel"
-				@click="onCollectClick"
-			>
-				<span class="card__collect-mark" aria-hidden="true">{{ collected ? 'IN' : '+' }}</span>
-				<span class="card__collect-label" aria-hidden="true">{{
-					collected ? 'Album' : 'Collect'
-				}}</span>
-			</button>
 			<div
 				ref="sceneRef"
 				class="card__scene"
@@ -62,6 +50,18 @@
 					/>
 				</div>
 			</div>
+			<button
+				type="button"
+				class="card__collect"
+				:aria-pressed="collected ? 'true' : 'false'"
+				:aria-label="collectAriaLabel"
+				@click="onCollectClick"
+			>
+				<span class="card__collect-mark" aria-hidden="true">{{ collected ? 'IN' : '+' }}</span>
+				<span class="card__collect-label" aria-hidden="true">{{
+					collected ? 'Album' : 'Collect'
+				}}</span>
+			</button>
 		</div>
 	</div>
 </template>
@@ -216,7 +216,7 @@ function onCollectClick() {
  * mis-composites 3D flips with this, remove .card__defer’s content-visibility.
  */
 .card__defer {
-	contain-intrinsic-block-size: 336px; /* ~5:6 at 280px max width */
+	contain-intrinsic-block-size: 372px; /* ~5:6 card + collect row */
 	/* auto skipped subtree decode/paint in some browsers with 3D cards + external images */
 	content-visibility: visible;
 	max-width: 280px;
@@ -224,14 +224,18 @@ function onCollectClick() {
 }
 
 .card__shell {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
 	position: relative;
 	width: 100%;
 }
 
 .card__collect {
 	align-items: center;
-	background: color-mix(in srgb, var(--color-surface-elevated, #f7f3ea) 88%, var(--color-ui-crimson, #9b1c1c));
-	border: 1px solid color-mix(in srgb, var(--color-text) 28%, transparent);
+	align-self: stretch;
+	background: var(--color-surface-elevated);
+	border: 1px solid color-mix(in srgb, var(--color-text) 35%, transparent);
 	border-radius: 0;
 	box-shadow: 0 1px 0 color-mix(in srgb, var(--color-ink, #1c1917) 12%, transparent);
 	color: var(--color-text);
@@ -241,14 +245,13 @@ function onCollectClick() {
 	font-size: 0.625rem;
 	font-weight: 700;
 	gap: 0.28rem;
+	justify-content: center;
 	letter-spacing: 0.08em;
 	line-height: 1;
-	padding: 0.35rem 0.45rem;
-	position: absolute;
-	right: 0.35rem;
+	padding: 0.4rem 0.5rem;
+	position: relative;
 	text-transform: uppercase;
-	top: 0.35rem;
-	z-index: 4;
+	z-index: 1;
 }
 
 .card__collect:focus {
@@ -262,9 +265,10 @@ function onCollectClick() {
 }
 
 .card__collect[aria-pressed='true'] {
-	background: color-mix(in srgb, var(--theme-heading, var(--color-ui-crimson)) 18%, var(--color-surface-elevated, #f7f3ea));
-	border-color: var(--theme-heading, var(--color-ui-crimson));
-	color: var(--theme-heading, var(--color-ui-crimson));
+	background: var(--color-surface-selected);
+	border-color: var(--color-ui-ink);
+	color: var(--color-text);
+	font-weight: 700;
 }
 
 .card__collect-mark {
@@ -273,7 +277,7 @@ function onCollectClick() {
 }
 
 .card__collect-label {
-	max-width: 4.5rem;
+	max-width: 6rem;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
