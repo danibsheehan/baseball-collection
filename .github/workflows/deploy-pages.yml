@@ -27,7 +27,7 @@ jobs:
         env:
           VITE_API_BASE: https://statsapi.mlb.com/api/v1
           VITE_PUBLIC_PATH: /${{ github.event.repository.name }}/
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
