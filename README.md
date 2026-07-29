@@ -64,6 +64,9 @@ Per-franchise caps and fields: `--theme-*` in `src/styles/team-themes.css`. **Up
 | **BOOT** | `main.ts` — mounts Vue, imports global CSS |
 | **GLOBAL LOOK** | `src/styles/tokens.css` (stock, rules, album, card polish); `src/styles/team-themes.css` (franchise themes) |
 | **TEAMS** | `components/Team.vue`; `lib/filterMlbTeams.ts`; `lib/teamPickerSections.ts` |
+| **CLUB URL** | `lib/teamUrlState.ts` — `?team=` History API deep links |
+| **LOCAL ALBUM** | `lib/albumCollection.ts` — `localStorage` collect + owned-vs-roster completeness |
+| **ROSTER LOAD** | `lib/rosterLoad.ts` — enriched roster fetch for the deal |
 | **CARDS** | `components/BaseballCard.vue`, `CardFront.vue`, `CardBack.vue`, `CardFoilGl.vue` + `Player*.vue` |
 | **MOTION / FX** | `lib/useCardTilt.ts`, `lib/useBinderPennantParallax.ts`, `lib/cardFoilBridge.ts`, `cardFoilDom.ts`, `cardFoilWebgl.ts` |
 | **PACK / DEAL** | `components/AlbumPackLottie.vue`; deal + roster animation orchestration in `App.vue` |
