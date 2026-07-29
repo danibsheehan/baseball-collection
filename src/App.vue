@@ -170,7 +170,7 @@
 								v-if="!rosterLoading && selectedTeamId === null"
 								class="album__results-placeholder"
 							>
-								Pick a club to start your run.
+								Pick a club to open the sheet.
 							</p>
 							<div
 								v-if="selectedTeamId !== null"
