@@ -60,7 +60,7 @@
 						<p v-if="teamsLoading" class="album__status" role="status">
 							<span class="album__loading-row">
 								<span class="album__loading-copy">
-									Working the league sheet
+									Working the league
 									<span class="album__type-caret" aria-hidden="true"></span>
 								</span>
 								<span class="album__print-dots" aria-hidden="true">
@@ -170,7 +170,7 @@
 								v-if="!rosterLoading && selectedTeamId === null"
 								class="album__results-placeholder"
 							>
-								Pick a club to open the sheet.
+								Pick a club to see the cards.
 							</p>
 							<div
 								v-if="selectedTeamId !== null"
@@ -214,7 +214,7 @@
 												:aria-pressed="rosterAlbumFilter === 'all' ? 'true' : 'false'"
 												@click="setRosterAlbumFilter('all')"
 											>
-												Full sheet
+												All cards
 											</button>
 											<button
 												type="button"
@@ -285,7 +285,7 @@
 										class="album__results-empty-action"
 										@click="setRosterAlbumFilter('all')"
 									>
-										Show full sheet
+										Show all cards
 									</button>
 								</p>
 								<p
@@ -443,7 +443,7 @@ const teamsSectionsLayoutClass = computed(() => {
 /** Owned counts per club from collect-time teamId tags. */
 const albumCountByTeamId = computed(() => countCollectedByTeamId(albumStore.value));
 
-/** Roster rows after Full sheet / In album filter. */
+/** Roster rows after All cards / In album filter. */
 const displayedPlayers = computed(() =>
 	filterRosterPlayersByAlbum(players.value, albumStore.value, rosterAlbumFilter.value)
 );
@@ -456,7 +456,7 @@ const showAlbumFilterEmpty = computed(
 		displayedPlayers.value.length === 0
 );
 
-/** Completeness uses the full club sheet; filter only changes which cards render. */
+/** Completeness uses the full club roster; filter only changes which cards render. */
 const rosterOwnedCount = computed(() =>
 	countCollectedOnRoster(
 		albumStore.value,
@@ -482,7 +482,7 @@ const rosterLoadingHeadline = computed(() => {
 	if (rosterLoadStage.value === 'faces') {
 		return 'Mounting portraits…';
 	}
-	return 'Pulling the club sheet…';
+	return 'Loading the roster…';
 });
 
 /** Placeholder card-backs while the roster / people requests run */
@@ -902,7 +902,7 @@ function setRosterAlbumFilter(next) {
 				: `No cards in your album for the ${teamName.value} yet.`
 		);
 	} else {
-		setLiveMessage(`Showing the full sheet for the ${teamName.value}.`);
+		setLiveMessage(`Showing all cards for the ${teamName.value}.`);
 	}
 }
 
@@ -963,7 +963,7 @@ async function selectTeam(team, opts = {}) {
 	}
 
 	players.value = [];
-	setLiveMessage(`Pulling the sheet for ${team.name}.`);
+	setLiveMessage(`Loading cards for ${team.name}.`);
 	setRosterLoadStage('pulling');
 	setRosterLoading(true);
 
@@ -991,7 +991,7 @@ async function selectTeam(team, opts = {}) {
 			return;
 		}
 		players.value = [];
-		setLiveMessage(`Could not load the sheet for ${team.name}.`);
+		setLiveMessage(`Could not load cards for ${team.name}.`);
 	} finally {
 		if (requestId === rosterRequestId) {
 			setRosterLoading(false);
@@ -1050,7 +1050,7 @@ onMounted(() => {
 	teams.value = [];
 	teamsLoading.value = true;
 	teamsError.value = '';
-	liveRegionText.value = 'Opening the league sheet.';
+	liveRegionText.value = 'Loading clubs.';
 	http.get('teams')
 		.then((response) => {
 			const data = filterMajorLeagueBaseballTeams(response.data.teams || []).sort(
@@ -1061,7 +1061,7 @@ onMounted(() => {
 			const deepLinkCode = readTeamCodeFromLocation();
 			const deepLinkTeam = deepLinkCode ? findTeamByTeamCode(data, deepLinkCode) : undefined;
 			if (deepLinkTeam) {
-				liveRegionText.value = `Opening the sheet for ${deepLinkTeam.name}.`;
+				liveRegionText.value = `Loading cards for ${deepLinkTeam.name}.`;
 			} else if (deepLinkCode) {
 				liveRegionText.value = `No club on file for “${deepLinkCode}”.`;
 			} else {

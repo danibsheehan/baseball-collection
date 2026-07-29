@@ -47,7 +47,7 @@ async function fetchPeopleByIds(http: RosterHttp, personIds: number[]) {
  * Load a club roster and batch-enrich with `/people` (same path as the checklist chips).
  * Rejects when the roster request fails; people failures degrade to empty `playerInfo`.
  *
- * @param opts.onRosterLoaded — called after a non-empty roster sheet arrives (before people batch)
+ * @param opts.onRosterLoaded — called after a non-empty roster arrives (before people batch)
  */
 export async function fetchEnrichedRoster(
 	http: RosterHttp,
