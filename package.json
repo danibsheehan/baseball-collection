@@ -11,7 +11,7 @@
     "build": "vite build",
     "build:report": "vite build && node scripts/bundle-report.mjs",
     "preview": "vite preview",
-    "lint": "eslint src --ext .vue,.ts",
+    "lint": "eslint src",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -30,61 +30,21 @@
     "vue": "^3.5.13"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@typescript-eslint/parser": "^8.65.0",
     "@vitejs/plugin-vue": "^6.0.7",
     "@vitest/coverage-v8": "^4.1.10",
     "@vue/test-utils": "^2.4.11",
     "autoprefixer": "^10.4.20",
     "concurrently": "^10.0.4",
-    "eslint": "^8.57.1",
+    "eslint": "^10.8.0",
     "eslint-plugin-vue": "^10.10.0",
+    "globals": "^17.9.0",
     "jsdom": "^30.0.1",
     "typescript": "^5.9.3",
     "vite": "^8.1.5",
     "vitest": "^4.1.8",
     "vue-eslint-parser": "^10.4.1"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "browser": true,
-      "es2022": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "parser": "vue-eslint-parser",
-    "parserOptions": {
-      "ecmaVersion": 2022,
-      "sourceType": "module"
-    },
-    "rules": {
-      "no-console": "off",
-      "vue/multi-word-component-names": "off"
-    },
-    "overrides": [
-      {
-        "files": [
-          "**/*.ts",
-          "**/*.tsx"
-        ],
-        "parser": "@typescript-eslint/parser",
-        "parserOptions": {
-          "ecmaVersion": 2022,
-          "sourceType": "module"
-        }
-      },
-      {
-        "files": [
-          "**/*.d.ts"
-        ],
-        "parser": "@typescript-eslint/parser",
-        "rules": {
-          "no-unused-vars": "off"
-        }
-      }
-    ]
   },
   "postcss": {
     "plugins": {
