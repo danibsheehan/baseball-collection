@@ -42,7 +42,7 @@ Before writing, read the relevant files:
 - **API Docs**: Read the specific file(s) containing the functions/types to document
 - **Inline Comments**: Read the specific functions or blocks to annotate
 
-Use `bash_tool` to explore if needed:
+Use the shell to explore if needed:
 ```bash
 # JS/TS: find exported functions/types
 grep -rn "^export " src/ --include="*.ts" | head -40
@@ -71,12 +71,13 @@ Then produce the output following those guidelines exactly.
 
 ## Step 4: Deliver Output
 
-- **README**: Write to `/mnt/user-data/outputs/README.md` and call `present_files`
-- **API Docs**: Write to `/mnt/user-data/outputs/<filename>` preserving original filename, call `present_files`
-- **Inline Comments**: Write to `/mnt/user-data/outputs/<filename>` with comments added inline, call `present_files`
-- If multiple files: write each separately, present all at once
+Write directly into the repo at the file's natural location, then show the result in chat:
+
+- **README**: Edit `README.md` at the repo root in place (don't overwrite unrelated sections).
+- **API Docs**: Edit the JSDoc/GoDoc comments into the source file(s) being documented.
+- **Inline Comments**: Edit the annotated comments into the source file(s) in place.
+- If multiple files: edit each, then summarize all changes together.
 
 Always tell the user:
-1. What was generated
-2. Which files to copy where in their repo
-3. Any gaps (e.g., "I couldn't find a description for `X` — you may want to fill that in")
+1. What was generated and which files changed
+2. Any gaps (e.g., "I couldn't find a description for `X` — you may want to fill that in")
