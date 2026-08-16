@@ -68,6 +68,10 @@ symlink to the same files, auto-invoked by either tool based on the task):
 
 ## Constraints — do not
 
+- **Add or remove a `.cursor/skills/*/SKILL.md` directory without updating both
+  `.cursor/rules/baseball-collection.mdc`'s Workflow skills list and this file's skills list in
+  the same change** — these are two manually maintained copies of the same list; nothing else
+  checks them for drift.
 - **Concatenate raw request input into MLB proxy paths.** Build `relativePath` from fixed
   templates plus validated params only — see `api-proxy-hardening` (SSRF risk otherwise).
 - **Assume `server.js` exists in production.** GitHub Pages serves the SPA statically with no
