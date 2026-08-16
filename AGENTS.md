@@ -66,6 +66,11 @@ symlink to the same files, auto-invoked by either tool based on the task):
 - `bundle-performance` — size report, Lottie/chunk weight
 - `doc-writer` — README / JSDoc / inline comments (keep palette tables in sync with
   `tokens.css`)
+- `dependabot-triage` — classify open Dependabot PRs that auto-merge didn't already handle
+  (majors, CI-red); merges only what's explicitly named
+- `pr-summary-draft` — drafts a why-first PR Summary / How-to-verify from the actual diff
+- `coverage-gap-diagnosis` — names the specific untested branches for files changed on this
+  branch, not just a bare percentage
 
 ## Constraints — do not
 
