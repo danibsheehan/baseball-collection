@@ -33,11 +33,11 @@ npm run test:coverage
 npm run build
 ```
 
-| Check | Why |
-|-------|-----|
-| `lint` | ESLint on `src` (`.vue`, `.ts`) — same gate as **`.github/workflows/pull-request-tests.yml`** |
-| `test:coverage` | Matches CI; enforces Vitest thresholds in `vite.config.mjs` |
-| `build` | Matches CI (Pages-shaped `VITE_*` in the workflow); catches Vite/bundle breaks before Pages or Node hosting |
+| Check           | Why                                                                                                         |
+| --------------- | ----------------------------------------------------------------------------------------------------------- |
+| `lint`          | ESLint on `src` (`.vue`, `.ts`) — same gate as **`.github/workflows/pull-request-tests.yml`**               |
+| `test:coverage` | Matches CI; enforces Vitest thresholds in `vite.config.mjs`                                                 |
+| `build`         | Matches CI (Pages-shaped `VITE_*` in the workflow); catches Vite/bundle breaks before Pages or Node hosting |
 
 Faster while iterating (not a substitute before PR): `npm run test:run`.
 

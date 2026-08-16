@@ -1,47 +1,38 @@
 <template>
-	<button
-		type="button"
-		class="team"
-		:class="{ 'team--selected': selected }"
-		:data-theme="theme || undefined"
-		:aria-current="selected ? 'true' : undefined"
-		@click="onSelect"
-	>
-		<span class="team__inner">
-			<span class="team__logo" aria-hidden="true"></span>
-			<span class="team__name">{{ team.name }}</span>
-			<span
-				v-if="albumCount > 0"
-				class="visually-hidden"
-			>
-				, {{ albumCount }} in your album
-			</span>
-		</span>
-		<span
-			v-if="albumCount > 0"
-			class="team__album-count"
-			aria-hidden="true"
-		>
-			{{ albumCount }}
-		</span>
-	</button>
+  <button
+    type="button"
+    class="team"
+    :class="{ 'team--selected': selected }"
+    :data-theme="theme || undefined"
+    :aria-current="selected ? 'true' : undefined"
+    @click="onSelect"
+  >
+    <span class="team__inner">
+      <span class="team__logo" aria-hidden="true"></span>
+      <span class="team__name">{{ team.name }}</span>
+      <span v-if="albumCount > 0" class="visually-hidden"> , {{ albumCount }} in your album </span>
+    </span>
+    <span v-if="albumCount > 0" class="team__album-count" aria-hidden="true">
+      {{ albumCount }}
+    </span>
+  </button>
 </template>
 
 <script setup>
 import { computed } from 'vue';
 
 const props = defineProps({
-	team: {
-		type: Object
-	},
-	selected: {
-		type: Boolean,
-		default: false
-	},
-	albumCount: {
-		type: Number,
-		default: 0
-	}
+  team: {
+    type: Object,
+  },
+  selected: {
+    type: Boolean,
+    default: false,
+  },
+  albumCount: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const emit = defineEmits(['select']);
@@ -49,269 +40,282 @@ const emit = defineEmits(['select']);
 const theme = computed(() => props.team.teamCode?.toLowerCase() || '');
 
 function onSelect() {
-	emit('select', props.team);
+  emit('select', props.team);
 }
 </script>
 
 <style scoped>
 .team {
-	align-items: center;
-	background-color: var(--color-team-button);
-	border: 2px solid var(--color-team-button-border);
-	border-radius: 0;
-	color: var(--color-team-button-text);
-	cursor: pointer;
-	display: flex;
-	font-size: clamp(0.6875rem, 1.65vw, 0.9375rem);
-	font-weight: 600;
-	height: 100%;
-	justify-content: center;
-	min-height: 5.5rem;
-	min-width: 0;
-	padding: var(--space-4) var(--space-3);
-	position: relative;
-	text-align: center;
-	transition:
-		border-color 0.16s ease,
-		background-color 0.16s ease,
-		box-shadow 0.16s ease;
-	width: 100%;
+  align-items: center;
+  background-color: var(--color-team-button);
+  border: 2px solid var(--color-team-button-border);
+  border-radius: 0;
+  color: var(--color-team-button-text);
+  cursor: pointer;
+  display: flex;
+  font-size: clamp(0.6875rem, 1.65vw, 0.9375rem);
+  font-weight: 600;
+  height: 100%;
+  justify-content: center;
+  min-height: 5.5rem;
+  min-width: 0;
+  padding: var(--space-4) var(--space-3);
+  position: relative;
+  text-align: center;
+  transition:
+    border-color 0.16s ease,
+    background-color 0.16s ease,
+    box-shadow 0.16s ease;
+  width: 100%;
 }
 
 .team:focus {
-	outline: none;
+  outline: none;
 }
 
 .team:focus-visible {
-	box-shadow:
-		0 0 0 3px var(--color-focus-ring),
-		0 0 0 5px var(--color-ui-gum);
-	outline: 2px solid transparent;
+  box-shadow:
+    0 0 0 3px var(--color-focus-ring),
+    0 0 0 5px var(--color-ui-gum);
+  outline: 2px solid transparent;
 }
 
 /* Rubber-stamp / keycap press — scale inner so App.vue stamp rotation stays intact */
 .team:active .team__inner {
-	transform: scale(0.98);
+  transform: scale(0.98);
 }
 
 .team:not(.team--selected):active {
-	border-color: color-mix(in srgb, var(--color-text) 24%, var(--color-team-button-border));
+  border-color: color-mix(in srgb, var(--color-text) 24%, var(--color-team-button-border));
 }
 
 .team.team--selected:active {
-	border-color: color-mix(
-		in srgb,
-		var(--theme-logo-border, var(--color-team-button-border)) 58%,
-		var(--color-text) 42%
-	);
+  border-color: color-mix(
+    in srgb,
+    var(--theme-logo-border, var(--color-team-button-border)) 58%,
+    var(--color-text) 42%
+  );
 }
 
 .team--selected {
-	background-color: var(--color-team-chip-selected);
-	border-color: var(--theme-logo-border, var(--color-team-button-border));
-	border-width: 2px;
-	padding: var(--space-3) 0.625rem;
+  background-color: var(--color-team-chip-selected);
+  border-color: var(--theme-logo-border, var(--color-team-button-border));
+  border-width: 2px;
+  padding: var(--space-3) 0.625rem;
 }
 
 @supports (background-color: color-mix(in srgb, white, black)) {
-	.team--selected {
-		background-color: color-mix(
-			in srgb,
-			var(--theme-logo-border, var(--color-accent)) 14%,
-			var(--color-team-selected-mix-base)
-		);
-		box-shadow: inset 0 0 0 1px
-			color-mix(in srgb, var(--theme-logo-border, var(--color-accent)) 35%, transparent);
-	}
+  .team--selected {
+    background-color: color-mix(
+      in srgb,
+      var(--theme-logo-border, var(--color-accent)) 14%,
+      var(--color-team-selected-mix-base)
+    );
+    box-shadow: inset 0 0 0 1px
+      color-mix(in srgb, var(--theme-logo-border, var(--color-accent)) 35%, transparent);
+  }
 }
 
 /* Shelf-tag glint: thin inset ring opacity pulse (pauses on hover so it stays calm under the pointer) */
 .team.team--selected::after {
-	animation: team-shelf-tag-pulse 2s ease-in-out infinite;
-	box-shadow: inset 0 0 0 1px
-		color-mix(in srgb, var(--theme-logo-border, var(--color-accent)) 72%, transparent);
-	content: '';
-	inset: 0;
-	opacity: 0.42;
-	pointer-events: none;
-	position: absolute;
-	z-index: 1;
+  animation: team-shelf-tag-pulse 2s ease-in-out infinite;
+  box-shadow: inset 0 0 0 1px
+    color-mix(in srgb, var(--theme-logo-border, var(--color-accent)) 72%, transparent);
+  content: '';
+  inset: 0;
+  opacity: 0.42;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
 }
 
 @keyframes team-shelf-tag-pulse {
-	0%,
-	100% {
-		opacity: 0.28;
-	}
+  0%,
+  100% {
+    opacity: 0.28;
+  }
 
-	50% {
-		opacity: 0.88;
-	}
+  50% {
+    opacity: 0.88;
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {
-	.team.team--selected:hover::after {
-		animation-play-state: paused;
-		opacity: 0.55;
-	}
+  .team.team--selected:hover::after {
+    animation-play-state: paused;
+    opacity: 0.55;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.team.team--selected::after {
-		animation: none;
-		opacity: 0.48;
-	}
+  .team.team--selected::after {
+    animation: none;
+    opacity: 0.48;
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {
-	.team:not(.team--selected):hover {
-		background-color: var(--color-team-button-hover);
-		border-color: var(--theme-logo-border, var(--color-team-button-border));
-	}
+  .team:not(.team--selected):hover {
+    background-color: var(--color-team-button-hover);
+    border-color: var(--theme-logo-border, var(--color-team-button-border));
+  }
 
-	.team:not(.team--selected):hover:not(:focus-visible) {
-		box-shadow: var(--shadow-team-hover);
-	}
+  .team:not(.team--selected):hover:not(:focus-visible) {
+    box-shadow: var(--shadow-team-hover);
+  }
 
-	/* Omit box-shadow so .team--selected’s inset ring is not replaced. */
-	.team.team--selected:hover {
-		background-color: var(--color-team-chip-selected-hover);
-	}
+  /* Omit box-shadow so .team--selected’s inset ring is not replaced. */
+  .team.team--selected:hover {
+    background-color: var(--color-team-chip-selected-hover);
+  }
 }
 
 @supports (background-color: color-mix(in srgb, white, black)) {
-	@media (hover: hover) and (pointer: fine) {
-		.team:not(.team--selected):hover {
-			background-color: color-mix(
-				in srgb,
-				var(--theme-logo-border, var(--color-accent)) 9%,
-				var(--color-team-selected-mix-base)
-			);
-		}
+  @media (hover: hover) and (pointer: fine) {
+    .team:not(.team--selected):hover {
+      background-color: color-mix(
+        in srgb,
+        var(--theme-logo-border, var(--color-accent)) 9%,
+        var(--color-team-selected-mix-base)
+      );
+    }
 
-		.team:not(.team--selected):hover:not(:focus-visible) {
-			box-shadow: 0 1px 3px
-				color-mix(in srgb, var(--theme-logo-border, var(--color-team-button-border)) 10%, transparent);
-		}
+    .team:not(.team--selected):hover:not(:focus-visible) {
+      box-shadow: 0 1px 3px
+        color-mix(
+          in srgb,
+          var(--theme-logo-border, var(--color-team-button-border)) 10%,
+          transparent
+        );
+    }
 
-		.team.team--selected:hover {
-			background-color: color-mix(
-				in srgb,
-				var(--theme-logo-border, var(--color-accent)) 20%,
-				var(--color-team-selected-mix-base)
-			);
-		}
+    .team.team--selected:hover {
+      background-color: color-mix(
+        in srgb,
+        var(--theme-logo-border, var(--color-accent)) 20%,
+        var(--color-team-selected-mix-base)
+      );
+    }
 
-		.team.team--selected:hover:not(:focus-visible) {
-			box-shadow:
-				0 1px 4px
-					color-mix(in srgb, var(--theme-logo-border, var(--color-team-button-border)) 12%, transparent),
-				inset 0 0 0 1px
-					color-mix(in srgb, var(--theme-logo-border, var(--color-accent)) 38%, transparent);
-		}
-	}
+    .team.team--selected:hover:not(:focus-visible) {
+      box-shadow:
+        0 1px 4px
+          color-mix(
+            in srgb,
+            var(--theme-logo-border, var(--color-team-button-border)) 12%,
+            transparent
+          ),
+        inset 0 0 0 1px
+          color-mix(in srgb, var(--theme-logo-border, var(--color-accent)) 38%, transparent);
+    }
+  }
 }
 
 .team__inner {
-	align-items: center;
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-3);
-	justify-content: center;
-	min-width: 0;
-	position: relative;
-	transition: transform 0.14s cubic-bezier(0.34, 1, 0.36, 1);
-	width: 100%;
-	z-index: 2;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  justify-content: center;
+  min-width: 0;
+  position: relative;
+  transition: transform 0.14s cubic-bezier(0.34, 1, 0.36, 1);
+  width: 100%;
+  z-index: 2;
 }
 
 .team__name {
-	flex: 1 1 auto;
-	letter-spacing: 0.02em;
-	line-height: 1.25;
-	min-width: 0;
-	overflow-wrap: anywhere;
+  flex: 1 1 auto;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 /* Sprite math is authored for a 30×30 viewport; scale from center so logos stay centered in the circle. */
 .team__logo {
-	background: var(--color-team-logo-well);
-	border-radius: 50%;
-	box-shadow: 0 0 0 2px var(--theme-logo-border, var(--color-team-button-border));
-	flex-shrink: 0;
-	height: 36px;
-	overflow: hidden;
-	position: relative;
-	width: 36px;
+  background: var(--color-team-logo-well);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--theme-logo-border, var(--color-team-button-border));
+  flex-shrink: 0;
+  height: 36px;
+  overflow: hidden;
+  position: relative;
+  width: 36px;
 }
 
 .team__logo::before {
-	background-image: url('../assets/mlb-logos-1.0.svg');
-	background-position: var(--theme-logo-bg-pos, 0 0);
-	background-repeat: no-repeat;
-	background-size: 900px 900px;
-	content: '';
-	height: 30px;
-	left: 50%;
-	position: absolute;
-	top: 50%;
-	transform: translate(-50%, -50%) scale(calc(36 / 30));
-	width: 30px;
+  background-image: url('../assets/mlb-logos-1.0.svg');
+  background-position: var(--theme-logo-bg-pos, 0 0);
+  background-repeat: no-repeat;
+  background-size: 900px 900px;
+  content: '';
+  height: 30px;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(calc(36 / 30));
+  width: 30px;
 }
 
 @media (max-width: 480px) {
-	.team {
-		font-size: 12px;
-		justify-content: flex-start;
-		min-height: 44px;
-		padding: var(--space-3) 0.625rem;
-		text-align: left;
-	}
+  .team {
+    font-size: 12px;
+    justify-content: flex-start;
+    min-height: 44px;
+    padding: var(--space-3) 0.625rem;
+    text-align: left;
+  }
 
-	.team__inner {
-		flex-direction: row;
-		gap: var(--space-2);
-		justify-content: flex-start;
-	}
+  .team__inner {
+    flex-direction: row;
+    gap: var(--space-2);
+    justify-content: flex-start;
+  }
 
-	.team__logo {
-		box-shadow: 0 0 0 1px var(--theme-logo-border, var(--color-team-button-border));
-		height: 26px;
-		width: 26px;
-	}
+  .team__logo {
+    box-shadow: 0 0 0 1px var(--theme-logo-border, var(--color-team-button-border));
+    height: 26px;
+    width: 26px;
+  }
 
-	.team__logo::before {
-		transform: translate(-50%, -50%) scale(calc(26 / 30));
-	}
+  .team__logo::before {
+    transform: translate(-50%, -50%) scale(calc(26 / 30));
+  }
 }
 
 .team__album-count {
-	background: color-mix(in srgb, var(--theme-logo-border, var(--color-accent)) 18%, var(--color-surface-elevated, #f7f3ea));
-	border: 1px solid color-mix(in srgb, var(--theme-logo-border, var(--color-accent)) 55%, transparent);
-	bottom: 0.35rem;
-	color: var(--color-text);
-	font-family: var(--font-ui-heading, var(--font-card));
-	font-size: 0.625rem;
-	font-weight: 700;
-	letter-spacing: 0.06em;
-	line-height: 1;
-	min-width: 1.15rem;
-	padding: 0.2rem 0.28rem;
-	position: absolute;
-	right: 0.35rem;
-	text-align: center;
-	z-index: 3;
+  background: color-mix(
+    in srgb,
+    var(--theme-logo-border, var(--color-accent)) 18%,
+    var(--color-surface-elevated, #f7f3ea)
+  );
+  border: 1px solid
+    color-mix(in srgb, var(--theme-logo-border, var(--color-accent)) 55%, transparent);
+  bottom: 0.35rem;
+  color: var(--color-text);
+  font-family: var(--font-ui-heading, var(--font-card));
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  min-width: 1.15rem;
+  padding: 0.2rem 0.28rem;
+  position: absolute;
+  right: 0.35rem;
+  text-align: center;
+  z-index: 3;
 }
 
 .visually-hidden {
-	border: 0;
-	clip: rect(0 0 0 0);
-	height: 1px;
-	margin: -1px;
-	overflow: hidden;
-	padding: 0;
-	position: absolute;
-	white-space: nowrap;
-	width: 1px;
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }
 </style>

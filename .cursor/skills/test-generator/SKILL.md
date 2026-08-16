@@ -52,11 +52,11 @@ Pure TypeScript tests can use Vitest’s default **`node`** environment (matches
 
 ### Naming
 
-| Source file | Test file (common) |
-|-------------|-------------------|
-| `Foo.vue` | `Foo.test.ts` or `Foo.spec.ts` (next to the component, or under `__tests__/` if the project prefers) |
-| `useFoo.ts` (composable) | `useFoo.test.ts` |
-| `foo.ts` (plain module) | `foo.test.ts` |
+| Source file              | Test file (common)                                                                                   |
+| ------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `Foo.vue`                | `Foo.test.ts` or `Foo.spec.ts` (next to the component, or under `__tests__/` if the project prefers) |
+| `useFoo.ts` (composable) | `useFoo.test.ts`                                                                                     |
+| `foo.ts` (plain module)  | `foo.test.ts`                                                                                        |
 
 Place the test file **next to** the source file unless the user or repo convention says otherwise.
 
@@ -82,19 +82,25 @@ At the **very top** of a component test file:
 
 ```typescript
 describe('MyModule', () => {
-	beforeEach(() => {
-		vi.clearAllMocks();
-	});
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
-	it('should <expected behaviour> when <condition>', () => {
-		// ...
-	});
+  it('should <expected behaviour> when <condition>', () => {
+    // ...
+  });
 
-	describe('methodName()', () => {
-		it('should <happy path>', () => { /* ... */ });
-		it('should <edge case>', () => { /* ... */ });
-		it('should <error path>', () => { /* ... */ });
-	});
+  describe('methodName()', () => {
+    it('should <happy path>', () => {
+      /* ... */
+    });
+    it('should <edge case>', () => {
+      /* ... */
+    });
+    it('should <error path>', () => {
+      /* ... */
+    });
+  });
 });
 ```
 
@@ -110,10 +116,10 @@ import { mount } from '@vue/test-utils';
 import MyCard from './MyCard.vue';
 
 it('renders title from props', () => {
-	const wrapper = mount(MyCard, {
-		props: { title: 'Rookie' }
-	});
-	expect(wrapper.text()).toContain('Rookie');
+  const wrapper = mount(MyCard, {
+    props: { title: 'Rookie' },
+  });
+  expect(wrapper.text()).toContain('Rookie');
 });
 ```
 
@@ -129,9 +135,9 @@ expect(wrapper.emitted('save')).toBeTruthy();
 
 ```typescript
 const wrapper = mount(Parent, {
-	global: {
-		stubs: { HeavyChild: true }
-	}
+  global: {
+    stubs: { HeavyChild: true },
+  },
 });
 ```
 
@@ -153,10 +159,10 @@ import { useCounter } from './useCounter';
 
 // If useCounter uses only refs and no inject:
 it('increments', () => {
-	const { count, inc } = useCounter();
-	expect(count.value).toBe(0);
-	inc();
-	expect(count.value).toBe(1);
+  const { count, inc } = useCounter();
+  expect(count.value).toBe(0);
+  inc();
+  expect(count.value).toBe(1);
 });
 ```
 
@@ -166,7 +172,7 @@ If the composable uses **`inject`**, `mount` a test parent that `provide`s the k
 
 ```typescript
 vi.mock('../api/client', () => ({
-	getTeams: vi.fn().mockResolvedValue({ data: { teams: [] } })
+  getTeams: vi.fn().mockResolvedValue({ data: { teams: [] } }),
 }));
 ```
 
@@ -185,7 +191,7 @@ Prefer mocking the module the component imports, not implementation details deep
 import { chunkIds } from './chunkIds';
 
 it('returns empty chunks for empty input', () => {
-	expect(chunkIds([], 10)).toEqual([]);
+  expect(chunkIds([], 10)).toEqual([]);
 });
 ```
 
