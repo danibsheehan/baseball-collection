@@ -46,3 +46,6 @@ Read `.cursor/skills/<name>/SKILL.md` when the task fits:
 - **`accessibility-a11y`** — keyboard, ARIA, reduced motion
 - **`bundle-performance`** — size report, Lottie/chunk weight
 - **`doc-writer`** — README / JSDoc (keep palette tables in sync with `tokens.css`)
+- **`dependabot-triage`** — classify open Dependabot PRs auto-merge didn't handle (majors, CI-red)
+- **`pr-summary-draft`** — drafts a why-first PR Summary / How-to-verify from the actual diff
+- **`coverage-gap-diagnosis`** — names untested branches for changed files, not just a percentage
