@@ -25,12 +25,12 @@ When editing **light `:root` palette** hex values in **`src/styles/tokens.css`**
 
 Determine which doc type(s) are needed:
 
-| Request | Doc Type |
-|---|---|
-| "Write a README", "document this repo" | → README |
-| "Document this function/class/interface", "add JSDoc/GoDoc" | → API Docs |
-| "Add comments", "explain what this code does inline" | → Inline Comments |
-| Mixed / ambiguous | → Ask, or default to README + API Docs |
+| Request                                                     | Doc Type                               |
+| ----------------------------------------------------------- | -------------------------------------- |
+| "Write a README", "document this repo"                      | → README                               |
+| "Document this function/class/interface", "add JSDoc/GoDoc" | → API Docs                             |
+| "Add comments", "explain what this code does inline"        | → Inline Comments                      |
+| Mixed / ambiguous                                           | → Ask, or default to README + API Docs |
 
 ---
 
@@ -43,6 +43,7 @@ Before writing, read the relevant files:
 - **Inline Comments**: Read the specific functions or blocks to annotate
 
 Use the shell to explore if needed:
+
 ```bash
 # JS/TS: find exported functions/types
 grep -rn "^export " src/ --include="*.ts" | head -40
@@ -79,5 +80,6 @@ Write directly into the repo at the file's natural location, then show the resul
 - If multiple files: edit each, then summarize all changes together.
 
 Always tell the user:
+
 1. What was generated and which files changed
 2. Any gaps (e.g., "I couldn't find a description for `X` — you may want to fill that in")

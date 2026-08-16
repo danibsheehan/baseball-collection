@@ -32,19 +32,19 @@ Same public feed for teams, roster, and player lines — errors stay visible, no
 
 **▼ Extra ink rows — light `:root` in `tokens.css` (dark remaps in the same file) ▼**
 
-| CSS variable | Hex / value | Where it reads |
-| ------------ | ----------- | ---------------- |
-| `--color-paper-gloss` | `#faf4e8` | Cream gloss on edges, focus ring anchor |
-| `--color-surface` | `#e8dfc8` | Newsprint page stock |
-| `--color-text` | `#1c1917` | Body ink |
-| `--color-text-muted` | `#5a4f42` | Sepia second read |
-| `--color-ui-ink` | `#0f172a` | Navy letterpress / UI chrome |
-| `--color-ui-crimson` | `#b91c1c` | Margin rules, pennant strip, “second color” accent |
-| `--color-ui-gum` | `#1e3a5f` | Gum-card navy accent |
-| `--album-masthead-bg` | `#f7f0e2` | Masthead band behind the woodcut title |
-| `--album-rail-paper` | `#f0e6d4` | Checklist rail stock |
-| `--album-felt-base` | `#d9e4d6` | Infield felt under the binder |
-| `--card-back-paper` | `#ebe0cd` | Warm buff card reverse |
+| CSS variable          | Hex / value | Where it reads                                     |
+| --------------------- | ----------- | -------------------------------------------------- |
+| `--color-paper-gloss` | `#faf4e8`   | Cream gloss on edges, focus ring anchor            |
+| `--color-surface`     | `#e8dfc8`   | Newsprint page stock                               |
+| `--color-text`        | `#1c1917`   | Body ink                                           |
+| `--color-text-muted`  | `#5a4f42`   | Sepia second read                                  |
+| `--color-ui-ink`      | `#0f172a`   | Navy letterpress / UI chrome                       |
+| `--color-ui-crimson`  | `#b91c1c`   | Margin rules, pennant strip, “second color” accent |
+| `--color-ui-gum`      | `#1e3a5f`   | Gum-card navy accent                               |
+| `--album-masthead-bg` | `#f7f0e2`   | Masthead band behind the woodcut title             |
+| `--album-rail-paper`  | `#f0e6d4`   | Checklist rail stock                               |
+| `--album-felt-base`   | `#d9e4d6`   | Infield felt under the binder                      |
+| `--card-back-paper`   | `#ebe0cd`   | Warm buff card reverse                             |
 
 _Painted chips are only in the image below—the big `╔══╗` “program” frame at the top of this README is plain Markdown text and `░░` characters, not a color graphic._
 
@@ -58,20 +58,20 @@ Per-franchise caps and fields: `--theme-*` in `src/styles/team-themes.css`. **Up
 
 ## ⚾ DUGOUT MAP — **where each folder points**
 
-| ZONE | PATH |
-| ---- | ---- |
-| **SHELL** | `App.vue` — masthead, team nav, binder, deal phases, live region |
-| **BOOT** | `main.ts` — mounts Vue, imports global CSS |
-| **GLOBAL LOOK** | `src/styles/tokens.css` (stock, rules, album, card polish); `src/styles/team-themes.css` (franchise themes) |
-| **TEAMS** | `components/Team.vue`; `lib/filterMlbTeams.ts`; `lib/teamPickerSections.ts` |
-| **CLUB URL** | `lib/teamUrlState.ts` — `?team=` History API deep links |
-| **LOCAL ALBUM** | `lib/albumCollection.ts` — `localStorage` collect + owned-vs-roster completeness |
-| **ROSTER LOAD** | `lib/rosterLoad.ts` — enriched roster fetch for the deal |
-| **CARDS** | `components/BaseballCard.vue`, `CardFront.vue`, `CardBack.vue`, `CardFoilGl.vue` + `Player*.vue` |
+| ZONE            | PATH                                                                                                                   |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **SHELL**       | `App.vue` — masthead, team nav, binder, deal phases, live region                                                       |
+| **BOOT**        | `main.ts` — mounts Vue, imports global CSS                                                                             |
+| **GLOBAL LOOK** | `src/styles/tokens.css` (stock, rules, album, card polish); `src/styles/team-themes.css` (franchise themes)            |
+| **TEAMS**       | `components/Team.vue`; `lib/filterMlbTeams.ts`; `lib/teamPickerSections.ts`                                            |
+| **CLUB URL**    | `lib/teamUrlState.ts` — `?team=` History API deep links                                                                |
+| **LOCAL ALBUM** | `lib/albumCollection.ts` — `localStorage` collect + owned-vs-roster completeness                                       |
+| **ROSTER LOAD** | `lib/rosterLoad.ts` — enriched roster fetch for the deal                                                               |
+| **CARDS**       | `components/BaseballCard.vue`, `CardFront.vue`, `CardBack.vue`, `CardFoilGl.vue` + `Player*.vue`                       |
 | **MOTION / FX** | `lib/useCardTilt.ts`, `lib/useBinderPennantParallax.ts`, `lib/cardFoilBridge.ts`, `cardFoilDom.ts`, `cardFoilWebgl.ts` |
-| **PACK / DEAL** | `components/AlbumPackLottie.vue`; deal + roster animation orchestration in `App.vue` |
-| **HTTP** | `http-common.ts` (Axios + cache); `lib/rosterPeople.ts` (batch people for backs) |
-| **API** | `server.js` — Express proxy + static; path validation under `lib/` |
+| **PACK / DEAL** | `components/AlbumPackLottie.vue`; deal + roster animation orchestration in `App.vue`                                   |
+| **HTTP**        | `http-common.ts` (Axios + cache); `lib/rosterPeople.ts` (batch people for backs)                                       |
+| **API**         | `server.js` — Express proxy + static; path validation under `lib/`                                                     |
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
@@ -79,18 +79,18 @@ Per-franchise caps and fields: `--theme-*` in `src/styles/team-themes.css`. **Up
 
 ## ⚾ FEATURE ROLL CALL — **what ships in the box**
 
-| TAG | WHAT HAPPENS |
-| --- | ------------ |
-| **CLUBS** | MLB teams filtered to `sport.name === 'Major League Baseball'`; AL / NL sections + search; per-club album count badges |
-| **SHAREABLE CLUB** | `?team=<teamCode>` deep links (History API); refresh / share / back-forward restore the club |
-| **LOCAL ALBUM** | Collect cards in the browser (`localStorage`); completeness is owned vs roster; All cards / In album filter |
-| **ROSTER GRID** | One **1959-style** card per active player; team crest + theme on the front |
-| **FLIP** | Click / keyboard flip; back pulls bat/ball stats lines from batched people payload |
-| **TILT + FOIL** | Pointer tilt on the scene; optional WebGL foil path on a single “chase” card target |
-| **WAX PACK** | Lottie unwrap + peel deal when motion is allowed; instant static grid when reduced |
-| **BATCH PEOPLE** | Up to **50** IDs per `GET /people?personIds=…` (proxy also accepts `ids`) |
-| **CACHE** | Short-lived Axios cache adapter on the client |
-| **DARK NIGHT GAME** | `prefers-color-scheme: dark` retints `:root` in `tokens.css` (warmer cards under “lights”) |
+| TAG                 | WHAT HAPPENS                                                                                                           |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **CLUBS**           | MLB teams filtered to `sport.name === 'Major League Baseball'`; AL / NL sections + search; per-club album count badges |
+| **SHAREABLE CLUB**  | `?team=<teamCode>` deep links (History API); refresh / share / back-forward restore the club                           |
+| **LOCAL ALBUM**     | Collect cards in the browser (`localStorage`); completeness is owned vs roster; All cards / In album filter            |
+| **ROSTER GRID**     | One **1959-style** card per active player; team crest + theme on the front                                             |
+| **FLIP**            | Click / keyboard flip; back pulls bat/ball stats lines from batched people payload                                     |
+| **TILT + FOIL**     | Pointer tilt on the scene; optional WebGL foil path on a single “chase” card target                                    |
+| **WAX PACK**        | Lottie unwrap + peel deal when motion is allowed; instant static grid when reduced                                     |
+| **BATCH PEOPLE**    | Up to **50** IDs per `GET /people?personIds=…` (proxy also accepts `ids`)                                              |
+| **CACHE**           | Short-lived Axios cache adapter on the client                                                                          |
+| **DARK NIGHT GAME** | `prefers-color-scheme: dark` retints `:root` in `tokens.css` (warmer cards under “lights”)                             |
 
 > **Product note:** Club URLs are shareable; your album stays on-device only (no account / database). Sharing `?team=bos` opens the Red Sox cards — not someone else’s collection.
 
@@ -100,8 +100,8 @@ Per-franchise caps and fields: `--theme-*` in `src/styles/team-themes.css`. **Up
 
 ## ⚾ PREREQS — **install first**
 
-| REQUIREMENT | NOTES |
-| ----------- | ----- |
+| REQUIREMENT    | NOTES                                                         |
+| -------------- | ------------------------------------------------------------- |
 | **Node.js 22** | Matches `.nvmrc`, `package.json` `engines`, and CI workflows. |
 
 ```
@@ -162,20 +162,20 @@ npm start
 
 ## ⚾ SCRIPTS — **npm, decoded**
 
-| SCRIPT | WHAT IT DOES |
-| ------ | -------------- |
-| `npm run dev` | `concurrently`: `npm run api` (**3000**) + Vite dev server |
-| `npm run dev:client` | Vite only |
-| `npm run api` | Express proxy on **PORT=3000** |
-| `npm run build` | `vite build` → `dist/` |
-| `npm run build:report` | Build then `scripts/bundle-report.mjs` |
-| `npm run preview` | `vite preview` |
-| `npm start` | `node server.js` — static `dist` + proxy (**8080** default) |
-| `npm run lint` | ESLint on `src` (`.vue`, `.ts`) |
-| `npm run test` | Vitest watch |
-| `npm run test:run` | Vitest single run |
-| `npm run test:coverage` | Coverage run (thresholds per config) |
-| `npm run heroku-postbuild` | Heroku: dev deps + `npm run build` |
+| SCRIPT                     | WHAT IT DOES                                                |
+| -------------------------- | ----------------------------------------------------------- |
+| `npm run dev`              | `concurrently`: `npm run api` (**3000**) + Vite dev server  |
+| `npm run dev:client`       | Vite only                                                   |
+| `npm run api`              | Express proxy on **PORT=3000**                              |
+| `npm run build`            | `vite build` → `dist/`                                      |
+| `npm run build:report`     | Build then `scripts/bundle-report.mjs`                      |
+| `npm run preview`          | `vite preview`                                              |
+| `npm start`                | `node server.js` — static `dist` + proxy (**8080** default) |
+| `npm run lint`             | ESLint on `src` (`.vue`, `.ts`)                             |
+| `npm run test`             | Vitest watch                                                |
+| `npm run test:run`         | Vitest single run                                           |
+| `npm run test:coverage`    | Coverage run (thresholds per config)                        |
+| `npm run heroku-postbuild` | Heroku: dev deps + `npm run build`                          |
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
@@ -185,12 +185,12 @@ npm start
 
 In development, Vite proxies `/teams` and `/people` to `server.js`. On GitHub Pages, `VITE_API_BASE` can point at MLB directly.
 
-| Path | Purpose |
-| ---- | ------- |
-| `GET /teams` | MLB teams collection (app keeps `sport.name === 'Major League Baseball'`) |
-| `GET /teams/:teamId/roster` | Active roster for one team |
+| Path                              | Purpose                                                                           |
+| --------------------------------- | --------------------------------------------------------------------------------- |
+| `GET /teams`                      | MLB teams collection (app keeps `sport.name === 'Major League Baseball'`)         |
+| `GET /teams/:teamId/roster`       | Active roster for one team                                                        |
 | `GET /people?personIds=id1,id2,…` | Batched player records for card backs (comma-separated; proxy also accepts `ids`) |
-| `GET /people/:playerId` | Single player record (proxy only; SPA prefers batching) |
+| `GET /people/:playerId`           | Single player record (proxy only; SPA prefers batching)                           |
 
 Upstream: **MLB Stats API** — `https://statsapi.mlb.com/api/v1/`. Response shapes match that API.
 
@@ -200,12 +200,12 @@ Upstream: **MLB Stats API** — `https://statsapi.mlb.com/api/v1/`. Response sha
 
 ## ⚾ CONFIGURATION — **Vite + server**
 
-| FIELD | WHERE | DESCRIPTION |
-| ----- | ----- | ----------- |
-| `VITE_API_BASE` | env | Full MLB Stats API root, e.g. `https://statsapi.mlb.com/api/v1`. Empty in dev → `location.origin` + proxy. |
-| `VITE_PUBLIC_PATH` | env | Vite `base`; `/repository-name/` for GitHub project Pages. |
-| `PORT` | env | `server.js` listen port (`8080` default for `npm start`). |
-| `npm run api` | script | Forces **3000** for local proxy. |
+| FIELD              | WHERE  | DESCRIPTION                                                                                                |
+| ------------------ | ------ | ---------------------------------------------------------------------------------------------------------- |
+| `VITE_API_BASE`    | env    | Full MLB Stats API root, e.g. `https://statsapi.mlb.com/api/v1`. Empty in dev → `location.origin` + proxy. |
+| `VITE_PUBLIC_PATH` | env    | Vite `base`; `/repository-name/` for GitHub project Pages.                                                 |
+| `PORT`             | env    | `server.js` listen port (`8080` default for `npm start`).                                                  |
+| `npm run api`      | script | Forces **3000** for local proxy.                                                                           |
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
@@ -213,10 +213,10 @@ Upstream: **MLB Stats API** — `https://statsapi.mlb.com/api/v1/`. Response sha
 
 ## ⚾ DEPLOYMENT — **where it lands**
 
-| TARGET | NOTES |
-| ------ | ----- |
+| TARGET           | NOTES                                                                                                                      |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | **GitHub Pages** | `.github/workflows/deploy-pages.yml` — `npm ci`, `npm run build` with `VITE_API_BASE` + `VITE_PUBLIC_PATH`, deploy `dist/` |
-| **Heroku** | `heroku-postbuild` builds; web process = `npm start` |
+| **Heroku**       | `heroku-postbuild` builds; web process = `npm start`                                                                       |
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓

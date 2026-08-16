@@ -3,194 +3,194 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
 
 vi.mock('../lib/useCardTilt', () => ({
-	useCardTilt: () => ({
-		tiltStyle: {},
-		onPointerEnter: () => {},
-		onPointerMove: () => {},
-		onPointerLeave: () => {},
-		onPointerDown: () => {}
-	})
+  useCardTilt: () => ({
+    tiltStyle: {},
+    onPointerEnter: () => {},
+    onPointerMove: () => {},
+    onPointerLeave: () => {},
+    onPointerDown: () => {},
+  }),
 }));
 
 import * as foilBridge from '../lib/cardFoilBridge';
 import BaseballCard from './BaseballCard.vue';
 
 const player = {
-	person: { id: 501, fullName: 'Test Hitter' },
-	playerInfo: {
-		primaryPosition: { name: 'First Base' }
-	}
+  person: { id: 501, fullName: 'Test Hitter' },
+  playerInfo: {
+    primaryPosition: { name: 'First Base' },
+  },
 };
 
 describe('BaseballCard', () => {
-	beforeEach(() => {
-		if (foilBridge.cardFoilTarget.value?.id === 501) {
-			foilBridge.clearCardFoilTarget(501);
-		}
-		foilBridge.cardFoilTarget.value = null;
-	});
+  beforeEach(() => {
+    if (foilBridge.cardFoilTarget.value?.id === 501) {
+      foilBridge.clearCardFoilTarget(501);
+    }
+    foilBridge.cardFoilTarget.value = null;
+  });
 
-	it('exposes an accessible flip control with a descriptive label', () => {
-		const wrapper = mount(BaseballCard, {
-			props: { player, teamName: 'Club', theme: 'bos' },
-			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
-		});
-		const flip = wrapper.find('.card__container');
-		expect(flip.attributes('aria-label')).toContain('Test Hitter');
-		expect(flip.attributes('aria-pressed')).toBe('false');
-	});
+  it('exposes an accessible flip control with a descriptive label', () => {
+    const wrapper = mount(BaseballCard, {
+      props: { player, teamName: 'Club', theme: 'bos' },
+      global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } },
+    });
+    const flip = wrapper.find('.card__container');
+    expect(flip.attributes('aria-label')).toContain('Test Hitter');
+    expect(flip.attributes('aria-pressed')).toBe('false');
+  });
 
-	it('toggles flip state on click', async () => {
-		const wrapper = mount(BaseballCard, {
-			props: { player, teamName: 'Club' },
-			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
-		});
-		const flip = wrapper.find('.card__container');
-		await flip.trigger('click');
-		expect(flip.attributes('aria-pressed')).toBe('true');
-		expect(flip.classes()).toContain('card__container--flipped');
-		await flip.trigger('click');
-		expect(flip.attributes('aria-pressed')).toBe('false');
-	});
+  it('toggles flip state on click', async () => {
+    const wrapper = mount(BaseballCard, {
+      props: { player, teamName: 'Club' },
+      global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } },
+    });
+    const flip = wrapper.find('.card__container');
+    await flip.trigger('click');
+    expect(flip.attributes('aria-pressed')).toBe('true');
+    expect(flip.classes()).toContain('card__container--flipped');
+    await flip.trigger('click');
+    expect(flip.attributes('aria-pressed')).toBe('false');
+  });
 
-	it('flips when Enter is pressed while focused', async () => {
-		const wrapper = mount(BaseballCard, {
-			props: { player, teamName: 'Club' },
-			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
-		});
-		const flip = wrapper.find('.card__container');
-		await flip.trigger('focus');
-		await flip.trigger('keydown', { key: 'Enter' });
-		expect(flip.attributes('aria-pressed')).toBe('true');
-	});
+  it('flips when Enter is pressed while focused', async () => {
+    const wrapper = mount(BaseballCard, {
+      props: { player, teamName: 'Club' },
+      global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } },
+    });
+    const flip = wrapper.find('.card__container');
+    await flip.trigger('focus');
+    await flip.trigger('keydown', { key: 'Enter' });
+    expect(flip.attributes('aria-pressed')).toBe('true');
+  });
 
-	it('flips when Space is pressed while focused', async () => {
-		const wrapper = mount(BaseballCard, {
-			props: { player, teamName: 'Club' },
-			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
-		});
-		const flip = wrapper.find('.card__container');
-		await flip.trigger('keydown', { key: ' ' });
-		expect(flip.attributes('aria-pressed')).toBe('true');
-	});
+  it('flips when Space is pressed while focused', async () => {
+    const wrapper = mount(BaseballCard, {
+      props: { player, teamName: 'Club' },
+      global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } },
+    });
+    const flip = wrapper.find('.card__container');
+    await flip.trigger('keydown', { key: ' ' });
+    expect(flip.attributes('aria-pressed')).toBe('true');
+  });
 
-	it('exposes a collect control outside the flip target', async () => {
-		const wrapper = mount(BaseballCard, {
-			props: { player, teamName: 'Club', collected: false },
-			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
-		});
-		const collect = wrapper.find('.card__collect');
-		expect(collect.attributes('aria-label')).toBe('Add Test Hitter to your album');
-		expect(collect.attributes('aria-pressed')).toBe('false');
-		await collect.trigger('click');
-		expect(wrapper.emitted('toggle-collect')?.[0]).toEqual([501]);
-		expect(wrapper.find('.card__container').attributes('aria-pressed')).toBe('false');
-	});
+  it('exposes a collect control outside the flip target', async () => {
+    const wrapper = mount(BaseballCard, {
+      props: { player, teamName: 'Club', collected: false },
+      global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } },
+    });
+    const collect = wrapper.find('.card__collect');
+    expect(collect.attributes('aria-label')).toBe('Add Test Hitter to your album');
+    expect(collect.attributes('aria-pressed')).toBe('false');
+    await collect.trigger('click');
+    expect(wrapper.emitted('toggle-collect')?.[0]).toEqual([501]);
+    expect(wrapper.find('.card__container').attributes('aria-pressed')).toBe('false');
+  });
 
-	it('labels collect as remove when the card is already in the album', () => {
-		const wrapper = mount(BaseballCard, {
-			props: { player, teamName: 'Club', collected: true },
-			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
-		});
-		expect(wrapper.find('.card__collect').attributes('aria-label')).toBe(
-			'Remove Test Hitter from your album'
-		);
-		expect(wrapper.find('.card__shell').classes()).toContain('card__shell--collected');
-	});
+  it('labels collect as remove when the card is already in the album', () => {
+    const wrapper = mount(BaseballCard, {
+      props: { player, teamName: 'Club', collected: true },
+      global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } },
+    });
+    expect(wrapper.find('.card__collect').attributes('aria-label')).toBe(
+      'Remove Test Hitter from your album',
+    );
+    expect(wrapper.find('.card__shell').classes()).toContain('card__shell--collected');
+  });
 
-	it('claims the foil target when the scene receives pointer enter', async () => {
-		const spy = vi.spyOn(foilBridge, 'setCardFoilTarget');
-		const wrapper = mount(BaseballCard, {
-			props: { player, teamName: 'Club' },
-			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
-		});
-		await wrapper.find('.card__scene').trigger('pointerenter');
-		expect(spy).toHaveBeenCalled();
-		spy.mockRestore();
-	});
+  it('claims the foil target when the scene receives pointer enter', async () => {
+    const spy = vi.spyOn(foilBridge, 'setCardFoilTarget');
+    const wrapper = mount(BaseballCard, {
+      props: { player, teamName: 'Club' },
+      global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } },
+    });
+    await wrapper.find('.card__scene').trigger('pointerenter');
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+  });
 
-	it('clears foil after pointer leave when nothing inside the scene stays focused or hovered', async () => {
-		const clearSpy = vi.spyOn(foilBridge, 'clearCardFoilTarget');
-		const wrapper = mount(BaseballCard, {
-			props: { player, teamName: 'Club' },
-			attachTo: document.body,
-			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
-		});
-		const sceneEl = wrapper.find('.card__scene').element as HTMLElement;
-		vi.spyOn(sceneEl, 'matches').mockImplementation(() => false);
+  it('clears foil after pointer leave when nothing inside the scene stays focused or hovered', async () => {
+    const clearSpy = vi.spyOn(foilBridge, 'clearCardFoilTarget');
+    const wrapper = mount(BaseballCard, {
+      props: { player, teamName: 'Club' },
+      attachTo: document.body,
+      global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } },
+    });
+    const sceneEl = wrapper.find('.card__scene').element as HTMLElement;
+    vi.spyOn(sceneEl, 'matches').mockImplementation(() => false);
 
-		await wrapper.find('.card__scene').trigger('pointerenter');
-		await wrapper.find('.card__scene').trigger('pointerleave');
-		await flushPromises();
+    await wrapper.find('.card__scene').trigger('pointerenter');
+    await wrapper.find('.card__scene').trigger('pointerleave');
+    await flushPromises();
 
-		expect(clearSpy).toHaveBeenCalledWith(501);
-		clearSpy.mockRestore();
-		wrapper.unmount();
-	});
+    expect(clearSpy).toHaveBeenCalledWith(501);
+    clearSpy.mockRestore();
+    wrapper.unmount();
+  });
 
-	it('keeps foil after pointer leave while the scene still matches :hover', async () => {
-		const clearSpy = vi.spyOn(foilBridge, 'clearCardFoilTarget');
-		const wrapper = mount(BaseballCard, {
-			props: { player, teamName: 'Club' },
-			attachTo: document.body,
-			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
-		});
-		const sceneEl = wrapper.find('.card__scene').element as HTMLElement;
-		vi.spyOn(sceneEl, 'matches').mockImplementation((selector) => selector === ':hover');
+  it('keeps foil after pointer leave while the scene still matches :hover', async () => {
+    const clearSpy = vi.spyOn(foilBridge, 'clearCardFoilTarget');
+    const wrapper = mount(BaseballCard, {
+      props: { player, teamName: 'Club' },
+      attachTo: document.body,
+      global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } },
+    });
+    const sceneEl = wrapper.find('.card__scene').element as HTMLElement;
+    vi.spyOn(sceneEl, 'matches').mockImplementation((selector) => selector === ':hover');
 
-		await wrapper.find('.card__scene').trigger('pointerenter');
-		await wrapper.find('.card__scene').trigger('pointerleave');
-		await flushPromises();
+    await wrapper.find('.card__scene').trigger('pointerenter');
+    await wrapper.find('.card__scene').trigger('pointerleave');
+    await flushPromises();
 
-		expect(clearSpy).not.toHaveBeenCalled();
-		clearSpy.mockRestore();
-		wrapper.unmount();
-	});
+    expect(clearSpy).not.toHaveBeenCalled();
+    clearSpy.mockRestore();
+    wrapper.unmount();
+  });
 
-	it('claims foil when focus moves inside the scene', async () => {
-		const spy = vi.spyOn(foilBridge, 'setCardFoilTarget');
-		const wrapper = mount(BaseballCard, {
-			props: { player, teamName: 'Club' },
-			attachTo: document.body,
-			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
-		});
-		const flip = wrapper.find('.card__container').element;
-		flip.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
-		expect(spy).toHaveBeenCalled();
-		spy.mockRestore();
-		wrapper.unmount();
-	});
+  it('claims foil when focus moves inside the scene', async () => {
+    const spy = vi.spyOn(foilBridge, 'setCardFoilTarget');
+    const wrapper = mount(BaseballCard, {
+      props: { player, teamName: 'Club' },
+      attachTo: document.body,
+      global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } },
+    });
+    const flip = wrapper.find('.card__container').element;
+    flip.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+    wrapper.unmount();
+  });
 
-	it('ignores flip keydown for keys other than Enter and Space', async () => {
-		const wrapper = mount(BaseballCard, {
-			props: { player, teamName: 'Club' },
-			global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } }
-		});
-		const flip = wrapper.find('.card__container');
-		await flip.trigger('keydown', { key: 'Tab' });
-		expect(flip.attributes('aria-pressed')).toBe('false');
-	});
+  it('ignores flip keydown for keys other than Enter and Space', async () => {
+    const wrapper = mount(BaseballCard, {
+      props: { player, teamName: 'Club' },
+      global: { stubs: { CardFront: true, CardBack: true, CardFoilGl: true } },
+    });
+    const flip = wrapper.find('.card__container');
+    await flip.trigger('keydown', { key: 'Tab' });
+    expect(flip.attributes('aria-pressed')).toBe('false');
+  });
 
-	it('renders foil overlay when this card owns the foil target', async () => {
-		const scene = document.createElement('div');
-		foilBridge.cardFoilTarget.value = { el: scene, id: 501, manyPlayers: false };
+  it('renders foil overlay when this card owns the foil target', async () => {
+    const scene = document.createElement('div');
+    foilBridge.cardFoilTarget.value = { el: scene, id: 501, manyPlayers: false };
 
-		const wrapper = mount(BaseballCard, {
-			props: { player, teamName: 'Club' },
-			attachTo: document.body,
-			global: {
-				stubs: {
-					CardFront: true,
-					CardBack: true,
-					CardFoilGl: {
-						template: '<div class="foil-stub" />'
-					}
-				}
-			}
-		});
+    const wrapper = mount(BaseballCard, {
+      props: { player, teamName: 'Club' },
+      attachTo: document.body,
+      global: {
+        stubs: {
+          CardFront: true,
+          CardBack: true,
+          CardFoilGl: {
+            template: '<div class="foil-stub" />',
+          },
+        },
+      },
+    });
 
-		await wrapper.vm.$nextTick();
-		expect(wrapper.find('.foil-stub').exists()).toBe(true);
-		wrapper.unmount();
-	});
+    await wrapper.vm.$nextTick();
+    expect(wrapper.find('.foil-stub').exists()).toBe(true);
+    wrapper.unmount();
+  });
 });
