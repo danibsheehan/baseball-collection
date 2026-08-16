@@ -9,7 +9,6 @@
 
 <script setup>
 import { ref, watch, onBeforeUnmount, nextTick } from 'vue';
-import lottie from 'lottie-web';
 
 const props = defineProps({
   dealPhase: { type: String, required: true },
@@ -94,7 +93,12 @@ async function loadAndPlay() {
   }
 
   try {
-    const res = await fetch(packJsonUrl);
+    /* Fetch the comp JSON and the lottie-web player chunk together — neither blocks the other,
+       and the player never downloads at all for the reduced-motion path above. */
+    const [res, { default: lottie }] = await Promise.all([
+      fetch(packJsonUrl),
+      import('lottie-web'),
+    ]);
     if (!res.ok) {
       throw new Error(`lottie fetch ${res.status}`);
     }
