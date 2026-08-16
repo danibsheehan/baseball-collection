@@ -2,6 +2,7 @@ import js from '@eslint/js'
 import pluginVue from 'eslint-plugin-vue'
 import globals from 'globals'
 import tsParser from '@typescript-eslint/parser'
+import eslintConfigPrettier from 'eslint-config-prettier'
 
 export default [
   {
@@ -52,4 +53,5 @@ export default [
       'no-unused-vars': 'off',
     },
   },
+  eslintConfigPrettier,
 ]
