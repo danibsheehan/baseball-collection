@@ -2,9 +2,9 @@
 name: pr-ready
 description: >
   Runs baseball-collection local CI-parity checks and prepares a pull request
-  (lint, Vitest coverage thresholds, build, Pages env when needed). Use when the
-  user asks to open a PR, prepare a pull request, pre-PR checks, make CI pass,
-  or verify before merging.
+  (format check, lint, Vitest coverage thresholds, build, Pages env when
+  needed). Use when the user asks to open a PR, prepare a pull request,
+  pre-PR checks, make CI pass, or verify before merging.
 ---
 
 # PR ready (baseball-collection)
@@ -16,6 +16,7 @@ Run before opening or updating a PR. Prefer full gates over “tests only.”
 ```
 Pre-PR:
 - [ ] Scope: only intended files; no secrets (.env, credentials)
+- [ ] npm run format:check
 - [ ] npm run lint
 - [ ] npm run test:coverage
 - [ ] npm run build
@@ -28,6 +29,7 @@ Pre-PR:
 From the repo root:
 
 ```bash
+npm run format:check
 npm run lint
 npm run test:coverage
 npm run build
@@ -35,6 +37,7 @@ npm run build
 
 | Check           | Why                                                                                                         |
 | --------------- | ----------------------------------------------------------------------------------------------------------- |
+| `format:check`  | Prettier — same gate as **`.github/workflows/pull-request-tests.yml`**; run `npm run format` to fix         |
 | `lint`          | ESLint on `src` (`.vue`, `.ts`) — same gate as **`.github/workflows/pull-request-tests.yml`**               |
 | `test:coverage` | Matches CI; enforces Vitest thresholds in `vite.config.mjs`                                                 |
 | `build`         | Matches CI (Pages-shaped `VITE_*` in the workflow); catches Vite/bundle breaks before Pages or Node hosting |

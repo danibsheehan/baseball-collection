@@ -1,9 +1,10 @@
 ---
 name: definition-of-done
 description: >
-  Verifies baseball-collection changes by running lint, Vitest, and production
-  build. Use after substantive edits to Vue, TypeScript, styles, server/proxy,
-  or config, or when the user asks to validate or finish a task.
+  Verifies baseball-collection changes by running Prettier format check, lint,
+  Vitest, and production build. Use after substantive edits to Vue,
+  TypeScript, styles, server/proxy, or config, or when the user asks to
+  validate or finish a task.
 ---
 
 # Definition of done (baseball-collection)
@@ -12,9 +13,10 @@ description: >
 
 After **substantive** edits (features, components, `src/lib/`, `lib/`, `server.js`, styles, Vite/CI config), run from the repo root in order:
 
-1. `npm run lint`
-2. `npm run test:run`
-3. `npm run build`
+1. `npm run format:check` (or `npm run format` to fix)
+2. `npm run lint`
+3. `npm run test:run`
+4. `npm run build`
 
 Fix failures before considering the task complete.
 

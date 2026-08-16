@@ -18,7 +18,7 @@ Vue 3 + Vite SPA (album shell, roster grid, card flip/tilt/foil, wax-pack deal) 
 ## Commands
 
 - **Dev**: `npm run dev` (API **:3000** + Vite **:5173**); `npm run api` / `npm run dev:client` alone as needed.
-- **Lint / test / build**: `npm run lint`, `npm run test` / `test:run` / `test:coverage`, `npm run build` (optional `build:report`).
+- **Format / lint / test / build**: `npm run format:check` (or `format` to fix), `npm run lint`, `npm run test` / `test:run` / `test:coverage`, `npm run build` (optional `build:report`).
 - **Prod-like**: `npm start` serves `dist` + proxy (**PORT** default **8080**).
 - **Pages**: push to `main` → `.github/workflows/deploy-pages.yml` (skill **`github-pages-deploy`**).
 
@@ -32,8 +32,8 @@ Vue 3 + Vite SPA (album shell, roster grid, card flip/tilt/foil, wax-pack deal) 
 
 ## Agent definition of done
 
-- **Task done**: follow skills for files you touched; run the **smallest** relevant check. For substantive edits, follow **`.cursor/skills/definition-of-done/SKILL.md`** (`lint` → `test:run` → `build`). Do **not** require full CI for every small edit.
-- **PR done**: follow **`.cursor/skills/pr-ready/SKILL.md`** (`lint`, `test:coverage`, `build`; Pages-shaped build when deploy/env changes). Commit, push, or open a PR **only when the user asks**.
+- **Task done**: follow skills for files you touched; run the **smallest** relevant check. For substantive edits, follow **`.cursor/skills/definition-of-done/SKILL.md`** (`format:check` → `lint` → `test:run` → `build`). Do **not** require full CI for every small edit.
+- **PR done**: follow **`.cursor/skills/pr-ready/SKILL.md`** (`format:check`, `lint`, `test:coverage`, `build`; Pages-shaped build when deploy/env changes). Commit, push, or open a PR **only when the user asks**.
 
 ## Workflow skills
 

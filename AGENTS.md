@@ -35,6 +35,7 @@ npm start           # prod-like: Express serves dist + proxy, PORT default 8080
 ## Test
 
 ```bash
+npm run format:check    # Prettier check (npm run format to fix)
 npm run lint            # ESLint on src (.vue, .ts)
 npm run test:run        # Vitest, single run
 npm run test:coverage   # Vitest with coverage thresholds (matches CI)
@@ -42,9 +43,9 @@ npm run build           # Vite production build
 npm run build:report    # build + dist size report (scripts/bundle-report.mjs)
 ```
 
-Before opening or updating a PR, run local CI parity — `lint` → `test:coverage` → `build` (see
-the `pr-ready` skill). For small, localized edits the smallest relevant check is enough (see
-`definition-of-done`); full coverage isn't required for every tweak.
+Before opening or updating a PR, run local CI parity — `format:check` → `lint` → `test:coverage`
+→ `build` (see the `pr-ready` skill). For small, localized edits the smallest relevant check is
+enough (see `definition-of-done`); full coverage isn't required for every tweak.
 
 ## Conventions
 
@@ -84,7 +85,9 @@ symlink to the same files, auto-invoked by either tool based on the task):
 ## Definition of done
 
 - **Task done**: follow the skill for files touched; run the smallest relevant check. For
-  substantive edits (Vue, TypeScript, styles, server/proxy, config), run `lint` → `test:run` →
-  `build` (`definition-of-done` skill). Full CI is not required for every small edit.
-- **PR done**: `lint`, `test:coverage`, `build` all green (`pr-ready` skill); Pages-shaped build
-  too if deploy/base/API env changed. Commit, push, or open a PR only when the user asks.
+  substantive edits (Vue, TypeScript, styles, server/proxy, config), run `format:check` → `lint`
+  → `test:run` → `build` (`definition-of-done` skill). Full CI is not required for every small
+  edit.
+- **PR done**: `format:check`, `lint`, `test:coverage`, `build` all green (`pr-ready` skill);
+  Pages-shaped build too if deploy/base/API env changed. Commit, push, or open a PR only when the
+  user asks.
