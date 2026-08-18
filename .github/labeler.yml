@@ -1,0 +1,29 @@
+javascript:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/**'
+          - 'server.js'
+          - 'lib/**'
+          - 'scripts/**'
+          - '*.mjs'
+          - '*.cjs'
+          - 'vite.config.ts'
+          - 'eslint.config.js'
+
+github_actions:
+  - changed-files:
+      - any-glob-to-any-file: '.github/**'
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'README.md'
+          - 'AGENTS.md'
+          - 'CLAUDE.md'
+          - '*.md'
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'package.json'
+          - 'package-lock.json'
