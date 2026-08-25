@@ -235,6 +235,30 @@ Tests live next to sources: `src/**/*.test.ts`, `lib/**/*.test.mjs` (see `vite.c
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 ```
 
+## ⚾ AUTOMATION — **what runs on its own**
+
+**In plain English:** one narrow decision merges itself (a Dependabot patch/minor bump once CI
+is green); everything else — triage, docs, features — is a person or an AI assistant doing work
+someone asked for, reviewed before it ships.
+
+- **Auto-merge** ([`dependabot-auto-merge.yml`](.github/workflows/dependabot-auto-merge.yml)) —
+  merges the grouped `npm-minor-and-patch` Dependabot PR once required checks pass. Same scoping
+  as `caught-looking`'s equivalent workflow. Ungrouped npm bumps (majors), GitHub Actions bumps,
+  and anything CI doesn't clear stay manual.
+- **`dependabot-triage`** skill — ported from `caught-looking`, available on request to classify
+  the Dependabot backlog by risk. Not on a schedule here yet — run it manually when the backlog
+  needs a look.
+- **CodeQL / security scanning** — not configured in this repo yet.
+- **Cross-repo, read-only**: a scheduled Claude Code routine, defined in
+  [`danibsheehan/portfolio-automation`](https://github.com/danibsheehan/portfolio-automation)'s
+  [`weekly-project-update`](https://github.com/danibsheehan/portfolio-automation/blob/main/.cursor/skills/weekly-project-update/SKILL.md)
+  skill, reads this repo once a week (never writes to it) and — only when there's something
+  people-relevant to report — opens a PR against
+  [danibsheehan.github.io](https://github.com/danibsheehan/danibsheehan.github.io) updating this
+  project's page. See
+  [`portfolio-automation`'s README](https://github.com/danibsheehan/portfolio-automation#autonomy-boundary)
+  for the full autonomy boundary (it opens, never merges).
+
 ## ⚾ PERFORMANCE CHECKLIST — **optional, for regressions**
 
 1. **Lighthouse** — Performance (mobile + desktop): LCP, TBT, dependency tree.

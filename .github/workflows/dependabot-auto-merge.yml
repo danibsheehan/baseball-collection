@@ -1,3 +1,6 @@
+# Auto-merges only the grouped npm-minor-and-patch Dependabot PR once required checks
+# pass. Ungrouped npm bumps (majors) and GitHub Actions bumps stay manual — they carry
+# more upgrade risk than a pre-grouped, semver-minor-or-patch bump does.
 name: Dependabot auto-merge
 
 on: pull_request
@@ -16,10 +19,8 @@ jobs:
         uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
-      - name: Enable auto-merge for patch/minor bumps
-        if: >
-          steps.metadata.outputs.update-type == 'version-update:semver-patch' ||
-          steps.metadata.outputs.update-type == 'version-update:semver-minor'
+      - name: Enable auto-merge for npm-minor-and-patch group
+        if: steps.metadata.outputs.dependency-group-name == 'npm-minor-and-patch'
         run: gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}

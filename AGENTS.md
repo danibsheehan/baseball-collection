@@ -85,7 +85,10 @@ symlink to the same files, auto-invoked by either tool based on the task):
 - **Add unsolicited README/docs changes or drive-by refactors** on unrelated code — keep diffs
   focused.
 - **Commit secrets** (`.env*`, credentials).
-- **Amend or force-push**, or **open/push/merge a PR**, unless the user explicitly asks.
+- **Amend or force-push**, or **open/push/merge a PR**, unless the user explicitly asks. (See
+  README's **Automation** section for this repo's one standing exception — grouped Dependabot
+  auto-merge — and the read-only, cross-repo `weekly-project-update` routine, defined in
+  `danibsheehan/portfolio-automation`, that opens PRs *elsewhere*, never here.)
 
 ## Definition of done
 
