@@ -162,20 +162,23 @@ npm start
 
 ## ⚾ SCRIPTS — **npm, decoded**
 
-| SCRIPT                     | WHAT IT DOES                                                |
-| -------------------------- | ----------------------------------------------------------- |
-| `npm run dev`              | `concurrently`: `npm run api` (**3000**) + Vite dev server  |
-| `npm run dev:client`       | Vite only                                                   |
-| `npm run api`              | Express proxy on **PORT=3000**                              |
-| `npm run build`            | `vite build` → `dist/`                                      |
-| `npm run build:report`     | Build then `scripts/bundle-report.mjs`                      |
-| `npm run preview`          | `vite preview`                                              |
-| `npm start`                | `node server.js` — static `dist` + proxy (**8080** default) |
-| `npm run lint`             | ESLint on `src` (`.vue`, `.ts`)                             |
-| `npm run test`             | Vitest watch                                                |
-| `npm run test:run`         | Vitest single run                                           |
-| `npm run test:coverage`    | Coverage run (thresholds per config)                        |
-| `npm run heroku-postbuild` | Heroku: dev deps + `npm run build`                          |
+| SCRIPT                        | WHAT IT DOES                                                |
+| ----------------------------- | ----------------------------------------------------------- |
+| `npm run dev`                 | `concurrently`: `npm run api` (**3000**) + Vite dev server  |
+| `npm run dev:client`          | Vite only                                                   |
+| `npm run api`                 | Express proxy on **PORT=3000**                              |
+| `npm run build`               | `vite build` → `dist/`                                      |
+| `npm run build:report`        | Build then `scripts/bundle-report.mjs`                      |
+| `npm run preview`             | `vite preview`                                              |
+| `npm start`                   | `node server.js` — static `dist` + proxy (**8080** default) |
+| `npm run lint`                | ESLint on `src` (`.vue`, `.ts`)                             |
+| `npm run format`              | Prettier — write formatting fixes                           |
+| `npm run format:check`        | Prettier — check formatting only                            |
+| `npm run test`                | Vitest watch                                                |
+| `npm run test:run`            | Vitest single run                                           |
+| `npm run test:coverage`       | Coverage run (thresholds per config)                        |
+| `npm run test:coverage:watch` | Coverage run, watch mode                                    |
+| `npm run heroku-postbuild`    | Heroku: dev deps + `npm run build`                          |
 
 ```
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
@@ -225,8 +228,10 @@ Upstream: **MLB Stats API** — `https://statsapi.mlb.com/api/v1/`. Response sha
 ## ⚾ CONTRIBUTING — **lint + test**
 
 ```bash
+npm run format:check
 npm run lint
-npm run test:run
+npm run test:coverage
+npm run build
 ```
 
 Tests live next to sources: `src/**/*.test.ts`, `lib/**/*.test.mjs` (see `vite.config.mjs`).
@@ -284,8 +289,7 @@ someone asked for, reviewed before it ships.
 **╚══════════════════════════════════════════════════════════╝**
 
 **╔══════════════════════════════════════════════════════════╗**  
-**║** **LICENSE:** no `LICENSE` file in-repo yet. **║**  
-**║** Add one when you want explicit terms. **║**  
+**║** **LICENSE:** MIT — see [`LICENSE`](LICENSE). **║**  
 **╚══════════════════════════════════════════════════════════╝**
 
 _KEEP THE ALBUM SPINE STRAIGHT · PLAY BALL_
