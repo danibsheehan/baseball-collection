@@ -14,7 +14,23 @@
 **║** Newsreader / Oswald / Bebas / Archivo — tokens in `src/styles/tokens.css` **║**  
 **╚══════════════════════════════════════════════════════════════════════════╝**
 
-Vue 3 — composition + SFCs · Vite — dev + build · Express — `server.js` proxy + static `dist` · MLB Stats API — `statsapi.mlb.com` · Vitest — unit tests by source
+<p align="center">
+  <a href="https://statsapi.mlb.com/api/v1/"><img src="https://img.shields.io/badge/MLB_STATS_API-v1-b91c1c?style=flat-square&labelColor=0f172a" alt="MLB Stats API"></a>
+  <a href="https://vuejs.org/"><img src="https://img.shields.io/badge/VUE-3.5-0f172a?style=flat-square&logo=vuedotjs&logoColor=faf4e8&labelColor=b91c1c" alt="Vue 3.5"></a>
+  <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/VITE-8.0-b91c1c?style=flat-square&logo=vite&logoColor=faf4e8&labelColor=0f172a" alt="Vite 8"></a>
+  <a href="https://expressjs.com/"><img src="https://img.shields.io/badge/EXPRESS-5.0-1e3a5f?style=flat-square&logo=express&logoColor=faf4e8&labelColor=0f172a" alt="Express 5"></a>
+  <br>
+  <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/NODE-%3E%3D22-5a4f42?style=flat-square&logo=node.js&logoColor=faf4e8&labelColor=1e3a5f" alt="Node.js >=22"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/LICENSE-MIT-b91c1c?style=flat-square&logo=opensourceinitiative&logoColor=faf4e8&labelColor=0f172a" alt="MIT License"></a>
+</p>
+
+<p align="center">
+  <img src="./docs/readme-ui-palette.svg" width="900" alt="Cartophiles light :root palette: eleven paper and ink swatches left to right">
+</p>
+
+<p align="center">
+  <sub>Badges + strip use the same hex as <a href="src/styles/tokens.css"><code>src/styles/tokens.css</code></a> (<code>:root</code>) — full hex table under "What this is" below.</sub>
+</p>
 
 **PICK A CLUB → LOAD THE ACTIVE ROSTER → DEAL THE GRID → FLIP FOR THE BACK.**  
 _Wax pack + peel when motion is on; `prefers-reduced-motion` jumps straight to a quiet grid._  
@@ -69,9 +85,7 @@ Deeper technical detail — project layout, the full script list, API routes, pe
 | `--album-felt-base`   | `#d9e4d6`   | Infield felt under the binder                      |
 | `--card-back-paper`   | `#ebe0cd`   | Warm buff card reverse                             |
 
-_Painted chips are only in the image below—the big `╔══╗` "program" frame at the top of this README is plain Markdown text and `░░` characters, not a color graphic._
-
-![Cartophiles light :root palette: eleven paper and ink swatches left to right](./docs/readme-ui-palette.svg)
+_Painted chips are in the strip at the top of this README, not in this table—the big `╔══╗` "program" frame at the top of this README is plain Markdown text and `░░` characters, not a color graphic._
 
 Per-franchise caps and fields: `--theme-*` in `src/styles/team-themes.css`. **Update this table and [`docs/readme-ui-palette.svg`](./docs/readme-ui-palette.svg) whenever you change light `:root` hex values** (same order left → right in the strip) so the README stays honest with the UI—same pattern as [gotta-catch-em-all](https://github.com/danibsheehan/gotta-catch-em-all) (`docs/readme-ui-palette.svg`). If the image ever breaks in preview, confirm the SVG is **valid UTF-8 XML** (no stray bytes in text nodes).
 
