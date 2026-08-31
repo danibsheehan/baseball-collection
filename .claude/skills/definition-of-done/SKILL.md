@@ -30,7 +30,7 @@ If the change touches deploy base path, client API base, or static hosting:
 - `.github/workflows/deploy-pages.yml`
 - Asset paths that break under a project-Pages subpath
 
-Then build like CI (see **`.cursor/skills/github-pages-deploy/SKILL.md`**):
+Then build like CI (see **`.claude/skills/github-pages-deploy/SKILL.md`**):
 
 ```bash
 VITE_PUBLIC_PATH=/baseball-collection/ VITE_API_BASE=https://statsapi.mlb.com/api/v1 npm run build
@@ -40,5 +40,5 @@ VITE_PUBLIC_PATH=/baseball-collection/ VITE_API_BASE=https://statsapi.mlb.com/ap
 
 ## Related
 
-- Before opening a PR, use **`.cursor/skills/pr-ready/SKILL.md`** (`test:coverage` matches CI).
+- Before opening a PR, use **`.claude/skills/pr-ready/SKILL.md`** (`test:coverage` matches CI).
 - Proxy / validation changes: **`api-proxy-hardening`**. Bundle size: **`bundle-performance`**.

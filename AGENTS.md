@@ -47,14 +47,26 @@ Before opening or updating a PR, run local CI parity — `format:check` → `lin
 → `build` (see the `pr-ready` skill). For small, localized edits the smallest relevant check is
 enough (see `definition-of-done`); full coverage isn't required for every tweak.
 
+## Layout
+
+- **UI**: `src/` — `main.ts`, `App.vue`, `components/*.vue`, shared logic in `src/lib/` (`.ts`,
+  tests as `*.test.ts`).
+- **Global look**: `src/styles/tokens.css`; team themes in `src/styles/team-themes.css`
+  (`[data-theme]` on **BaseballCard**).
+- **HTTP**: `src/http-common.ts` (Axios + short-lived cache); `src/lib/rosterPeople.ts` batches
+  people for card backs.
+- **API**: `server.js` + validation under `lib/` — details in skill `api-proxy-hardening`.
+- **Tooling**: `vite.config.mjs` (Vue, Vitest `environment: 'node'`, dev proxy to
+  `127.0.0.1:3000` for `/teams` and `/people`).
+
 ## Conventions
 
-Detailed conventions live in [`.cursor/rules/baseball-collection.mdc`](.cursor/rules/baseball-collection.mdc)
-and are read automatically by Claude Code via [`CLAUDE.md`](CLAUDE.md); Cursor reads them
-natively. Do not restate them here — this section is the map, not the content.
+- Match nearby Vue SFC patterns (`PlayerInfo.vue`, `BaseballCard.vue`).
+- Non-trivial logic in `src/lib/` or `lib/`: add or extend Vitest coverage.
 
-Step-by-step playbooks live in `.cursor/skills/*/SKILL.md` (also `.claude/skills/` — a directory
-symlink to the same files, auto-invoked by either tool based on the task):
+Step-by-step playbooks live in `.claude/skills/*/SKILL.md` (canonical — add new skills here;
+`.cursor/skills` is a symlink to it, kept for compatibility with the legacy Cursor setup),
+auto-invoked by task:
 
 - `definition-of-done` / `pr-ready` — validate a task, or prepare a PR (CI-parity checks, PR
   template)
@@ -74,10 +86,6 @@ symlink to the same files, auto-invoked by either tool based on the task):
 
 ## Constraints — do not
 
-- **Add or remove a `.cursor/skills/*/SKILL.md` directory without updating both
-  `.cursor/rules/baseball-collection.mdc`'s Workflow skills list and this file's skills list in
-  the same change** — these are two manually maintained copies of the same list; nothing else
-  checks them for drift.
 - **Concatenate raw request input into MLB proxy paths.** Build `relativePath` from fixed
   templates plus validated params only — see `api-proxy-hardening` (SSRF risk otherwise).
 - **Assume `server.js` exists in production.** GitHub Pages serves the SPA statically with no
