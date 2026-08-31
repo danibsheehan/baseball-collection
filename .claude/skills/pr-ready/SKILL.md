@@ -44,7 +44,7 @@ npm run build
 
 Faster while iterating (not a substitute before PR): `npm run test:run`.
 
-If the change touches **`VITE_PUBLIC_PATH`**, **`VITE_API_BASE`**, Pages workflow, or subpath asset loading, also follow **`.cursor/skills/github-pages-deploy/SKILL.md`** (CI-shaped `build` + spot-check `preview`).
+If the change touches **`VITE_PUBLIC_PATH`**, **`VITE_API_BASE`**, Pages workflow, or subpath asset loading, also follow **`.claude/skills/github-pages-deploy/SKILL.md`** (CI-shaped `build` + spot-check `preview`).
 
 Proxy / validation work: confirm tests under `lib/**/*.test.mjs` still pass via coverage run; see **`api-proxy-hardening`**.
 
