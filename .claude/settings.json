@@ -7,5 +7,13 @@
       "Bash(npm run test:coverage)",
       "Bash(npm run build)"
     ]
+  },
+  "extraKnownMarketplaces": {
+    "dani-foundations": {
+      "source": { "source": "github", "repo": "danibsheehan/dani-foundations" }
+    }
+  },
+  "enabledPlugins": {
+    "foundations@dani-foundations": true
   }
 }
