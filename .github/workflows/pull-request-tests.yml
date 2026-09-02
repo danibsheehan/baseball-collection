@@ -70,3 +70,18 @@ jobs:
           # cobertura-action defaults skip_covered to true, which hides 100%-covered files from the table.
           skip_covered: false
           report_name: Unit tests (Vitest)
+
+  # Gated on unit-tests passing -- previously this repo's Pages deploy was fully independent
+  # of CI and could publish a build even when tests would have failed.
+  deploy:
+    needs: unit-tests
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: danibsheehan/dani-actions/.github/workflows/deploy-github-pages.yml@v2
+    with:
+      build-command: "VITE_API_BASE=https://statsapi.mlb.com/api/v1 VITE_PUBLIC_PATH=/${{ github.event.repository.name }}/ npm run build"
+      dist-path: dist
+    secrets: inherit
