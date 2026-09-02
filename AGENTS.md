@@ -68,21 +68,19 @@ Step-by-step playbooks live in `.claude/skills/*/SKILL.md` (canonical — add ne
 `.cursor/skills` is a symlink to it, kept for compatibility with the legacy Cursor setup),
 auto-invoked by task:
 
-- `definition-of-done` / `pr-ready` — validate a task, or prepare a PR (CI-parity checks, PR
-  template)
 - `api-proxy-hardening` — Express proxy (`server.js`), validation (`lib/`), CORS/cache, the
   three-mode `VITE_API_BASE` behavior
 - `github-pages-deploy` — Pages base path, `VITE_*` CI parity, release flow
 - `test-generator` — Vitest for Vue/TS
 - `accessibility-a11y` — keyboard, ARIA, reduced motion
 - `bundle-performance` — size report, Lottie/chunk weight
-- `doc-writer` — README / JSDoc / inline comments (keep palette tables in sync with
-  `tokens.css`)
-- `dependabot-triage` — classify open Dependabot PRs that auto-merge didn't already handle
-  (majors, CI-red); merges only what's explicitly named
-- `pr-summary-draft` — drafts a why-first PR Summary / How-to-verify from the actual diff
-- `coverage-gap-diagnosis` — names the specific untested branches for files changed on this
-  branch, not just a bare percentage
+
+This repo also installs the `foundations` plugin from the `dani-foundations` marketplace
+(see `.claude/settings.json`), providing `doc-writer`, `dependabot-triage`,
+`pr-summary-draft`, `coverage-gap-diagnosis`, `definition-of-done`, and `pr-ready`
+(namespaced `foundations:*`) — no local copies of these needed; each is generic enough on
+its own, verified against this repo's `AGENTS.md`/`tokens.css`/other local skills before
+removing the local duplicates.
 
 ## Constraints — do not
 
