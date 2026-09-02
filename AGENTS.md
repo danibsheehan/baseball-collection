@@ -77,16 +77,19 @@ auto-invoked by task:
 - `api-proxy-hardening` — Express proxy (`server.js`), validation (`lib/`), CORS/cache, the
   three-mode `VITE_API_BASE` behavior; see `foundations:api-hardening` for the general
   principles this implements
-- `test-generator` — Vitest for Vue/TS
 
 This repo also installs the `foundations` plugin from the `dani-foundations` marketplace
 (see `.claude/settings.json`), providing `doc-writer`, `dependabot-triage`,
 `pr-summary-draft`, `coverage-gap-diagnosis`, `definition-of-done`, `pr-ready`,
-`accessibility-a11y`, `bundle-performance`, `github-pages-deploy`, and `api-hardening`
-(namespaced `foundations:*`) — no local copies of these needed; each is generic enough on
-its own, verified against this repo's `AGENTS.md`/`tokens.css`/other local skills before
-removing the local duplicates. The 3 genuinely repo-specific notes `accessibility-a11y`/
-`bundle-performance`/`github-pages-deploy` used to carry are folded into Conventions above.
+`accessibility-a11y`, `bundle-performance`, `github-pages-deploy`, `api-hardening`, and
+`vue-vitest-testing` (namespaced `foundations:*`) — no local copies of these needed; each is
+generic enough on its own, verified against this repo's `AGENTS.md`/`tokens.css`/other local
+skills before removing the local duplicates. The 3 genuinely repo-specific notes
+`accessibility-a11y`/`bundle-performance`/`github-pages-deploy` used to carry are folded into
+Conventions above. The local `test-generator` skill is gone entirely — it was Vue-generic
+content already generalized into `foundations:vue-vitest-testing`, plus Vitest config
+defaults already in `vite.config.mjs`/`.nvmrc`; nothing baseball-collection-specific
+remained.
 
 ## Constraints — do not
 
