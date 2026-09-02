@@ -9,6 +9,11 @@ description: >
 
 # API / proxy hardening (baseball-collection)
 
+For the general principles this implements (validate before calling upstream, never leak
+raw upstream errors to clients, explicit CORS/rate-limit defaults, SSRF-safe URL
+construction, never hit the real upstream from tests), see the **`foundations:api-hardening`**
+skill. This file is the concrete implementation reference for this repo's actual proxy.
+
 ## Architecture (three modes)
 
 | Mode                                                 | Client `baseURL`                                                   | API traffic                                                                                                                                                                                                      |

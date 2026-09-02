@@ -63,24 +63,30 @@ enough (see `definition-of-done`); full coverage isn't required for every tweak.
 
 - Match nearby Vue SFC patterns (`PlayerInfo.vue`, `BaseballCard.vue`).
 - Non-trivial logic in `src/lib/` or `lib/`: add or extend Vitest coverage.
+- **BaseballCard's Collect control sits below the flip scene, not over the card face** —
+  deliberate (accessibility/interaction), don't move it back without a reason.
+- **Bundle weight is dominated by `lottie-web` (pack-open animation) and MLB headshot
+  images** — prefer lazy/viewport loading for either before reaching for other cuts.
+- **No secrets needed for the GitHub Pages deploy** — the MLB Stats API endpoints used are
+  public and credential-free.
 
 Step-by-step playbooks live in `.claude/skills/*/SKILL.md` (canonical — add new skills here;
 `.cursor/skills` is a symlink to it, kept for compatibility with the legacy Cursor setup),
 auto-invoked by task:
 
 - `api-proxy-hardening` — Express proxy (`server.js`), validation (`lib/`), CORS/cache, the
-  three-mode `VITE_API_BASE` behavior
-- `github-pages-deploy` — Pages base path, `VITE_*` CI parity, release flow
+  three-mode `VITE_API_BASE` behavior; see `foundations:api-hardening` for the general
+  principles this implements
 - `test-generator` — Vitest for Vue/TS
-- `accessibility-a11y` — keyboard, ARIA, reduced motion
-- `bundle-performance` — size report, Lottie/chunk weight
 
 This repo also installs the `foundations` plugin from the `dani-foundations` marketplace
 (see `.claude/settings.json`), providing `doc-writer`, `dependabot-triage`,
-`pr-summary-draft`, `coverage-gap-diagnosis`, `definition-of-done`, and `pr-ready`
+`pr-summary-draft`, `coverage-gap-diagnosis`, `definition-of-done`, `pr-ready`,
+`accessibility-a11y`, `bundle-performance`, `github-pages-deploy`, and `api-hardening`
 (namespaced `foundations:*`) — no local copies of these needed; each is generic enough on
 its own, verified against this repo's `AGENTS.md`/`tokens.css`/other local skills before
-removing the local duplicates.
+removing the local duplicates. The 3 genuinely repo-specific notes `accessibility-a11y`/
+`bundle-performance`/`github-pages-deploy` used to carry are folded into Conventions above.
 
 ## Constraints — do not
 
