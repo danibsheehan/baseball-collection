@@ -82,6 +82,6 @@ jobs:
       id-token: write
     uses: danibsheehan/dani-actions/.github/workflows/deploy-github-pages.yml@v2
     with:
-      build-command: "VITE_API_BASE=https://statsapi.mlb.com/api/v1 VITE_PUBLIC_PATH=/${{ github.event.repository.name }}/ npm run build"
+      build-command: 'VITE_API_BASE=https://statsapi.mlb.com/api/v1 VITE_PUBLIC_PATH=/${{ github.event.repository.name }}/ npm run build'
       dist-path: dist
     secrets: inherit
