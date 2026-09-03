@@ -2,6 +2,7 @@ export const PEOPLE_BATCH_SIZE = 50;
 
 export type PersonRecord = {
   id: number;
+  fullName?: string;
 } & Record<string, unknown>;
 
 export type PeopleBatchResponse = {
@@ -9,7 +10,7 @@ export type PeopleBatchResponse = {
 };
 
 export type RosterRow = {
-  person?: { id?: number };
+  person?: { id?: number; fullName?: string };
 } & Record<string, unknown>;
 
 /** Unique person IDs in first-seen order (matches Set spread behavior). */

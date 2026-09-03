@@ -4,6 +4,7 @@ import {
   enrichRosterWithPlayerInfo,
   peopleByIdFromResponses,
   uniquePersonIds,
+  type PeopleBatchResponse,
   type RosterRow,
 } from './rosterPeople';
 
@@ -36,11 +37,16 @@ function sortRosterByPlayerName<T extends RosterRow & { playerInfo?: { fullName?
 async function fetchPeopleByIds(http: RosterHttp, personIds: number[]) {
   const unique = uniquePersonIds(personIds);
   const chunks = chunkPersonIds(unique, PEOPLE_BATCH_SIZE);
-  return Promise.all(
-    chunks.map((chunk) => http.get('people', { params: { personIds: chunk.join(',') } })),
-  )
-    .then((responses) => peopleByIdFromResponses(responses))
-    .catch(() => ({}) as Record<number, never>);
+  return (
+    Promise.all(
+      chunks.map((chunk) => http.get('people', { params: { personIds: chunk.join(',') } })),
+    )
+      // RosterHttp.get's return type is shared with the roster-fetch call site above, so its
+      // `people` field is loosely `unknown[]` there; this call site knows the /people endpoint
+      // actually returns PeopleBatchResponse's shape.
+      .then((responses) => peopleByIdFromResponses(responses as PeopleBatchResponse[]))
+      .catch(() => ({}) as Record<number, never>)
+  );
 }
 
 /**

@@ -94,8 +94,12 @@ export function createCardFoilRenderer(canvas: HTMLCanvasElement): CardFoilRende
   if (!gl) {
     return null;
   }
+  // Re-bind to a const TS keeps narrowed as non-null inside the nested draw/dispose
+  // closures below -- narrowing on the outer `gl` doesn't persist into function
+  // declarations, since they could in principle be invoked before this point.
+  const context = gl;
 
-  const program = createProgram(gl, VS, FS);
+  const program = createProgram(context, VS, FS);
   if (!program) {
     return null;
   }
@@ -125,31 +129,31 @@ export function createCardFoilRenderer(canvas: HTMLCanvasElement): CardFoilRende
     pixelW: number,
     pixelH: number,
   ) {
-    gl.viewport(0, 0, pixelW, pixelH);
-    gl.clearColor(0, 0, 0, 0);
-    gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-    gl.useProgram(program);
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.enableVertexAttribArray(locPos);
-    gl.vertexAttribPointer(locPos, 2, gl.FLOAT, false, 0, 0);
+    context.viewport(0, 0, pixelW, pixelH);
+    context.clearColor(0, 0, 0, 0);
+    context.clear(context.COLOR_BUFFER_BIT);
+    context.enable(context.BLEND);
+    context.blendFunc(context.SRC_ALPHA, context.ONE_MINUS_SRC_ALPHA);
+    context.useProgram(program);
+    context.bindBuffer(context.ARRAY_BUFFER, buf);
+    context.enableVertexAttribArray(locPos);
+    context.vertexAttribPointer(locPos, 2, context.FLOAT, false, 0, 0);
     const tx = (tiltXDeg * Math.PI) / 180;
     const ty = (tiltYDeg * Math.PI) / 180;
-    gl.uniform2f(locTilt, tx, ty);
-    gl.uniform1f(locTime, timeSec);
-    gl.uniform1f(locIntensity, intensity);
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    context.uniform2f(locTilt, tx, ty);
+    context.uniform1f(locTime, timeSec);
+    context.uniform1f(locIntensity, intensity);
+    context.drawArrays(context.TRIANGLES, 0, 6);
   }
 
   function dispose() {
     if (buf) {
-      gl.deleteBuffer(buf);
+      context.deleteBuffer(buf);
     }
-    gl.deleteProgram(program);
+    context.deleteProgram(program);
   }
 
-  return { gl, draw, dispose };
+  return { gl: context, draw, dispose };
 }
 
 export function parseCssDeg(value: string | undefined | null): number {
