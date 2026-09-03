@@ -37,15 +37,18 @@ npm start           # prod-like: Express serves dist + proxy, PORT default 8080
 ```bash
 npm run format:check    # Prettier check (npm run format to fix)
 npm run lint            # ESLint on src (.vue, .ts)
+npm run typecheck       # tsc --noEmit
 npm run test:run        # Vitest, single run
 npm run test:coverage   # Vitest with coverage thresholds (matches CI)
 npm run build           # Vite production build
 npm run build:report    # build + dist size report (scripts/bundle-report.mjs)
 ```
 
-Before opening or updating a PR, run local CI parity — `format:check` → `lint` → `test:coverage`
-→ `build` (see the `pr-ready` skill). For small, localized edits the smallest relevant check is
-enough (see `definition-of-done`); full coverage isn't required for every tweak.
+Before opening or updating a PR, run local CI parity — `format:check` → `lint` → `typecheck` →
+`test:coverage` → `build` (see the `pr-ready` skill). For small, localized edits the smallest
+relevant check is enough (see `definition-of-done`); full coverage isn't required for every
+tweak. CI (`.github/workflows/verify.yml`, via dani-actions' `npm-verify.yml`) runs these as
+separate parallel jobs, each its own required check (e.g. `verify / lint (app)`).
 
 ## Layout
 
