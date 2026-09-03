@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   deploy:
-    uses: danibsheehan/dani-actions/.github/workflows/deploy-github-pages.yml@v12
+    uses: danibsheehan/dani-actions/.github/workflows/deploy-github-pages.yml@v15
     with:
       build-command: 'VITE_API_BASE=https://statsapi.mlb.com/api/v1 VITE_PUBLIC_PATH=/${{ github.event.repository.name }}/ npm run build'
       dist-path: dist
