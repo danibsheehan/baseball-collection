@@ -261,7 +261,14 @@ someone asked for, reviewed before it ships.
 - **`dependabot-triage`** skill — ported from `caught-looking`, available on request to classify
   the Dependabot backlog by risk. Not on a schedule here yet — run it manually when the backlog
   needs a look.
-- **CodeQL / security scanning** — not configured in this repo yet.
+- **CodeQL** ([`codeql.yml`](.github/workflows/codeql.yml)) — scans the Vue/TypeScript app on
+  push to `main`, on every PR, and weekly (Monday), flagging known vulnerability patterns.
+- **Dependency review** ([`dependency-review.yml`](.github/workflows/dependency-review.yml)) —
+  flags newly-introduced vulnerable or license-incompatible dependencies in a PR's diff, before
+  merge.
+- **PR guide** ([`pr-guide.yml`](.github/workflows/pr-guide.yml)) — scaffolds an empty PR
+  description, posts a sticky checklist/reviewer-focus comment, and applies path-based labels
+  (same-repo PRs only).
 - **Cross-repo, read-only**: a scheduled Claude Code routine, defined in
   [`danibsheehan/portfolio-automation`](https://github.com/danibsheehan/portfolio-automation)'s
   [`weekly-project-update`](https://github.com/danibsheehan/portfolio-automation/blob/main/.claude/skills/weekly-project-update/SKILL.md)
