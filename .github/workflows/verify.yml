@@ -2,7 +2,7 @@
 # dani-actions' shared npm-verify.yml. Deploy lives in its own file (deploy-pages.yml)
 # since it has a different trigger (push to main only) and different risk profile.
 
-name: verify
+name: CI
 
 on:
   pull_request:
