@@ -242,6 +242,7 @@ Upstream: **MLB Stats API** — `https://statsapi.mlb.com/api/v1/`. Response sha
 ```bash
 npm run format:check
 npm run lint
+npm run typecheck
 npm run test:coverage
 npm run build
 ```
