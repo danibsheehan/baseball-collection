@@ -3,154 +3,154 @@
 # to be .github/scripts/pr_guide_lib.py + generate_pr_guide.py -- verified against a real PR
 # to produce byte-identical output before those scripts were removed.
 
-meta_start: "<!-- pr-guide-meta:start -->"
-meta_end: "<!-- pr-guide-meta:end -->"
-summary_prompt: "<!-- What changed and why? -->"
-verify_prompt: "<!-- Commands run, manual checks, or N/A with rationale. -->"
-legacy_template_markers: ["## Checklist", "No unintended secrets"]
+meta_start: '<!-- pr-guide-meta:start -->'
+meta_end: '<!-- pr-guide-meta:end -->'
+summary_prompt: '<!-- What changed and why? -->'
+verify_prompt: '<!-- Commands run, manual checks, or N/A with rationale. -->'
+legacy_template_markers: ['## Checklist', 'No unintended secrets']
 meta_block_template: |-
   **Touches:** {touches}
 
   Checklist and reviewer focus: see the **PR guide** comment on this PR (updated on each push).
 
-guide_intro: "_Auto-generated from changed paths. Fill in **Summary** and **How to verify** in the PR description above._"
+guide_intro: '_Auto-generated from changed paths. Fill in **Summary** and **How to verify** in the PR description above._'
 required_checks_description: >-
   Required checks: [verify]({ci_href}) runs format/lint/audit/typecheck/test/build as
   separate per-concern checks for every PR. Coverage tables are posted separately.
 
 always_checklist_items:
-  - "No unintended secrets or local-only config committed"
+  - 'No unintended secrets or local-only config committed'
 
 fallback:
-  verify: "N/A - docs/tooling only; confirm locally if anything user-facing changed"
-  reviewer_focus: "Scope looks docs- or tooling-only; confirm there is no hidden runtime impact"
+  verify: 'N/A - docs/tooling only; confirm locally if anything user-facing changed'
+  reviewer_focus: 'Scope looks docs- or tooling-only; confirm there is no hidden runtime impact'
 
 tests_missing_rule:
   tests_area_id: tests
   trigger_areas: [card, player, team, collection, roster, app]
-  note: "Tests added or updated for changed behavior, or noted why not"
+  note: 'Tests added or updated for changed behavior, or noted why not'
 
 test_file_rule:
-  substrings: [".test."]
-  note: "Test assertions cover the behavior under review rather than only implementation details"
+  substrings: ['.test.']
+  note: 'Test assertions cover the behavior under review rather than only implementation details'
 
 verify_groups:
   full_suite:
-    - "`npm run lint`"
-    - "`npm run format:check`"
-    - "`npm run typecheck`"
-    - "`npm run test:run` or targeted Vitest files for the changed area"
-    - "`npm run build`"
+    - '`npm run lint`'
+    - '`npm run format:check`'
+    - '`npm run typecheck`'
+    - '`npm run test:run` or targeted Vitest files for the changed area'
+    - '`npm run build`'
   tests_only:
-    - "`npm run test:run` or targeted Vitest files"
+    - '`npm run test:run` or targeted Vitest files'
 
 areas:
   - id: card
-    display: "card rendering / foil effects"
+    display: 'card rendering / foil effects'
     prefixes:
-      - "src/components/BaseballCard"
-      - "src/components/CardBack"
-      - "src/components/CardFront"
-      - "src/components/CardFoilGl"
-      - "src/lib/cardFoil"
-      - "src/lib/useCardTilt"
+      - 'src/components/BaseballCard'
+      - 'src/components/CardBack'
+      - 'src/components/CardFront'
+      - 'src/components/CardFoilGl'
+      - 'src/lib/cardFoil'
+      - 'src/lib/useCardTilt'
     verify_group: full_suite
     checklist:
-      - "Card front/back rendering and foil effect (WebGL + DOM fallback) still work across browsers"
+      - 'Card front/back rendering and foil effect (WebGL + DOM fallback) still work across browsers'
     reviewer_focus:
-      - "Foil/tilt rendering correctness and WebGL-unavailable fallback behavior"
+      - 'Foil/tilt rendering correctness and WebGL-unavailable fallback behavior'
 
   - id: player
-    display: "player info display"
+    display: 'player info display'
     prefixes:
-      - "src/components/PlayerImage"
-      - "src/components/PlayerInfo"
-      - "src/components/PlayerLogo"
-      - "src/components/PlayerName"
+      - 'src/components/PlayerImage'
+      - 'src/components/PlayerInfo'
+      - 'src/components/PlayerLogo'
+      - 'src/components/PlayerName'
     verify_group: full_suite
     checklist:
-      - "Player image/info/logo/name still handle missing or partial MLB data gracefully"
+      - 'Player image/info/logo/name still handle missing or partial MLB data gracefully'
     reviewer_focus:
-      - "Handling of missing/partial player data from the MLB API"
+      - 'Handling of missing/partial player data from the MLB API'
 
   - id: team
-    display: "team display"
-    prefixes: ["src/components/Team"]
+    display: 'team display'
+    prefixes: ['src/components/Team']
     verify_group: full_suite
     checklist:
-      - "Team display still matches expected roster/team data"
+      - 'Team display still matches expected roster/team data'
     reviewer_focus:
-      - "Team data mapping and display"
+      - 'Team data mapping and display'
 
   - id: collection
-    display: "album / pack collection"
+    display: 'album / pack collection'
     prefixes:
-      - "src/components/AlbumPackLottie"
-      - "src/lib/albumCollection"
-      - "src/lib/useBinderPennantParallax"
+      - 'src/components/AlbumPackLottie'
+      - 'src/lib/albumCollection'
+      - 'src/lib/useBinderPennantParallax'
     verify_group: full_suite
     checklist:
-      - "Album/pack collection state still persists and renders correctly"
+      - 'Album/pack collection state still persists and renders correctly'
     reviewer_focus:
-      - "Album/pack collection state persistence"
+      - 'Album/pack collection state persistence'
 
   - id: roster
-    display: "MLB roster data loading"
+    display: 'MLB roster data loading'
     prefixes:
-      - "src/lib/rosterLoad"
-      - "src/lib/rosterPeople"
-      - "src/lib/filterMlbTeams"
-      - "src/lib/teamPickerSections"
-      - "src/lib/teamUrlState"
-      - "src/http-common.ts"
+      - 'src/lib/rosterLoad'
+      - 'src/lib/rosterPeople'
+      - 'src/lib/filterMlbTeams'
+      - 'src/lib/teamPickerSections'
+      - 'src/lib/teamUrlState'
+      - 'src/http-common.ts'
     verify_group: full_suite
     checklist:
-      - "Roster loading still handles the real MLB API response shapes, including partial/failed people-batch fetches"
+      - 'Roster loading still handles the real MLB API response shapes, including partial/failed people-batch fetches'
     reviewer_focus:
-      - "MLB API response-shape assumptions and error handling in roster/people loading"
+      - 'MLB API response-shape assumptions and error handling in roster/people loading'
 
   - id: app
-    display: "app shell"
-    prefixes: ["src/App.vue", "src/main.ts"]
+    display: 'app shell'
+    prefixes: ['src/App.vue', 'src/main.ts']
     verify_group: full_suite
     checklist:
-      - "App shell renders correctly under the GitHub Pages base path"
+      - 'App shell renders correctly under the GitHub Pages base path'
     reviewer_focus:
-      - "App shell and GitHub Pages base-path handling"
+      - 'App shell and GitHub Pages base-path handling'
 
   - id: styles
-    display: "styles"
-    prefixes: ["src/styles/"]
+    display: 'styles'
+    prefixes: ['src/styles/']
     verify_group: full_suite
 
   - id: tests
-    display: "tests"
-    prefixes: [".test."]
+    display: 'tests'
+    prefixes: ['.test.']
     verify_group: tests_only
 
   - id: ci
-    display: "CI / GitHub"
-    prefixes: [".github/"]
+    display: 'CI / GitHub'
+    prefixes: ['.github/']
     verify_extra:
-      - "Review workflow syntax and required permissions in GitHub Actions"
+      - 'Review workflow syntax and required permissions in GitHub Actions'
     reviewer_focus:
-      - "Workflow event triggers, token permissions, and required-check names"
+      - 'Workflow event triggers, token permissions, and required-check names'
 
   - id: docs
-    display: "docs / agent guidance"
-    prefixes: ["README.md", "AGENTS.md", "CLAUDE.md", "docs/"]
+    display: 'docs / agent guidance'
+    prefixes: ['README.md', 'AGENTS.md', 'CLAUDE.md', 'docs/']
 
   - id: config
-    display: "tooling config"
+    display: 'tooling config'
     prefixes:
-      - "package.json"
-      - "package-lock.json"
-      - "vite.config"
-      - "eslint.config"
-      - "prettier.config"
-      - "tsconfig"
-      - ".nvmrc"
-      - ".lighthouserc.json"
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vite.config'
+      - 'eslint.config'
+      - 'prettier.config'
+      - 'tsconfig'
+      - '.nvmrc'
+      - '.lighthouserc.json'
     verify_group: full_suite
     reviewer_focus:
-      - "Dependency, Vite, TypeScript, ESLint, and Prettier changes that can affect local and CI runs"
+      - 'Dependency, Vite, TypeScript, ESLint, and Prettier changes that can affect local and CI runs'
