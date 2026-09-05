@@ -23,11 +23,18 @@ jobs:
       checks: write
     uses: danibsheehan/dani-actions/.github/workflows/npm-verify.yml@v20
     with:
+      # coverage-minimum (82) mirrors vite.config.mjs's `branches` threshold, the lowest of
+      # its four real Vitest thresholds (95 stmts/85 funcs/95 lines/82 branches). It's display-only
+      # in the Cobertura PR comment (never fails the build) and is checked against that action's
+      # blended (line-rate + branch-rate) / 2 "Coverage" column, so it approximates rather than
+      # exactly mirrors the real gate — lean on the branch floor since branches usually lag lines.
+      # Keep in sync with vite.config.mjs's `branches` threshold if it changes.
       packages: |
         [{"name": "app", "path": ".",
           "test-command": "npm run test:coverage",
           "build-command": "VITE_API_BASE=https://statsapi.mlb.com/api/v1 VITE_PUBLIC_PATH=/${{ github.event.repository.name }}/ npm run build",
           "coverage-file": "coverage/cobertura-coverage.xml",
+          "coverage-minimum": 82,
           "typecheck-command": "npm run typecheck",
           "paths": "app:\n  - 'src/**'\n  - 'public/**'\n  - 'index.html'\n  - 'package.json'\n  - 'package-lock.json'\n  - 'tsconfig.json'\n  - 'vite.config.mjs'\n  - 'eslint.config.mjs'\n  - 'prettier.config.mjs'\n  - '.nvmrc'\n  - '.github/workflows/**'\n  - '.github/dependabot.yml'\n  - '.github/labeler.yml'"}]
       skip-covered: false
