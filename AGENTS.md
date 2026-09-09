@@ -92,10 +92,19 @@ skills before removing the local duplicates. The 3 genuinely repo-specific notes
 Conventions above. The local `test-generator` skill is gone entirely — it was Vue-generic
 content already generalized into `foundations:vue-vitest-testing`, plus Vitest config
 defaults already in `vite.config.mjs`/`.nvmrc`; nothing baseball-collection-specific
-remained.
+remained. Two more from the same plugin apply to how any task here gets branched and scoped:
+**`foundations:branch-naming`** — every branch follows `<type>/<slug>`
+(Conventional-Commits-style type prefix); enforced by a `PreToolUse` hook shipped with the
+plugin, so a non-conforming `git checkout -b`/`git switch -c` is blocked automatically.
+**`foundations:pr-chunk-plan`** — before starting a task that touches 3 or more files, or
+bundles multiple distinct concerns, break it into an ordered sequence of small,
+independently reviewable chunks first; skip it for single-file or one-line fixes.
 
 ## Constraints — do not
 
+- **Commit or push directly to `main`.** Always branch first, following
+  `foundations:branch-naming`'s `<type>/<slug>` convention, then open a PR — even for small
+  or config-only changes.
 - **Concatenate raw request input into MLB proxy paths.** Build `relativePath` from fixed
   templates plus validated params only — see `api-proxy-hardening` (SSRF risk otherwise).
 - **Assume `server.js` exists in production.** GitHub Pages serves the SPA statically with no
