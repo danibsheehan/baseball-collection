@@ -50,6 +50,9 @@ relevant check is enough (see `definition-of-done`); full coverage isn't require
 tweak. CI (`.github/workflows/verify.yml`, via dani-actions' `npm-verify.yml`) runs these as
 separate parallel jobs, each its own required check (e.g. `verify / lint (app)`).
 
+If coverage is close to a threshold or drops, use `foundations:coverage-gap-diagnosis` to find
+the specific untested branches rather than eyeballing the percentage.
+
 ## Layout
 
 - **UI**: `src/` — `main.ts`, `App.vue`, `components/*.vue`, shared logic in `src/lib/` (`.ts`,
@@ -58,18 +61,23 @@ separate parallel jobs, each its own required check (e.g. `verify / lint (app)`)
   (`[data-theme]` on **BaseballCard**).
 - **HTTP**: `src/http-common.ts` (Axios + short-lived cache); `src/lib/rosterPeople.ts` batches
   people for card backs.
-- **API**: `server.js` + validation under `lib/` — details in skill `api-proxy-hardening`.
+- **API**: `server.js` + validation under `lib/` — details in skill `api-proxy-hardening`;
+  see `foundations:caching-and-upstream-perf` for caching/TTL/rate-limit principles against
+  the MLB upstream.
 - **Tooling**: `vite.config.mjs` (Vue, Vitest `environment: 'node'`, dev proxy to
   `127.0.0.1:3000` for `/teams` and `/people`).
 
 ## Conventions
 
 - Match nearby Vue SFC patterns (`PlayerInfo.vue`, `BaseballCard.vue`).
-- Non-trivial logic in `src/lib/` or `lib/`: add or extend Vitest coverage.
+- Non-trivial logic in `src/lib/` or `lib/`: add or extend Vitest coverage
+  (`foundations:vue-vitest-testing`).
 - **BaseballCard's Collect control sits below the flip scene, not over the card face** —
-  deliberate (accessibility/interaction), don't move it back without a reason.
+  deliberate (accessibility/interaction, see `foundations:accessibility-a11y`), don't move it
+  back without a reason.
 - **Bundle weight is dominated by `lottie-web` (pack-open animation) and MLB headshot
-  images** — prefer lazy/viewport loading for either before reaching for other cuts.
+  images** — prefer lazy/viewport loading for either before reaching for other cuts (see
+  `foundations:bundle-performance`).
 - **No secrets needed for the GitHub Pages deploy** — the MLB Stats API endpoints used are
   public and credential-free.
 
@@ -117,7 +125,8 @@ as earlier ones merge; see Definition of done below for when it's invoked.
 - **Commit secrets** (`.env*`, credentials).
 - **Amend or force-push**, or **open/push/merge a PR**, unless the user explicitly asks. (See
   README's **Automation** section for this repo's one standing exception — grouped Dependabot
-  auto-merge — and the read-only, cross-repo `weekly-project-update` routine, defined in
+  auto-merge, `foundations:dependabot-triage` for anything not auto-merged — and the
+  read-only, cross-repo `weekly-project-update` routine, defined in
   `danibsheehan/portfolio-automation`, that opens PRs _elsewhere_, never here.)
 
 ## Definition of done
