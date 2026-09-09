@@ -99,6 +99,9 @@ plugin, so a non-conforming `git checkout -b`/`git switch -c` is blocked automat
 **`foundations:pr-chunk-plan`** — before starting a task that touches 3 or more files, or
 bundles multiple distinct concerns, break it into an ordered sequence of small,
 independently reviewable chunks first; skip it for single-file or one-line fixes.
+Once a `pr-chunk-plan`-style chunk plan is ready to execute, **`foundations:pr-stack-ship`**
+ships it — branching, committing, and opening a PR per chunk, retargeting/rebasing later PRs
+as earlier ones merge; see Definition of done below for when it's invoked.
 
 ## Constraints — do not
 
@@ -124,5 +127,7 @@ independently reviewable chunks first; skip it for single-file or one-line fixes
   → `test:run` → `build` (`definition-of-done` skill). Full CI is not required for every small
   edit.
 - **PR done**: `format:check`, `lint`, `test:coverage`, `build` all green (`pr-ready` skill);
-  Pages-shaped build too if deploy/base/API env changed. Commit, push, or open a PR only when the
-  user asks.
+  draft the PR description with `pr-summary-draft`; Pages-shaped build too if deploy/base/API env
+  changed. For chunked work (see `pr-chunk-plan` above), ship the stack — branch, commit, and
+  open a PR per chunk, retargeting later PRs as earlier ones merge — with `pr-stack-ship` instead
+  of a single `pr-ready` pass. Commit, push, or open a PR only when the user asks.
