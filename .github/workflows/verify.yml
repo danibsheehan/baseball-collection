@@ -21,7 +21,7 @@ jobs:
       contents: read
       pull-requests: write
       checks: write
-    uses: danibsheehan/dani-actions/.github/workflows/npm-verify.yml@v21
+    uses: danibsheehan/dani-actions/.github/workflows/npm-verify.yml@v27
     with:
       # coverage-minimum (82) mirrors vite.config.mjs's `branches` threshold, the lowest of
       # its four real Vitest thresholds (95 stmts/85 funcs/95 lines/82 branches). It's display-only
