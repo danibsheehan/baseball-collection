@@ -34,7 +34,7 @@ Changes to **`server.js`** affect **local / Node hosting only**. Production Page
 
 ## Validation (`lib/peopleQueryValidation.cjs`)
 
-- **`validatePersonIdsQuery(raw)`** — `raw` from `personIds` or **`ids`** query; must match **`^\d+(,\d+)*$`** after trim (no empty segments, no leading/trailing commas). App batches up to **50** IDs per request (see **`README.md`**). On failure respond **400** JSON `{ message }` (same pattern as `server.js` today).
+- **`validatePersonIdsQuery(raw)`** — `raw` from `personIds` or **`ids`** query; must match **`^\d+(,\d+)*$`** after trim (no empty segments, no leading/trailing commas), and enforces a hard cap of **`MAX_PERSON_IDS` = 50** IDs per request. App batches up to **50** IDs per request via `PEOPLE_BATCH_SIZE` in `src/lib/rosterPeople.ts` (see also **`README.md`**) — **these two constants must be changed together**; raising one without the other means legitimate roster loads silently start getting rejected with 400s (or the cap stops doing anything). On failure respond **400** JSON `{ message }` (same pattern as `server.js` today).
 - **`validatePlayerIdParam(playerId)`** — digits only; else **400**.
 - **Tests**: `lib/peopleQueryValidation.test.mjs` (Vitest). **Extend tests** whenever validation rules change.
 
