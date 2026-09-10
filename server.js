@@ -8,6 +8,7 @@ const {
   validatePersonIdsQuery,
   validatePlayerIdParam,
 } = require('./lib/peopleQueryValidation.cjs');
+const { isAllowedOrigin } = require('./lib/corsOrigins.cjs');
 
 const app = express();
 const baseURL = 'http://statsapi.mlb.com/api/v1/';
@@ -75,8 +76,12 @@ async function proxyMlb(req, res, relativePath, cacheControl) {
 }
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  const origin = req.header('Origin');
+  if (isAllowedOrigin(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Vary', 'Origin');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  }
   next();
 });
 
