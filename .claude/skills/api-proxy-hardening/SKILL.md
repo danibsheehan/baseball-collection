@@ -30,7 +30,7 @@ Changes to **`server.js`** affect **local / Node hosting only**. Production Page
 - **`proxyMlb(req, res, relativePath, cacheControl)`** — only call with **`relativePath` built from fixed templates** plus **validated** params (never concatenate raw `req.url` into MLB paths—**SSRF** risk).
 - **`pipeMlbToResponse`** — copies `Content-Type`, sets `Cache-Control`, pipes stream; stream errors → **502** `{ message: '...' }` if headers not sent, else `res.destroy()`.
 - **Catch in `proxyMlb`** — network/upstream failures → **502** `{ message: 'Failed to reach MLB API' }`.
-- **CORS** — global middleware allows `*` and common headers; tighten origins if the proxy is exposed beyond local dev.
+- **CORS** — global middleware allowlists origins via `lib/corsOrigins.cjs`'s `isAllowedOrigin` (currently just the Vite dev origins, `http://localhost:5173` / `http://127.0.0.1:5173`) rather than `*`. No origin needs this today: Vite dev proxies server-to-server (`vite.config.mjs`), and GitHub Pages never runs `server.js`. **If a new origin ever needs to call `server.js` directly from a browser, add it to `ALLOWED_ORIGINS` in `lib/corsOrigins.cjs`** — it won't work silently otherwise (no error, just a missing `Access-Control-Allow-Origin` header and a browser-side CORS failure).
 
 ## Validation (`lib/peopleQueryValidation.cjs`)
 
