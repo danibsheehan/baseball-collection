@@ -4,6 +4,7 @@ const https = require('https');
 const express = require('express');
 const axios = require('axios');
 const serveStatic = require('serve-static');
+const rateLimit = require('express-rate-limit');
 const {
   validatePersonIdsQuery,
   validatePlayerIdParam,
@@ -87,11 +88,23 @@ app.use((req, res, next) => {
 
 app.use(serveStatic(__dirname + '/dist'));
 
-app.get('/teams', (req, res) => {
+// Bounds abuse/cost against the MLB upstream and this server; scoped to the API routes only
+// (static asset serving above is unaffected).
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(429).json({ message: 'Too many requests, please try again later.' });
+  },
+});
+
+app.get('/teams', apiLimiter, (req, res) => {
   proxyMlb(req, res, 'teams', CACHE.teams);
 });
 
-app.get('/teams/:teamId/roster', (req, res) => {
+app.get('/teams/:teamId/roster', apiLimiter, (req, res) => {
   const teamId = validateNumericId(req.params.teamId);
   if (!teamId) {
     res.status(400).json({ message: 'Invalid teamId' });
@@ -101,7 +114,7 @@ app.get('/teams/:teamId/roster', (req, res) => {
 });
 
 /** Comma-separated MLB person IDs → single MLB batch request (personIds query). */
-app.get('/people', (req, res) => {
+app.get('/people', apiLimiter, (req, res) => {
   const raw = req.query.personIds ?? req.query.ids;
   const parsed = validatePersonIdsQuery(raw);
   if (!parsed.ok) {
@@ -112,7 +125,7 @@ app.get('/people', (req, res) => {
   proxyMlb(req, res, path, CACHE.people);
 });
 
-app.get('/people/:playerId', (req, res) => {
+app.get('/people/:playerId', apiLimiter, (req, res) => {
   const parsed = validatePlayerIdParam(req.params.playerId);
   if (!parsed.ok) {
     res.status(400).json({ message: parsed.message });
