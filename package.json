@@ -23,7 +23,6 @@
     "test:coverage:watch": "vitest --coverage",
     "start": "node server.js",
     "api": "PORT=3000 node server.js",
-    "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build",
     "prepare": "husky"
   },
   "lint-staged": {
