@@ -189,23 +189,24 @@ npm start
 <details>
 <summary><strong>All npm scripts</strong>, decoded (for builders)</summary>
 
-| SCRIPT                        | WHAT IT DOES                                                |
-| ----------------------------- | ----------------------------------------------------------- |
-| `npm run dev`                 | `concurrently`: `npm run api` (**3000**) + Vite dev server  |
-| `npm run dev:client`          | Vite only                                                   |
-| `npm run api`                 | Express proxy on **PORT=3000**                              |
-| `npm run build`               | `vite build` → `dist/`                                      |
-| `npm run build:report`        | Build then `scripts/bundle-report.mjs`                      |
-| `npm run preview`             | `vite preview`                                              |
-| `npm start`                   | `node server.js` — static `dist` + proxy (**8080** default) |
-| `npm run lint`                | ESLint on `src` (`.vue`, `.ts`)                             |
-| `npm run format`              | Prettier — write formatting fixes                           |
-| `npm run format:check`        | Prettier — check formatting only                            |
-| `npm run test`                | Vitest watch                                                |
-| `npm run test:run`            | Vitest single run                                           |
-| `npm run test:coverage`       | Coverage run (thresholds per config)                        |
-| `npm run test:coverage:watch` | Coverage run, watch mode                                    |
-| `npm run heroku-postbuild`    | Heroku: dev deps + `npm run build`                          |
+| SCRIPT                        | WHAT IT DOES                                                                                                      |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`                 | `concurrently`: `npm run api` (**3000**) + Vite dev server                                                        |
+| `npm run dev:client`          | Vite only                                                                                                         |
+| `npm run api`                 | Express proxy on **PORT=3000**                                                                                    |
+| `npm run build`               | `vite build` → `dist/`                                                                                            |
+| `npm run build:report`        | Build then `scripts/bundle-report.mjs`                                                                            |
+| `npm run preview`             | `vite preview`                                                                                                    |
+| `npm start`                   | `node server.js` — static `dist` + proxy (**8080** default)                                                       |
+| `npm run lint`                | ESLint on `src` (`.vue`, `.ts`)                                                                                   |
+| `npm run typecheck`           | `tsc --noEmit`; also runs in CI (`verify.yml`)                                                                    |
+| `npm run format`              | Prettier — write formatting fixes                                                                                 |
+| `npm run format:check`        | Prettier — check formatting only                                                                                  |
+| `npm run test`                | Vitest watch                                                                                                      |
+| `npm run test:run`            | Vitest single run                                                                                                 |
+| `npm run test:coverage`       | Coverage run (thresholds per config)                                                                              |
+| `npm run test:coverage:watch` | Coverage run, watch mode                                                                                          |
+| `npm run contrast-report`     | `scripts/contrast-report.mjs` — WCAG contrast ratios (4.5:1 text, 3:1 UI) across `tokens.css` / `team-themes.css` |
 
 </details>
 
@@ -239,7 +240,6 @@ Upstream: **MLB Stats API** — `https://statsapi.mlb.com/api/v1/`. Response sha
 | TARGET           | NOTES                                                                                                                      |
 | ---------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | **GitHub Pages** | `.github/workflows/deploy-pages.yml` — `npm ci`, `npm run build` with `VITE_API_BASE` + `VITE_PUBLIC_PATH`, deploy `dist/` |
-| **Heroku**       | `heroku-postbuild` builds; web process = `npm start`                                                                       |
 
 ## Contributing
 
@@ -259,6 +259,9 @@ Tests live next to sources: `src/**/*.test.ts`, `lib/**/*.test.mjs` (see `vite.c
 is green); everything else — triage, docs, features — is a person or an AI assistant doing work
 someone asked for, reviewed before it ships.
 
+- **CI** ([`verify.yml`](.github/workflows/verify.yml)) — runs format/lint/typecheck/test/build
+  (via dani-actions' shared `npm-verify.yml`) on every PR and on push to `main`; each check is
+  its own required status (e.g. `verify / lint (app)`).
 - **Auto-merge** ([`dependabot-auto-merge.yml`](.github/workflows/dependabot-auto-merge.yml)) —
   merges the grouped `npm-minor-and-patch` Dependabot PR once required checks pass. Same scoping
   as `caught-looking`'s equivalent workflow. Ungrouped npm bumps (majors), GitHub Actions bumps,
@@ -287,7 +290,9 @@ someone asked for, reviewed before it ships.
 <details>
 <summary><strong>Performance & motion internals</strong> (for builders)</summary>
 
-1. **Lighthouse** — Performance (mobile + desktop): LCP, TBT, dependency tree.
+1. **Lighthouse** — Performance (mobile + desktop): LCP, TBT, dependency tree. Also runs
+   automatically in CI on every PR ([`lighthouse.yml`](.github/workflows/lighthouse.yml), via
+   dani-actions' `lighthouse-ci.yml`).
 2. **Network** — Hard reload, pick a team: batched `GET /people?personIds=…` (or MLB URL in prod), not N single-player calls. Headshots lazy as cards approach viewport.
 3. **Coverage** — Compare JS/CSS at first paint vs after use.
 4. **Vue DevTools** — Flip cards, switch teams; watch re-renders on large lists.
