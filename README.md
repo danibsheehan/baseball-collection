@@ -44,8 +44,8 @@ Same public feed for teams, roster, and player lines — errors stay visible, no
 - [Run it locally](#run-it-locally)
 - [Configuration](#configuration)
 - [Deployment](#deployment)
-- [Contributing](#contributing)
 - [Automation](#automation)
+- [Cursor](#cursor--legacy-compatibility-only)
 
 Deeper technical detail — project layout, the full script list, API routes, performance internals — lives in collapsible **"for builders"** sections inline, right where each topic comes up.
 
@@ -57,7 +57,6 @@ Deeper technical detail — project layout, the full script list, API routes, pe
 | Run it locally              | [Run it locally](#run-it-locally)      |
 | Configure env vars          | [Configuration](#configuration)        |
 | Deploy it                   | [Deployment](#deployment)              |
-| Contribute a change         | [Contributing](#contributing)          |
 | Understand what's automated | [Automation](#automation)              |
 
 ## What this is
@@ -241,18 +240,6 @@ Upstream: **MLB Stats API** — `https://statsapi.mlb.com/api/v1/`. Response sha
 | ---------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | **GitHub Pages** | `.github/workflows/deploy-pages.yml` — `npm ci`, `npm run build` with `VITE_API_BASE` + `VITE_PUBLIC_PATH`, deploy `dist/` |
 
-## Contributing
-
-```bash
-npm run format:check
-npm run lint
-npm run typecheck
-npm run test:coverage
-npm run build
-```
-
-Tests live next to sources: `src/**/*.test.ts`, `lib/**/*.test.mjs` (see `vite.config.mjs`).
-
 ## Automation
 
 **In plain English:** one narrow decision merges itself (a Dependabot patch/minor bump once CI
@@ -305,6 +292,18 @@ someone asked for, reviewed before it ships.
 - **Large rosters (>30)** — Shorter peel, capped stagger, smaller fly vectors / fan angles (`getRevealTiming` / `measureAlbumRevealOffsets`), denser `--shadow-card-large-roster`.
 
 </details>
+
+## Cursor — legacy compatibility only
+
+This project is developed with Claude Code. Conventions live directly in
+[`AGENTS.md`](AGENTS.md) / [`CLAUDE.md`](CLAUDE.md) — there are no separate
+`.cursor/rules/*.mdc` files. `.cursor/skills` is kept only as a symlink to the canonical
+`.claude/skills/` directory, for compatibility if this repo is opened in Cursor.
+
+| Path                                      | Purpose                                                                                                                                                                                                         |
+| :---------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.claude/skills/*/`                       | Repo-local canonical skills — `api-proxy-hardening` — `.cursor/skills` symlinks here. `definition-of-done`, Vitest testing, and doc writer come from the installed `foundations` plugin instead of living here. |
+| `prettier.config.mjs` / `.prettierignore` | Prettier style + ignore list — agents and CI follow these; use `npm run format` / `format:check`.                                                                                                               |
 
 **╔══════════════════════════════════════════════════════════╗**  
 **║** **ATTRIBUTIONS** — palette reference: [U.S. Team Colors](https://usteamcolors.com/). **║**  
