@@ -84,6 +84,7 @@
 
 <script setup>
 import { computed } from 'vue';
+import { formatVintageDate } from '../lib/formatVintageDate';
 
 const props = defineProps({
   playerInfo: {
@@ -148,33 +149,7 @@ const hometownDisplay = computed(() => birthplaceLine.value || '—');
 /** Slightly friendlier than raw ISO when parsable (vintage postcard feel). */
 const birthDateDisplay = computed(() => {
   const raw = props.playerInfo?.birthDate;
-  if (!raw || typeof raw !== 'string') {
-    return '—';
-  }
-  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(raw.trim());
-  if (!m) {
-    return raw;
-  }
-  const [, y, mo, d] = m;
-  const months = [
-    'JAN',
-    'FEB',
-    'MAR',
-    'APR',
-    'MAY',
-    'JUN',
-    'JUL',
-    'AUG',
-    'SEP',
-    'OCT',
-    'NOV',
-    'DEC',
-  ];
-  const mi = Number(mo) - 1;
-  if (mi < 0 || mi > 11) {
-    return raw;
-  }
-  return `${months[mi]} ${Number(d)}, ${y}`;
+  return formatVintageDate(raw) ?? (typeof raw === 'string' && raw ? raw : '—');
 });
 
 const debutDisplay = computed(() => {
@@ -182,30 +157,7 @@ const debutDisplay = computed(() => {
   if (!raw || typeof raw !== 'string') {
     return '';
   }
-  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(raw.trim());
-  if (!m) {
-    return raw.toUpperCase();
-  }
-  const [, y, mo, d] = m;
-  const months = [
-    'JAN',
-    'FEB',
-    'MAR',
-    'APR',
-    'MAY',
-    'JUN',
-    'JUL',
-    'AUG',
-    'SEP',
-    'OCT',
-    'NOV',
-    'DEC',
-  ];
-  const mi = Number(mo) - 1;
-  if (mi < 0 || mi > 11) {
-    return raw.toUpperCase();
-  }
-  return `${months[mi]} ${Number(d)}, ${y}`;
+  return formatVintageDate(raw) ?? raw.toUpperCase();
 });
 </script>
 
