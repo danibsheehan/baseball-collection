@@ -131,12 +131,7 @@ app.get('/people/:playerId', apiLimiter, (req, res) => {
     res.status(400).json({ message: parsed.message });
     return;
   }
-  const playerId = validateNumericId(req.params.playerId);
-  if (!playerId) {
-    res.status(400).json({ message: 'Invalid playerId' });
-    return;
-  }
-  proxyMlb(req, res, `people/${playerId}`, CACHE.people);
+  proxyMlb(req, res, `people/${parsed.playerId}`, CACHE.people);
 });
 
 app.listen(port, () => {
