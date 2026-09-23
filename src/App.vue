@@ -309,13 +309,11 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue';
+import { ref, computed } from 'vue';
 import AlbumPackLottie from './components/AlbumPackLottie.vue';
 import BaseballCard from './components/BaseballCard.vue';
 import Team from './components/Team.vue';
 import http from './http-common';
-import { filterMajorLeagueBaseballTeams } from './lib/filterMlbTeams';
-import { fetchEnrichedRoster } from './lib/rosterLoad';
 import {
   countCollectedByTeamId,
   countCollectedOnRoster,
@@ -326,34 +324,14 @@ import {
   toggleCollected,
   writeAlbumStore,
 } from './lib/albumCollection';
-import { buildTeamPickerSections, filterTeamPickerSections } from './lib/teamPickerSections';
-import {
-  findTeamByTeamCode,
-  readTeamCodeFromLocation,
-  writeTeamCodeToHistory,
-} from './lib/teamUrlState';
 import { useBinderPennantParallax } from './lib/useBinderPennantParallax';
 import { useCardDealAnimation } from './lib/useCardDealAnimation';
+import { useTeamSelection } from './lib/useTeamSelection';
 
-/** Bumps on each roster request so stale responses do not overwrite a newer club. */
-let rosterRequestId = 0;
-
-const players = ref([]);
-const teamName = ref('');
-const selectedTeamId = ref(null);
-const teams = ref([]);
-const theme = ref('');
-const teamsLoading = ref(true);
-const teamsError = ref('');
-const liveRegionText = ref('');
-const rosterLoading = ref(false);
 /** Client-only album (localStorage); no backend. */
 const albumStore = ref(readAlbumStore(typeof localStorage !== 'undefined' ? localStorage : null));
 /** 'all' | 'album' — which cards to show for the open club. */
 const rosterAlbumFilter = ref('all');
-/** 'idle' | 'pulling' | 'faces' — while a roster request is in flight */
-const rosterLoadStage = ref('idle');
-const resultsSection = ref(null);
 const binderRef = ref(null);
 const pennantRef = ref(null);
 const feltRailRef = ref(null);
@@ -372,7 +350,31 @@ useBinderPennantParallax({
     scrollLerp: 0.1,
   },
 });
-const teamSearchQuery = ref('');
+
+const {
+  teams,
+  teamName,
+  selectedTeamId,
+  theme,
+  teamsLoading,
+  teamsError,
+  teamSearchQuery,
+  players,
+  rosterLoading,
+  rosterLoadingHeadline,
+  liveRegionText,
+  resultsSection,
+  filteredTeamSections,
+  displayTeamSections,
+  teamsSectionsLayoutClass,
+  onTeamSelect,
+  setLiveMessage,
+} = useTeamSelection({
+  http,
+  onTeamChange: () => {
+    rosterAlbumFilter.value = 'all';
+  },
+});
 
 const {
   packRevealRef,
@@ -384,32 +386,6 @@ const {
   onPackUnwrapComplete,
   onBinderSettleEnd,
 } = useCardDealAnimation({ players, rosterLoading, resultsSection, binderRef });
-
-const teamPickerSections = computed(() => buildTeamPickerSections(teams.value));
-
-const filteredTeamSections = computed(() =>
-  filterTeamPickerSections(teamPickerSections.value, teamSearchQuery.value),
-);
-
-/** While loading or empty API, avoid flashing “no matches” before sections exist. */
-const displayTeamSections = computed(() => {
-  if (teamsLoading.value || !teams.value.length) {
-    return teamPickerSections.value;
-  }
-  return filteredTeamSections.value;
-});
-
-/** Program layout: side-by-side league columns on wide checklist rail when AL + NL. */
-const teamsSectionsLayoutClass = computed(() => {
-  const n = displayTeamSections.value.length;
-  if (n <= 1) {
-    return 'teams__sections--solo';
-  }
-  if (n === 2) {
-    return 'teams__sections--duo';
-  }
-  return 'teams__sections--multi';
-});
 
 /** Owned counts per club from collect-time teamId tags. */
 const albumCountByTeamId = computed(() => countCollectedByTeamId(albumStore.value));
@@ -449,52 +425,8 @@ const rosterCompletenessFillPercent = computed(() =>
   albumCompletenessFillPercent(rosterOwnedCount.value, players.value.length),
 );
 
-const rosterLoadingHeadline = computed(() => {
-  if (rosterLoadStage.value === 'faces') {
-    return 'Mounting portraits…';
-  }
-  return 'Loading the roster…';
-});
-
 /** Placeholder card-backs while the roster / people requests run */
 const skeletonSlots = Array.from({ length: 12 }, (_, i) => i + 1);
-
-onUnmounted(() => {
-  window.removeEventListener('popstate', onTeamPopState);
-});
-
-function focusResultsSection() {
-  nextTick(() => {
-    const el = resultsSection.value;
-    if (!el || typeof el.focus !== 'function') {
-      return;
-    }
-    el.focus({ preventScroll: true });
-    if (typeof el.scrollIntoView === 'function') {
-      try {
-        el.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
-      } catch {
-        el.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'auto' });
-      }
-    }
-  });
-}
-
-watch(selectedTeamId, (id) => {
-  if (id != null) {
-    focusResultsSection();
-  }
-});
-
-watch(rosterLoading, (loading, wasLoading) => {
-  if (!loading && wasLoading && selectedTeamId.value != null) {
-    focusResultsSection();
-  }
-});
-
-function setLiveMessage(message) {
-  liveRegionText.value = message;
-}
 
 function isPlayerCollected(personId) {
   return isCollected(albumStore.value, personId);
@@ -535,171 +467,6 @@ function onToggleCollect(personId) {
     result.collected ? `Added ${name} to your album.` : `Removed ${name} from your album.`,
   );
 }
-
-function setRosterLoadStage(stage) {
-  rosterLoadStage.value = stage;
-}
-
-function setRosterLoading(loading) {
-  rosterLoading.value = loading;
-  if (!loading) {
-    rosterLoadStage.value = 'idle';
-  }
-}
-
-function applySelectedTeam(team) {
-  selectedTeamId.value = team.id;
-  theme.value = team.teamCode?.toLowerCase() || '';
-  teamName.value = team.name;
-  rosterAlbumFilter.value = 'all';
-}
-
-function clearSelectedTeam() {
-  selectedTeamId.value = null;
-  theme.value = '';
-  teamName.value = '';
-  players.value = [];
-  rosterAlbumFilter.value = 'all';
-}
-
-/**
- * Load a club roster (checklist click, URL hydrate, or browser history).
- * @param {object} team
- * @param {{ historyMode?: 'push' | 'replace' | 'none' }} [opts]
- */
-async function selectTeam(team, opts = {}) {
-  const historyMode = opts.historyMode ?? 'push';
-  const requestId = ++rosterRequestId;
-
-  applySelectedTeam(team);
-  if (historyMode !== 'none') {
-    writeTeamCodeToHistory(team.teamCode?.toLowerCase() || null, historyMode);
-  }
-
-  players.value = [];
-  setLiveMessage(`Loading cards for ${team.name}.`);
-  setRosterLoadStage('pulling');
-  setRosterLoading(true);
-
-  try {
-    const { players: nextPlayers, empty } = await fetchEnrichedRoster(http, team.id, {
-      onRosterLoaded: () => {
-        if (requestId === rosterRequestId) {
-          setRosterLoadStage('faces');
-        }
-      },
-    });
-    if (requestId !== rosterRequestId) {
-      return;
-    }
-    players.value = nextPlayers;
-    if (empty) {
-      setLiveMessage(`No cards listed for ${team.name}.`);
-    } else {
-      setLiveMessage(
-        `Showing ${nextPlayers.length} ${nextPlayers.length === 1 ? 'card' : 'cards'} for ${team.name}.`,
-      );
-    }
-  } catch {
-    if (requestId !== rosterRequestId) {
-      return;
-    }
-    players.value = [];
-    setLiveMessage(`Could not load cards for ${team.name}.`);
-  } finally {
-    if (requestId === rosterRequestId) {
-      setRosterLoading(false);
-    }
-  }
-}
-
-function onTeamSelect(team) {
-  if (team?.id == null) {
-    return;
-  }
-  const historyMode = selectedTeamId.value === team.id ? 'replace' : 'push';
-  selectTeam(team, { historyMode });
-}
-
-/**
- * Apply `?team=` from the location (boot hydrate or popstate).
- * @param {{ announceMissing?: boolean }} [opts]
- */
-function syncTeamFromLocation(opts = {}) {
-  const announceMissing = opts.announceMissing !== false;
-  const code = readTeamCodeFromLocation();
-
-  if (!code) {
-    if (selectedTeamId.value != null) {
-      rosterRequestId += 1;
-      clearSelectedTeam();
-      setRosterLoading(false);
-      setLiveMessage('Club cleared. Pick a club to see the cards.');
-    }
-    return;
-  }
-
-  const team = findTeamByTeamCode(teams.value, code);
-  if (!team) {
-    if (announceMissing) {
-      setLiveMessage(`No club on file for “${code}”.`);
-    }
-    writeTeamCodeToHistory(null, 'replace');
-    return;
-  }
-
-  if (selectedTeamId.value === team.id && (players.value.length > 0 || rosterLoading.value)) {
-    return;
-  }
-
-  selectTeam(team, { historyMode: 'none' });
-}
-
-function onTeamPopState() {
-  syncTeamFromLocation();
-}
-
-onMounted(() => {
-  window.addEventListener('popstate', onTeamPopState);
-  teams.value = [];
-  teamsLoading.value = true;
-  teamsError.value = '';
-  liveRegionText.value = 'Loading clubs.';
-  http
-    .get('teams')
-    .then((response) => {
-      const data = filterMajorLeagueBaseballTeams(response.data.teams || []).sort((a, b) =>
-        String(a.name || '').localeCompare(String(b.name || ''), undefined, {
-          sensitivity: 'base',
-        }),
-      );
-      teams.value = data;
-      teamsError.value = '';
-      const deepLinkCode = readTeamCodeFromLocation();
-      const deepLinkTeam = deepLinkCode ? findTeamByTeamCode(data, deepLinkCode) : undefined;
-      if (deepLinkTeam) {
-        liveRegionText.value = `Loading cards for ${deepLinkTeam.name}.`;
-      } else if (deepLinkCode) {
-        liveRegionText.value = `No club on file for “${deepLinkCode}”.`;
-      } else {
-        liveRegionText.value =
-          data.length > 0
-            ? `${data.length} clubs on file. Pick a club to see the cards.`
-            : 'No teams available.';
-      }
-    })
-    .catch((err) => {
-      console.error('teams request failed', err);
-      teams.value = [];
-      teamsError.value = 'Could not load teams. Check your connection or try refreshing the page.';
-    })
-    .finally(() => {
-      teamsLoading.value = false;
-      nextTick(() => {
-        syncTeamFromLocation({ announceMissing: false });
-      });
-    });
-});
 </script>
 
 <style>
