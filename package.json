@@ -33,14 +33,14 @@
     "axios-extensions": "^4.0.0",
     "dotenv": "^18.0.5",
     "express": "^5.2.1",
-    "express-rate-limit": "^8.7.0",
+    "express-rate-limit": "^8.7.1",
     "lottie-web": "^5.13.0",
     "serve-static": "^2.2.1",
     "vue": "^3.5.43"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@typescript-eslint/parser": "^8.71.0",
+    "@typescript-eslint/parser": "^8.71.1",
     "@vitejs/plugin-vue": "^6.0.9",
     "@vitest/coverage-v8": "^5.0.3",
     "@vue/test-utils": "^2.5.1",
@@ -55,7 +55,7 @@
     "lint-staged": "^17.6.0",
     "prettier": "^3.9.9",
     "typescript": "^6.0.3",
-    "vite": "^8.3.2",
+    "vite": "^8.3.3",
     "vitest": "^5.0.0",
     "vue-eslint-parser": "^10.4.1"
   },
